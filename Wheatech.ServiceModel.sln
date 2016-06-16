@@ -11,6 +11,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Ninje
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Autofac", "src\Wheatech.ServiceModel.Autofac\Wheatech.ServiceModel.Autofac.csproj", "{1AFD596C-6D58-4B6B-AD84-27375E41FECD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Interception", "src\Wheatech.ServiceModel.Interception\Wheatech.ServiceModel.Interception.csproj", "{38426EC5-1A50-4DA2-B459-5389B120A569}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Unity.Interception", "src\Wheatech.ServiceModel.Unity.Interception\Wheatech.ServiceModel.Unity.Interception.csproj", "{60972548-F189-49D7-9C31-976307A3E03D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0E23DD74-733E-4539-AEEB-527D73F0CA28}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autofac", "Autofac", "{CE31D387-7B66-430B-AC4B-1A3A74A451C9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ninject", "Ninject", "{05986363-0F1A-4808-BECE-981E42F527AA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unity", "Unity", "{C498B61F-0134-4FF9-88F7-F2B6CB123A96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,8 +45,24 @@ Global
 		{1AFD596C-6D58-4B6B-AD84-27375E41FECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AFD596C-6D58-4B6B-AD84-27375E41FECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AFD596C-6D58-4B6B-AD84-27375E41FECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38426EC5-1A50-4DA2-B459-5389B120A569}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38426EC5-1A50-4DA2-B459-5389B120A569}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38426EC5-1A50-4DA2-B459-5389B120A569}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38426EC5-1A50-4DA2-B459-5389B120A569}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60972548-F189-49D7-9C31-976307A3E03D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60972548-F189-49D7-9C31-976307A3E03D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60972548-F189-49D7-9C31-976307A3E03D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60972548-F189-49D7-9C31-976307A3E03D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3EB8741F-D5DB-47EB-A76E-2CD1CE0B3961} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
+		{C0BF61E5-73F6-40C8-97E1-F257A60CAB1A} = {C498B61F-0134-4FF9-88F7-F2B6CB123A96}
+		{F19E872B-CF52-440D-B44F-4DF1AEC8F8FF} = {05986363-0F1A-4808-BECE-981E42F527AA}
+		{1AFD596C-6D58-4B6B-AD84-27375E41FECD} = {CE31D387-7B66-430B-AC4B-1A3A74A451C9}
+		{38426EC5-1A50-4DA2-B459-5389B120A569} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
+		{60972548-F189-49D7-9C31-976307A3E03D} = {C498B61F-0134-4FF9-88F7-F2B6CB123A96}
 	EndGlobalSection
 EndGlobal

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
-using Autofac.Builder;
 
 namespace Wheatech.ServiceModel.Autofac
 {
@@ -13,16 +12,18 @@ namespace Wheatech.ServiceModel.Autofac
     public class AutofacServiceContainer : ServiceContainerBase, IDisposable
     {
         private Dictionary<Tuple<Type, string>, Type> _registrations = new Dictionary<Tuple<Type, string>, Type>();
-
+        private ContainerBuilder _builder;
         private IContainer _container;
         private readonly ServiceLifetime _lifetime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacServiceContainer" /> class.
         /// </summary>
-        public AutofacServiceContainer(ServiceLifetime lifetime)
+        public AutofacServiceContainer(ContainerBuilder builder = null, ServiceLifetime lifetime = ServiceLifetime.SingleInstance)
         {
             _lifetime = lifetime;
+            _builder = builder ?? new ContainerBuilder();
+            _builder.RegisterInstance(this).As<IServiceContainer>().ExternallyOwned();
         }
 
         /// <summary>
@@ -35,52 +36,17 @@ namespace Wheatech.ServiceModel.Autofac
                 _container.Dispose();
                 _container = null;
             }
+            _builder = null;
             _registrations = null;
         }
 
         private IContainer EnsureContainer()
         {
-            if (_registrations == null)
+            if (_builder == null)
             {
                 throw new ObjectDisposedException("container");
             }
-            if (_container == null)
-            {
-                var containerBuilder = new ContainerBuilder();
-                containerBuilder.RegisterInstance(this).As<IServiceContainer>().ExternallyOwned();
-                foreach (var registration in _registrations)
-                {
-                    IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> builder;
-                    if (registration.Key.Item2 == null)
-                    {
-                        builder = containerBuilder.RegisterType(registration.Value).As(registration.Key.Item1);
-                    }
-                    else
-                    {
-                        builder = containerBuilder.RegisterType(registration.Value).Named(registration.Key.Item2, registration.Key.Item1);
-                    }
-                    switch (_lifetime)
-                    {
-                        case ServiceLifetime.SingleInstance:
-                            builder.SingleInstance();
-                            break;
-                        case ServiceLifetime.InstancePerDependency:
-                            builder.InstancePerDependency();
-                            break;
-                        case ServiceLifetime.InstancePerLifetimeScope:
-                            builder.InstancePerLifetimeScope();
-                            break;
-                        case ServiceLifetime.ExternallyOwned:
-                            builder.ExternallyOwned();
-                            break;
-                        case ServiceLifetime.OwnedByLifetimeScope:
-                            builder.OwnedByLifetimeScope();
-                            break;
-                    }
-                }
-                _container = containerBuilder.Build();
-            }
-            return _container;
+            return _container ?? (_container = _builder.Build());
         }
 
         /// <summary>
@@ -91,7 +57,7 @@ namespace Wheatech.ServiceModel.Autofac
         /// <returns><c>true</c> if this type/name pair has been registered, <c>false</c> if not.</returns>
         public override bool IsRegistered(Type serviceType, string serviceName = null)
         {
-            if (_registrations == null)
+            if (_builder == null)
             {
                 throw new ObjectDisposedException("container");
             }
@@ -99,7 +65,11 @@ namespace Wheatech.ServiceModel.Autofac
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
-            return _registrations.ContainsKey(Tuple.Create(serviceType, serviceName));
+            if (_container == null)
+            {
+                return _registrations.ContainsKey(Tuple.Create(serviceType, serviceName));
+            }
+            return serviceName == null ? _container.IsRegistered(serviceType) : _container.IsRegisteredWithName(serviceName, serviceType);
         }
 
         /// <summary>
@@ -137,7 +107,7 @@ namespace Wheatech.ServiceModel.Autofac
             var enumerableType = typeof(IEnumerable<>).MakeGenericType(serviceType);
 
             object instance = container.Resolve(enumerableType);
-            return ((IEnumerable) instance).Cast<object>();
+            return ((IEnumerable)instance).Cast<object>();
         }
 
         /// <summary>
@@ -148,14 +118,30 @@ namespace Wheatech.ServiceModel.Autofac
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
         protected override void DoRegister(Type serviceType, Type implementationType, string serviceName)
         {
-            if (_registrations == null)
+            if (_builder == null)
             {
                 throw new ObjectDisposedException("container");
             }
-            if (_container != null)
+            var builder = serviceName == null
+                ? _builder.RegisterType(implementationType).As(serviceType)
+                : _builder.RegisterType(implementationType).Named(serviceName, serviceType);
+            switch (_lifetime)
             {
-                _container.Dispose();
-                _container = null;
+                case ServiceLifetime.SingleInstance:
+                    builder.SingleInstance();
+                    break;
+                case ServiceLifetime.InstancePerDependency:
+                    builder.InstancePerDependency();
+                    break;
+                case ServiceLifetime.InstancePerLifetimeScope:
+                    builder.InstancePerLifetimeScope();
+                    break;
+                case ServiceLifetime.ExternallyOwned:
+                    builder.ExternallyOwned();
+                    break;
+                case ServiceLifetime.OwnedByLifetimeScope:
+                    builder.OwnedByLifetimeScope();
+                    break;
             }
             _registrations[Tuple.Create(serviceType, serviceName)] = implementationType;
         }

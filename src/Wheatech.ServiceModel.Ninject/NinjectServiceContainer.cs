@@ -28,6 +28,7 @@ namespace Wheatech.ServiceModel.Ninject
         {
             _kernel = kernel ?? new StandardKernel();
             _scope = scope ?? StandardScopeCallbacks.Singleton;
+            _kernel.Bind<IServiceContainer>().ToConstant(this);
         }
 
         /// <summary>
