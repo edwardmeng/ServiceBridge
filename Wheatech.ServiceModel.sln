@@ -5,6 +5,12 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel", "src\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj", "{3EB8741F-D5DB-47EB-A76E-2CD1CE0B3961}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Unity", "src\Wheatech.ServiceModel.Unity\Wheatech.ServiceModel.Unity.csproj", "{C0BF61E5-73F6-40C8-97E1-F257A60CAB1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Ninject", "src\Wheatech.ServiceModel.Ninject\Wheatech.ServiceModel.Ninject.csproj", "{F19E872B-CF52-440D-B44F-4DF1AEC8F8FF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Autofac", "src\Wheatech.ServiceModel.Autofac\Wheatech.ServiceModel.Autofac.csproj", "{1AFD596C-6D58-4B6B-AD84-27375E41FECD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{3EB8741F-D5DB-47EB-A76E-2CD1CE0B3961}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EB8741F-D5DB-47EB-A76E-2CD1CE0B3961}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EB8741F-D5DB-47EB-A76E-2CD1CE0B3961}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0BF61E5-73F6-40C8-97E1-F257A60CAB1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0BF61E5-73F6-40C8-97E1-F257A60CAB1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0BF61E5-73F6-40C8-97E1-F257A60CAB1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0BF61E5-73F6-40C8-97E1-F257A60CAB1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F19E872B-CF52-440D-B44F-4DF1AEC8F8FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F19E872B-CF52-440D-B44F-4DF1AEC8F8FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F19E872B-CF52-440D-B44F-4DF1AEC8F8FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F19E872B-CF52-440D-B44F-4DF1AEC8F8FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AFD596C-6D58-4B6B-AD84-27375E41FECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AFD596C-6D58-4B6B-AD84-27375E41FECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AFD596C-6D58-4B6B-AD84-27375E41FECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AFD596C-6D58-4B6B-AD84-27375E41FECD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
