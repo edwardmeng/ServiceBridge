@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using Autofac.Builder;
 
 namespace Wheatech.ServiceModel.Autofac
 {
@@ -14,12 +15,14 @@ namespace Wheatech.ServiceModel.Autofac
         private Dictionary<Tuple<Type, string>, Type> _registrations = new Dictionary<Tuple<Type, string>, Type>();
 
         private IContainer _container;
+        private readonly ServiceLifetime _lifetime;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacServiceContainer" /> class.
         /// </summary>
-        public AutofacServiceContainer()
+        public AutofacServiceContainer(ServiceLifetime lifetime)
         {
+            _lifetime = lifetime;
         }
 
         /// <summary>
@@ -44,15 +47,35 @@ namespace Wheatech.ServiceModel.Autofac
             if (_container == null)
             {
                 var containerBuilder = new ContainerBuilder();
+                containerBuilder.RegisterInstance(this).As<IServiceContainer>().ExternallyOwned();
                 foreach (var registration in _registrations)
                 {
+                    IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> builder;
                     if (registration.Key.Item2 == null)
                     {
-                        containerBuilder.RegisterType(registration.Value).As(registration.Key.Item1);
+                        builder = containerBuilder.RegisterType(registration.Value).As(registration.Key.Item1);
                     }
                     else
                     {
-                        containerBuilder.RegisterType(registration.Value).Named(registration.Key.Item2, registration.Key.Item1);
+                        builder = containerBuilder.RegisterType(registration.Value).Named(registration.Key.Item2, registration.Key.Item1);
+                    }
+                    switch (_lifetime)
+                    {
+                        case ServiceLifetime.SingleInstance:
+                            builder.SingleInstance();
+                            break;
+                        case ServiceLifetime.InstancePerDependency:
+                            builder.InstancePerDependency();
+                            break;
+                        case ServiceLifetime.InstancePerLifetimeScope:
+                            builder.InstancePerLifetimeScope();
+                            break;
+                        case ServiceLifetime.ExternallyOwned:
+                            builder.ExternallyOwned();
+                            break;
+                        case ServiceLifetime.OwnedByLifetimeScope:
+                            builder.OwnedByLifetimeScope();
+                            break;
                     }
                 }
                 _container = containerBuilder.Build();
@@ -114,7 +137,7 @@ namespace Wheatech.ServiceModel.Autofac
             var enumerableType = typeof(IEnumerable<>).MakeGenericType(serviceType);
 
             object instance = container.Resolve(enumerableType);
-            return ((IEnumerable)instance).Cast<object>();
+            return ((IEnumerable) instance).Cast<object>();
         }
 
         /// <summary>
