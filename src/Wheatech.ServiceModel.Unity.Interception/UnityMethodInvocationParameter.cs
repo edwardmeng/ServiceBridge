@@ -4,7 +4,7 @@ using IMethodInvocation = Microsoft.Practices.Unity.InterceptionExtension.IMetho
 
 namespace Wheatech.ServiceModel.Unity.Interception
 {
-    public class UnityMethodInvocationParameter : IMethodParameter
+    internal class UnityMethodInvocationParameter : IMethodParameter
     {
         private readonly IMethodInvocation _invocation;
         private readonly int _parameterIndex;

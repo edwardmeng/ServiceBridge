@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Wheatech.ServiceModel.Interception;
+using IMethodInvocation = Wheatech.ServiceModel.Interception.IMethodInvocation;
+using IMethodReturn = Wheatech.ServiceModel.Interception.IMethodReturn;
+using ParameterCollection = Wheatech.ServiceModel.Interception.ParameterCollection;
 
 namespace Wheatech.ServiceModel.Unity.Interception
 {
-    public class UnityMethodInvocation : IMethodInvocation
+    internal class UnityMethodInvocation : IMethodInvocation
     {
         private readonly Microsoft.Practices.Unity.InterceptionExtension.IMethodInvocation _invocation;
         private ParameterCollection _arguments;
@@ -48,6 +51,11 @@ namespace Wheatech.ServiceModel.Unity.Interception
         public IMethodReturn CreateExceptionReturn(Exception exception)
         {
             return new UnityMethodReturn(_invocation.CreateExceptionMethodReturn(exception));
+        }
+
+        public Microsoft.Practices.Unity.InterceptionExtension.IMethodInvocation Unwrap()
+        {
+            return _invocation;
         }
     }
 }

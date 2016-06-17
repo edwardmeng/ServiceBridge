@@ -4,7 +4,7 @@ using IMethodReturn = Microsoft.Practices.Unity.InterceptionExtension.IMethodRet
 
 namespace Wheatech.ServiceModel.Unity.Interception
 {
-    public class UnitMethodReturnParameter : IMethodParameter
+    internal class UnitMethodReturnParameter : IMethodParameter
     {
         private readonly IMethodReturn _return;
         private readonly int _parameterIndex;

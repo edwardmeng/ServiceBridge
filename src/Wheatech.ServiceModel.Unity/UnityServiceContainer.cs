@@ -33,6 +33,25 @@ namespace Wheatech.ServiceModel.Unity
         }
 
         /// <summary>
+        /// Add an extension object to the container.
+        /// </summary>
+        /// <param name="extension">UnityContainerExtension to add.</param>
+        public void AddExtension(UnityContainerExtension extension)
+        {
+            _container.AddExtension(extension);
+        }
+
+        /// <summary>
+        /// Get access to a configuration interface exposed by an extension. 
+        /// </summary>
+        /// <param name="configurationInterface">Type of configuration interface required.</param>
+        /// <returns>The requested extension's configuration interface, or null if not found.</returns>
+        public object GetExtension(Type configurationInterface)
+        {
+            return _container.Configure(configurationInterface);
+        }
+
+        /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         public void Dispose()

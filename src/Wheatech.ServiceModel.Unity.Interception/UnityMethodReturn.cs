@@ -4,7 +4,7 @@ using Wheatech.ServiceModel.Interception;
 
 namespace Wheatech.ServiceModel.Unity.Interception
 {
-    public class UnityMethodReturn : IMethodReturn
+    internal class UnityMethodReturn : IMethodReturn
     {
         private readonly Microsoft.Practices.Unity.InterceptionExtension.IMethodReturn _return;
         private ParameterCollection _outputs;
@@ -41,6 +41,11 @@ namespace Wheatech.ServiceModel.Unity.Interception
         {
             get { return _return.ReturnValue; }
             set { _return.ReturnValue = value; }
+        }
+
+        public Microsoft.Practices.Unity.InterceptionExtension.IMethodReturn Unwrap()
+        {
+            return _return;
         }
     }
 }
