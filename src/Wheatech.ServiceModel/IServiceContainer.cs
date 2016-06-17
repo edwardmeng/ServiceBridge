@@ -44,5 +44,10 @@ namespace Wheatech.ServiceModel
         /// <param name="serviceName">Name to check registration for.</param>
         /// <returns><c>true</c> if this type/name pair has been registered, <c>false</c> if not.</returns>
         bool IsRegistered(Type serviceType, string serviceName = null);
+
+        /// <summary>
+        /// This event is raised when the <see cref="Register"/> method is called. 
+        /// </summary>
+        event EventHandler<ServiceRegisterEventArgs> Registering;
     }
 }

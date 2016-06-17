@@ -11,6 +11,8 @@ namespace Wheatech.ServiceModel
     /// </summary>
     public abstract class ServiceContainerBase : IServiceContainer
     {
+        #region Get Instance
+
         /// <summary>
         /// Implementation of <see cref="IServiceProvider.GetService"/>.
         /// </summary>
@@ -65,35 +67,6 @@ namespace Wheatech.ServiceModel
         }
 
         /// <summary>
-        /// Registers a type mapping with the container. 
-        /// </summary>
-        /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
-        /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
-        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        public IServiceContainer Register(Type serviceType, Type implementationType, string serviceName = null)
-        {
-            try
-            {
-                DoRegister(serviceType, implementationType, serviceName);
-                return this;
-            }
-            catch (Exception ex)
-            {
-                throw new RegistrationException("", ex);
-            }
-        }
-
-        /// <summary>
-        /// When implemented by inheriting classes, this method will do the actual work of 
-        /// checking if a particular type/name pair has been registered with the container. 
-        /// </summary>
-        /// <param name="serviceType">Type to check registration for.</param>
-        /// <param name="serviceName">Name to check registration for.</param>
-        /// <returns><c>true</c> if this type/name pair has been registered, <c>false</c> if not.</returns>
-        public abstract bool IsRegistered(Type serviceType, string serviceName = null);
-
-        /// <summary>
         /// When implemented by inheriting classes, this method will do the actual work of resolving
         /// the requested service instance.
         /// </summary>
@@ -110,6 +83,39 @@ namespace Wheatech.ServiceModel
         /// <returns>Sequence of service instance objects.</returns>
         protected abstract IEnumerable<object> DoGetAllInstances(Type serviceType);
 
+        #endregion
+
+        #region Register
+
+        /// <summary>
+        /// When implemented by inheriting classes, this method will do the actual work of 
+        /// checking if a particular type/name pair has been registered with the container. 
+        /// </summary>
+        /// <param name="serviceType">Type to check registration for.</param>
+        /// <param name="serviceName">Name to check registration for.</param>
+        /// <returns><c>true</c> if this type/name pair has been registered, <c>false</c> if not.</returns>
+        public abstract bool IsRegistered(Type serviceType, string serviceName = null);
+
+        /// <summary>
+        /// Registers a type mapping with the container. 
+        /// </summary>
+        /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
+        /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        public IServiceContainer Register(Type serviceType, Type implementationType, string serviceName = null)
+        {
+            try
+            {
+                DoRegister(serviceType, implementationType, serviceName);
+                return this;
+            }
+            catch (Exception ex)
+            {
+                throw new RegistrationException(FormatRegistrationExceptionMessage(ex, serviceType, implementationType, serviceName), ex);
+            }
+        }
+
         /// <summary>
         /// When implemented by inheriting classes, this method will do the actual work of
         /// registering the type mapping.
@@ -118,6 +124,24 @@ namespace Wheatech.ServiceModel
         /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
         protected abstract void DoRegister(Type serviceType, Type implementationType, string serviceName);
+
+        /// <summary>
+        /// This event is raised when the <see cref="IServiceContainer.Register"/> method is called. 
+        /// </summary>
+        public event EventHandler<ServiceRegisterEventArgs> Registering;
+
+        /// <summary>
+        /// Called by the container when the service type is registering.
+        /// </summary>
+        /// <param name="e">The event argument.</param>
+        protected virtual void OnRegistering(ServiceRegisterEventArgs e)
+        {
+            Registering?.Invoke(this, e);
+        }
+
+        #endregion
+
+        #region Message
 
         /// <summary>
         /// Format the exception message for use in an <see cref="ActivationException"/>
@@ -157,5 +181,7 @@ namespace Wheatech.ServiceModel
         {
             return string.Format(CultureInfo.CurrentUICulture, Resources.RegistrationExceptionMessage, serviceType.Name, implementationType.Name, serviceName);
         }
+
+        #endregion
     }
 }

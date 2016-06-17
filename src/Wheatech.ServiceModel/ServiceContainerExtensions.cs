@@ -10,6 +10,8 @@ namespace Wheatech.ServiceModel
     /// </summary>
     public static class ServiceContainerExtensions
     {
+        #region Get Instance
+
         /// <summary>
         /// Get an instance of the given named <typeparamref name="TService"/>.
         /// </summary>
@@ -40,6 +42,10 @@ namespace Wheatech.ServiceModel
                 yield return (TService)item;
             }
         }
+
+        #endregion
+
+        #region Register
 
         /// <summary>
         /// Register a type mapping with the container. 
@@ -222,5 +228,7 @@ namespace Wheatech.ServiceModel
                 return FilterMatchingGenericInterfaces(typeInfo);
             }
         }
+
+        #endregion
     }
 }

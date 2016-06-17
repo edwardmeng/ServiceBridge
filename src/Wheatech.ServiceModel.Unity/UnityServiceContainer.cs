@@ -140,7 +140,13 @@ namespace Wheatech.ServiceModel.Unity
             {
                 throw new ObjectDisposedException("container");
             }
-            _container.RegisterType(serviceType, implementationType, serviceName, _lifetimeManager, _injectionMembers);
+            var args = new UnityServiceRegisterEventArgs(serviceType, implementationType, serviceName)
+            {
+                Lifetime = _lifetimeManager,
+            };
+            args.InjectionMembers.AddRange(_injectionMembers);
+            OnRegistering(args);
+            _container.RegisterType(serviceType, implementationType, serviceName, args.Lifetime, args.InjectionMembers.ToArray());
         }
     }
 }
