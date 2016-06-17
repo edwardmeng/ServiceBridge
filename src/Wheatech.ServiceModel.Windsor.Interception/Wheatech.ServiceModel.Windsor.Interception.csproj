@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WindsorServiceContainerExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\tools\wheatech.snk">
@@ -62,6 +63,10 @@
     <ProjectReference Include="..\Wheatech.ServiceModel.Interception\Wheatech.ServiceModel.Interception.csproj">
       <Project>{38426ec5-1a50-4da2-b459-5389b120a569}</Project>
       <Name>Wheatech.ServiceModel.Interception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wheatech.ServiceModel.Windsor\Wheatech.ServiceModel.Windsor.csproj">
+      <Project>{37e0d2f9-83ee-4c13-8c72-da8494613552}</Project>
+      <Name>Wheatech.ServiceModel.Windsor</Name>
     </ProjectReference>
     <ProjectReference Include="..\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
       <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
