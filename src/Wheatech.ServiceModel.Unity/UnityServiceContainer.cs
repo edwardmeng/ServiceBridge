@@ -36,7 +36,7 @@ namespace Wheatech.ServiceModel.Unity
         /// Add an extension object to the container.
         /// </summary>
         /// <param name="extension">UnityContainerExtension to add.</param>
-        public void AddExtension(UnityContainerExtension extension)
+        public void AddUnityExtension(UnityContainerExtension extension)
         {
             _container.AddExtension(extension);
         }
@@ -46,7 +46,7 @@ namespace Wheatech.ServiceModel.Unity
         /// </summary>
         /// <param name="configurationInterface">Type of configuration interface required.</param>
         /// <returns>The requested extension's configuration interface, or null if not found.</returns>
-        public object GetExtension(Type configurationInterface)
+        public object GetUnityExtension(Type configurationInterface)
         {
             return _container.Configure(configurationInterface);
         }
@@ -54,15 +54,19 @@ namespace Wheatech.ServiceModel.Unity
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            if (_container != null)
+            base.Dispose(disposing);
+            if (disposing)
             {
-                _container.Dispose();
-                _container = null;
+                if (_container != null)
+                {
+                    _container.Dispose();
+                    _container = null;
+                }
+                _lifetimeManager = null;
+                _injectionMembers = null;
             }
-            _lifetimeManager = null;
-            _injectionMembers = null;
         }
 
         private static LifetimeManager CreateDefaultInstanceLifetimeManager()

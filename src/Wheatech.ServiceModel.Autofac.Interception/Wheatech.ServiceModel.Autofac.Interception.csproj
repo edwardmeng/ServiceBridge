@@ -54,6 +54,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutofacServiceContainerExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -62,6 +63,20 @@
     </None>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wheatech.ServiceModel.Autofac\Wheatech.ServiceModel.Autofac.csproj">
+      <Project>{1afd596c-6d58-4b6b-ad84-27375e41fecd}</Project>
+      <Name>Wheatech.ServiceModel.Autofac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wheatech.ServiceModel.Interception\Wheatech.ServiceModel.Interception.csproj">
+      <Project>{38426ec5-1a50-4da2-b459-5389b120a569}</Project>
+      <Name>Wheatech.ServiceModel.Interception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
+      <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
+      <Name>Wheatech.ServiceModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="..\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems" Label="Shared" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

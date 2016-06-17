@@ -8,7 +8,7 @@ namespace Wheatech.ServiceModel.Unity.Interception
     /// <summary>
     /// A unity extension to enable the interception mechanism.
     /// </summary>
-    public class UnityInterceptionExtension : UnityContainerExtension
+    internal class UnityInterceptionExtension : UnityContainerExtension
     {
         /// <summary>
         /// Initial the container with this extension's functionality.
@@ -16,6 +16,11 @@ namespace Wheatech.ServiceModel.Unity.Interception
         protected override void Initialize()
         {
             Context.Registering += OnRegistering;
+        }
+
+        public override void Remove()
+        {
+            Context.Registering -= OnRegistering;
         }
 
         private void OnRegistering(object sender, RegisterEventArgs e)

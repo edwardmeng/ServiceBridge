@@ -9,5 +9,10 @@
     <Import_RootNamespace>Wheatech.ServiceModel.DynamicProxy</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)InterceptMethodInvocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InterceptMethodParameter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InterceptMethodReturn.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceInterceptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceInterceptorSelector.cs" />
   </ItemGroup>
 </Project>

@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Microsoft.Practices.Unity.InterceptionExtension;
-using IInterceptor = Wheatech.ServiceModel.Interception.IInterceptor;
+using System.Linq;
 
-namespace Wheatech.ServiceModel.Unity.Interception
+namespace Wheatech.ServiceModel.Interception
 {
     /// <summary>
     /// A collection of <see cref="InterceptorPipeline"/> objects, indexed
     /// by <see cref="MethodBase"/>. Returns an empty pipeline if a
     /// MethodBase is requested that isn't in the dictionary.
     /// </summary>
-    internal class PipelineManager
+    public class PipelineManager
     {
         private readonly Dictionary<InterceptorPipelineKey, InterceptorPipeline> _pipelines =
             new Dictionary<InterceptorPipelineKey, InterceptorPipeline>();
@@ -41,23 +40,41 @@ namespace Wheatech.ServiceModel.Unity.Interception
         /// <summary>
         /// Get the pipeline for the given method, creating it if necessary.
         /// </summary>
-        /// <param name="method">Method to retrieve the pipeline for.</param>
-        /// <param name="interceptors">Interceptors to initialize the pipeline with</param>
+        /// <param name="interfaceMethod"><see cref="MethodInfo"/> for the interface method (may be null if no interface).</param>
+        /// <param name="implementMethod"><see cref="MethodInfo"/> for implementing method.</param>
+        /// <param name="container">Service container that can be used to resolve interceptors.</param>
         /// <returns>True if the pipeline has any interceptor in it, false if not.</returns>
-        public bool InitializePipeline(MethodImplementationInfo method, IEnumerable<IInterceptor> interceptors)
+        public bool InitializePipeline(MethodInfo interfaceMethod, MethodInfo implementMethod, IServiceContainer container)
         {
-            if (method == null)
+            if (implementMethod == null)
             {
-                throw new ArgumentNullException(nameof(method));
+                throw new ArgumentNullException(nameof(implementMethod));
             }
-
-            var pipeline = CreatePipeline(method.ImplementationMethodInfo, interceptors);
-            if (method.InterfaceMethodInfo != null)
+            var pipeline = CreatePipeline(implementMethod,
+                from attribute in GetInterceptorAttributes(interfaceMethod, implementMethod)
+                orderby attribute.Order
+                select attribute.CreateInterceptor(container));
+            if (interfaceMethod != null)
             {
-                _pipelines[InterceptorPipelineKey.ForMethod(method.InterfaceMethodInfo)] = pipeline;
+                _pipelines[InterceptorPipelineKey.ForMethod(interfaceMethod)] = pipeline;
             }
 
             return pipeline.Count > 0;
+        }
+
+        private IEnumerable<InterceptorAttribute> GetInterceptorAttributes(MethodInfo interfaceMethod, MethodInfo implementMethod)
+        {
+            if (interfaceMethod != null)
+            {
+                foreach (var attr in InterceptorAttribute.GetAttributes(interfaceMethod, true))
+                {
+                    yield return attr;
+                }
+            }
+            foreach (var attr in InterceptorAttribute.GetAttributes(implementMethod, true))
+            {
+                yield return attr;
+            }
         }
 
         private InterceptorPipeline CreatePipeline(MethodInfo method, IEnumerable<IInterceptor> interceptors)

@@ -2,10 +2,9 @@
 {
     public enum ServiceLifetime
     {
-        SingleInstance,
-        InstancePerDependency,
-        InstancePerLifetimeScope,
-        ExternallyOwned,
-        OwnedByLifetimeScope
+        Singleton,
+        PerDependency,
+        PerLifetimeScope,
+        PerRequest
     }
 }

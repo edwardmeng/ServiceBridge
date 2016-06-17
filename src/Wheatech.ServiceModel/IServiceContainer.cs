@@ -49,5 +49,23 @@ namespace Wheatech.ServiceModel
         /// This event is raised when the <see cref="Register"/> method is called. 
         /// </summary>
         event EventHandler<ServiceRegisterEventArgs> Registering;
+
+        /// <summary>
+        /// Add an extension object to the container.
+        /// </summary>
+        /// <param name="extension"><see cref="IServiceContainerExtension"/> to add.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        IServiceContainer AddExtension(IServiceContainerExtension extension);
+
+        /// <summary>
+        /// Get access to a configuration interface exposed by an extension.
+        /// </summary>
+        /// <remarks>Extensions can expose configuration interfaces as well as adding
+        /// strategies and policies to the container. This method walks the list of
+        /// added extensions and returns the first one that implements the requested type.
+        /// </remarks>
+        /// <param name="extensionType"><see cref="Type"/> of configuration interface required.</param>
+        /// <returns>The requested extension's configuration interface, or null if not found.</returns>
+        IServiceContainerExtension GetExtension(Type extensionType);
     }
 }

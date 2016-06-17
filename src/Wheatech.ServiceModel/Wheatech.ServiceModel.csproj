@@ -53,6 +53,7 @@
     <Compile Include="RegistrationException.cs" />
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="ServiceContainerBase.cs" />
+    <Compile Include="IServiceContainerExtension.cs" />
     <Compile Include="ServiceContainerExtensions.cs" />
     <Compile Include="ServiceRegisterEventArgs.cs" />
   </ItemGroup>

@@ -9,7 +9,7 @@ namespace Wheatech.ServiceModel.Autofac
     /// <summary>
     /// An implementation of <see cref="IServiceContainer"/> that wraps Autofac.
     /// </summary>
-    public class AutofacServiceContainer : ServiceContainerBase, IDisposable
+    public class AutofacServiceContainer : ServiceContainerBase
     {
         private Dictionary<Tuple<Type, string>, Type> _registrations = new Dictionary<Tuple<Type, string>, Type>();
         private ContainerBuilder _builder;
@@ -19,7 +19,7 @@ namespace Wheatech.ServiceModel.Autofac
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacServiceContainer" /> class.
         /// </summary>
-        public AutofacServiceContainer(ContainerBuilder builder = null, ServiceLifetime lifetime = ServiceLifetime.SingleInstance)
+        public AutofacServiceContainer(ContainerBuilder builder = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         {
             _lifetime = lifetime;
             _builder = builder ?? new ContainerBuilder();
@@ -29,15 +29,19 @@ namespace Wheatech.ServiceModel.Autofac
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            if (_container != null)
+            base.Dispose(disposing);
+            if (disposing)
             {
-                _container.Dispose();
-                _container = null;
+                if (_container != null)
+                {
+                    _container.Dispose();
+                    _container = null;
+                }
+                _builder = null;
+                _registrations = null;
             }
-            _builder = null;
-            _registrations = null;
         }
 
         private IContainer EnsureContainer()
@@ -122,25 +126,24 @@ namespace Wheatech.ServiceModel.Autofac
             {
                 throw new ObjectDisposedException("container");
             }
-            var builder = serviceName == null
+            var registration = serviceName == null
                 ? _builder.RegisterType(implementationType).As(serviceType)
                 : _builder.RegisterType(implementationType).Named(serviceName, serviceType);
-            switch (_lifetime)
+            var args = new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, registration) { Lifetime = _lifetime };
+            OnRegistering(args);
+            switch (args.Lifetime)
             {
-                case ServiceLifetime.SingleInstance:
-                    builder.SingleInstance();
+                case ServiceLifetime.Singleton:
+                    registration.SingleInstance();
                     break;
-                case ServiceLifetime.InstancePerDependency:
-                    builder.InstancePerDependency();
+                case ServiceLifetime.PerDependency:
+                    registration.InstancePerDependency();
                     break;
-                case ServiceLifetime.InstancePerLifetimeScope:
-                    builder.InstancePerLifetimeScope();
+                case ServiceLifetime.PerLifetimeScope:
+                    registration.InstancePerLifetimeScope();
                     break;
-                case ServiceLifetime.ExternallyOwned:
-                    builder.ExternallyOwned();
-                    break;
-                case ServiceLifetime.OwnedByLifetimeScope:
-                    builder.OwnedByLifetimeScope();
+                case ServiceLifetime.PerRequest:
+                    registration.InstancePerRequest();
                     break;
             }
             _registrations[Tuple.Create(serviceType, serviceName)] = implementationType;

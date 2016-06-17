@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Wheatech.ServiceModel.Unity.Interception
+namespace Wheatech.ServiceModel.Interception
 {
     /// <summary>
     /// Key for interceptor pipelines.

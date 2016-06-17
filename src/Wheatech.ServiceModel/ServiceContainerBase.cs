@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Reflection;
 using Wheatech.ServiceModel.Properties;
 
 namespace Wheatech.ServiceModel
@@ -9,8 +11,51 @@ namespace Wheatech.ServiceModel
     /// This class is a helper that provides a default implementation
     /// for most of the methods of <see cref="IServiceContainer"/>.
     /// </summary>
-    public abstract class ServiceContainerBase : IServiceContainer
+    public abstract class ServiceContainerBase : IServiceContainer, IDisposable
     {
+        private readonly List<IServiceContainerExtension> _extensions = new List<IServiceContainerExtension>();
+
+        #region IDisposable Implementation
+
+        /// <summary>
+        /// Dispose this container instance.
+        /// </summary>
+        /// <remarks>
+        /// Disposing the container also disposes any child containers,
+        /// and disposes any instances whose lifetimes are managed
+        /// by the container.
+        /// </remarks>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this); // Shut FxCop up
+        }
+
+        /// <summary>
+        /// Dispose this container instance.
+        /// </summary>
+        /// <remarks>
+        /// This class doesn't have a finalizer, so <paramref name="disposing"/> will always be true.</remarks>
+        /// <param name="disposing">True if being called from the IDisposable.Dispose
+        /// method, false if being called from a finalizer.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                var toRemove = new List<IServiceContainerExtension>(_extensions);
+                toRemove.Reverse();
+                foreach (var extension in toRemove)
+                {
+                    extension.Remove(this);
+                    (extension as IDisposable)?.Dispose();
+                }
+
+                _extensions.Clear();
+            }
+        }
+
+        #endregion
+
         #region Get Instance
 
         /// <summary>
@@ -137,6 +182,40 @@ namespace Wheatech.ServiceModel
         protected virtual void OnRegistering(ServiceRegisterEventArgs e)
         {
             Registering?.Invoke(this, e);
+        }
+
+        #endregion
+
+        #region Extension
+
+        /// <summary>
+        /// Add an extension object to the container.
+        /// </summary>
+        /// <param name="extension"><see cref="IServiceContainerExtension"/> to add.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        public virtual IServiceContainer AddExtension(IServiceContainerExtension extension)
+        {
+            if (extension == null)
+            {
+                throw new ArgumentNullException(nameof(extension));
+            }
+            _extensions.Add(extension);
+            extension.Initialize(this);
+            return this;
+        }
+
+        /// <summary>
+        /// Get access to a configuration interface exposed by an extension.
+        /// </summary>
+        /// <remarks>Extensions can expose configuration interfaces as well as adding
+        /// strategies and policies to the container. This method walks the list of
+        /// added extensions and returns the first one that implements the requested type.
+        /// </remarks>
+        /// <param name="extensionType"><see cref="Type"/> of configuration interface required.</param>
+        /// <returns>The requested extension's configuration interface, or null if not found.</returns>
+        public virtual IServiceContainerExtension GetExtension(Type extensionType)
+        {
+            return _extensions.FirstOrDefault(ex => extensionType.GetTypeInfo().IsAssignableFrom(ex.GetType().GetTypeInfo()));
         }
 
         #endregion

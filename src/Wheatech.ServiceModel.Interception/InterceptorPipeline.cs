@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
-using Wheatech.ServiceModel.Interception;
 
-namespace Wheatech.ServiceModel.Unity.Interception
+namespace Wheatech.ServiceModel.Interception
 {
     /// <summary>
     /// The InterceptorPipeline class encapsulates a list of <see cref="IInterceptor"/>s
     /// and manages calling them in the proper order with the right inputs.
     /// </summary>
-    internal class InterceptorPipeline
+    public class InterceptorPipeline
     {
         public static readonly InterceptorPipeline Empty = new InterceptorPipeline();
 

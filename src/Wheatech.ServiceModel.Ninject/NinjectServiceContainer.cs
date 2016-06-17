@@ -9,7 +9,7 @@ namespace Wheatech.ServiceModel.Ninject
     /// <summary>
     /// An implementation of <see cref="IServiceContainer"/> that wraps Ninject.
     /// </summary>
-    public class NinjectServiceContainer : ServiceContainerBase, IDisposable
+    public class NinjectServiceContainer : ServiceContainerBase
     {
         private IKernel _kernel;
         private Func<IContext, object> _scope;
@@ -34,14 +34,18 @@ namespace Wheatech.ServiceModel.Ninject
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            if (_kernel != null)
+            base.Dispose(disposing);
+            if (disposing)
             {
-                _kernel.Dispose();
-                _kernel = null;
+                if (_kernel != null)
+                {
+                    _kernel.Dispose();
+                    _kernel = null;
+                }
+                _scope = null;
             }
-            _scope = null;
         }
 
         /// <summary>
@@ -132,7 +136,9 @@ namespace Wheatech.ServiceModel.Ninject
             {
                 throw new ObjectDisposedException("container");
             }
-            var binding = _kernel.Bind(serviceType).To(implementationType).InScope(_scope);
+            var args = new NinjectServiceRegisterEventArgs(serviceType,implementationType,serviceName) {Scope = _scope};
+            OnRegistering(args);
+            var binding = _kernel.Bind(serviceType).To(implementationType).InScope(args.Scope);
             if (serviceName != null)
             {
                 binding.Named(serviceName);
