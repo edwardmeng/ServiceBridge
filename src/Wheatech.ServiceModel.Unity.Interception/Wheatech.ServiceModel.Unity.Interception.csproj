@@ -68,7 +68,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitMethodReturnParameter.cs" />
     <Compile Include="UnityInjectionBehavior.cs" />
-    <Compile Include="UnityInterceptionExtension.cs" />
     <Compile Include="UnityMethodInvocation.cs" />
     <Compile Include="UnityMethodInvocationParameter.cs" />
     <Compile Include="UnityMethodReturn.cs" />

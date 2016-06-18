@@ -1,5 +1,4 @@
 ﻿using System;
-using Ninject.Activation;
 
 namespace Wheatech.ServiceModel.Ninject
 {
@@ -9,6 +8,6 @@ namespace Wheatech.ServiceModel.Ninject
         {
         }
 
-        public Func<IContext, object> Scope { get; set; }
+        public ServiceLifetime Lifetime { get; set; }
     }
 }

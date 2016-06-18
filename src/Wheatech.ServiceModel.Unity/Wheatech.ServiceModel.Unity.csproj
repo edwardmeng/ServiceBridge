@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceLifetime.cs" />
     <Compile Include="UnityServiceContainer.cs" />
     <Compile Include="UnityServiceRegisterEventArgs.cs" />
   </ItemGroup>

@@ -8,8 +8,8 @@ namespace Wheatech.ServiceModel.Windsor.Interception
     {
         public void Initialize(IServiceContainer container)
         {
-            ((WindsorServiceContainer) container).RegisterInstance(typeof(IInterceptor), new ServiceInterceptor(new PipelineManager(), container));
             container.Registering += OnRegistering;
+            ((WindsorServiceContainer) container).RegisterInstance(typeof(ServiceInterceptor), new ServiceInterceptor(new PipelineManager(), container));
         }
 
         public void Remove(IServiceContainer container)
@@ -19,7 +19,7 @@ namespace Wheatech.ServiceModel.Windsor.Interception
 
         private void OnRegistering(object sender, ServiceRegisterEventArgs e)
         {
-            //((WindsorServiceRegisterEventArgs)e).Registration.Interceptors()
+            ((WindsorServiceRegisterEventArgs)e).Registration.Interceptors<ServiceInterceptor>();
         }
     }
 }

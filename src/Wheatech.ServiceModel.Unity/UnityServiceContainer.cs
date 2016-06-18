@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Practices.Unity;
 
 namespace Wheatech.ServiceModel.Unity
@@ -7,10 +8,10 @@ namespace Wheatech.ServiceModel.Unity
     /// <summary>
     /// An implementation of <see cref="IServiceContainer"/> that wraps a Unity container.
     /// </summary>
-    public class UnityServiceContainer : ServiceContainerBase, IDisposable
+    public class UnityServiceContainer : ServiceContainerBase
     {
         private IUnityContainer _container;
-        private LifetimeManager _lifetimeManager;
+        private ServiceLifetime _lifetime;
         private InjectionMember[] _injectionMembers;
 
         /// <summary>
@@ -20,16 +21,16 @@ namespace Wheatech.ServiceModel.Unity
         ///     The <see cref="IUnityContainer" /> to wrap with the <see cref="IServiceContainer" />
         ///     interface implementation.
         /// </param>
-        /// <param name="lifetimeManager">
-        ///     The <see cref="LifetimeManager"/> to register type mapping with.
+        /// <param name="lifetime">
+        ///     The <see cref="ServiceLifetime"/> to register type mapping with.
         /// </param>
         /// <param name="injectionMembers">The <see cref="InjectionMember"/>s to register type mapping with.</param>
-        public UnityServiceContainer(IUnityContainer container = null, LifetimeManager lifetimeManager = null, InjectionMember[] injectionMembers = null)
+        public UnityServiceContainer(IUnityContainer container = null, ServiceLifetime lifetime = ServiceLifetime.Singleton, InjectionMember[] injectionMembers = null)
         {
             _container = container ?? new UnityContainer();
-            _lifetimeManager = lifetimeManager ?? CreateDefaultInstanceLifetimeManager();
+            _lifetime = lifetime;
             _injectionMembers = injectionMembers ?? new InjectionMember[0];
-            container.RegisterInstance<IServiceContainer>(this, new ExternallyControlledLifetimeManager());
+            _container.RegisterInstance<IServiceContainer>(this, new ExternallyControlledLifetimeManager());
         }
 
         /// <summary>
@@ -64,14 +65,8 @@ namespace Wheatech.ServiceModel.Unity
                     _container.Dispose();
                     _container = null;
                 }
-                _lifetimeManager = null;
                 _injectionMembers = null;
             }
-        }
-
-        private static LifetimeManager CreateDefaultInstanceLifetimeManager()
-        {
-            return new ContainerControlledLifetimeManager();
         }
 
         /// <summary>
@@ -128,8 +123,9 @@ namespace Wheatech.ServiceModel.Unity
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
-
-            return _container.ResolveAll(serviceType);
+            return from registration in _container.Registrations
+                where registration.RegisteredType == serviceType
+                select _container.Resolve(registration.RegisteredType, registration.Name);
         }
 
         /// <summary>
@@ -146,11 +142,29 @@ namespace Wheatech.ServiceModel.Unity
             }
             var args = new UnityServiceRegisterEventArgs(serviceType, implementationType, serviceName)
             {
-                Lifetime = _lifetimeManager,
+                Lifetime = _lifetime,
             };
             args.InjectionMembers.AddRange(_injectionMembers);
             OnRegistering(args);
-            _container.RegisterType(serviceType, implementationType, serviceName, args.Lifetime, args.InjectionMembers.ToArray());
+            LifetimeManager lifetimeManager;
+            switch (args.Lifetime)
+            {
+                case ServiceLifetime.Singleton:
+                    lifetimeManager = new ContainerControlledLifetimeManager();
+                    break;
+                case ServiceLifetime.Transient:
+                    lifetimeManager = new TransientLifetimeManager();
+                    break;
+                case ServiceLifetime.PerThread:
+                    lifetimeManager = new PerThreadLifetimeManager();
+                    break;
+                case ServiceLifetime.PerResolve:
+                    lifetimeManager = new PerResolveLifetimeManager();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+            _container.RegisterType(serviceType, implementationType, serviceName, lifetimeManager, args.InjectionMembers.ToArray());
         }
     }
 }

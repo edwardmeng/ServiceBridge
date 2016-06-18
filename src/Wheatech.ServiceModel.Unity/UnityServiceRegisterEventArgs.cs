@@ -10,7 +10,7 @@ namespace Wheatech.ServiceModel.Unity
         {
         }
 
-        public LifetimeManager Lifetime { get; set; }
+        public ServiceLifetime Lifetime { get; set; }
 
         public List<InjectionMember> InjectionMembers { get; } = new List<InjectionMember>();
     }

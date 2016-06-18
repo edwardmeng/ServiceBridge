@@ -1,6 +1,7 @@
 ﻿using Autofac.Extras.DynamicProxy2;
 using Castle.DynamicProxy;
 using Wheatech.ServiceModel.DynamicProxy;
+using Wheatech.ServiceModel.Interception;
 
 namespace Wheatech.ServiceModel.Autofac.Interception
 {
@@ -9,6 +10,7 @@ namespace Wheatech.ServiceModel.Autofac.Interception
         public void Initialize(IServiceContainer container)
         {
             container.Registering += OnRegistering;
+            container.Register<PipelineManager>();
         }
 
         public void Remove(IServiceContainer container)
@@ -18,10 +20,17 @@ namespace Wheatech.ServiceModel.Autofac.Interception
 
         private void OnRegistering(object sender, ServiceRegisterEventArgs e)
         {
-            ((AutofacServiceRegisterEventArgs)e).Registration.EnableClassInterceptors(new ProxyGenerationOptions
+            if (e.ServiceType == typeof(PipelineManager))
             {
-                Selector = new ServiceInterceptorSelector((IServiceContainer)sender)
-            });
+                ((AutofacServiceRegisterEventArgs)e).Lifetime = ServiceLifetime.Singleton;
+            }
+            else
+            {
+                ((AutofacServiceRegisterEventArgs)e).Registration.EnableClassInterceptors(new ProxyGenerationOptions
+                {
+                    Selector = new ServiceInterceptorSelector((IServiceContainer)sender)
+                });
+            }
         }
     }
 }

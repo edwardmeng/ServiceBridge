@@ -16,6 +16,7 @@ namespace Wheatech.ServiceModel.Windsor
         {
             _lifetime = lifetime;
             _container = container ?? new WindsorContainer();
+            _container.Register(Component.For<IServiceContainer>().Instance(this));
         }
 
         protected override object DoGetInstance(Type serviceType, string serviceName)

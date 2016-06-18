@@ -33,7 +33,7 @@ namespace Wheatech.ServiceModel.DynamicProxy
                     var methodParameters = _invocation.Method.GetParameters();
                     for (int i = 0; i < methodParameters.Length; i++)
                     {
-                        if (methodParameters[i].IsOut)
+                        if (methodParameters[i].ParameterType.IsByRef)
                         {
                             parameters.Add(new InterceptMethodParameter(_invocation, i));
                         }

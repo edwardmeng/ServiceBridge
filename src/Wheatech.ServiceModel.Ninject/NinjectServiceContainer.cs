@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ninject;
-using Ninject.Activation;
 using Ninject.Infrastructure;
 
 namespace Wheatech.ServiceModel.Ninject
@@ -12,7 +11,7 @@ namespace Wheatech.ServiceModel.Ninject
     public class NinjectServiceContainer : ServiceContainerBase
     {
         private IKernel _kernel;
-        private Func<IContext, object> _scope;
+        private readonly ServiceLifetime _lifetime;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="NinjectServiceContainer" /> class for a container.
@@ -21,13 +20,13 @@ namespace Wheatech.ServiceModel.Ninject
         ///     The <see cref="IKernel" /> to wrap with the <see cref="IServiceContainer" />
         ///     interface implementation.
         /// </param>
-        /// <param name="scope">
-        ///     The <see cref="scope"/> to register type mapping with.
+        /// <param name="lifetime">
+        ///     The <see cref="lifetime"/> to register type mapping with.
         /// </param>
-        public NinjectServiceContainer(IKernel kernel = null, Func<IContext, object> scope = null)
+        public NinjectServiceContainer(IKernel kernel = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         {
             _kernel = kernel ?? new StandardKernel();
-            _scope = scope ?? StandardScopeCallbacks.Singleton;
+            _lifetime = lifetime;
             _kernel.Bind<IServiceContainer>().ToConstant(this);
         }
 
@@ -44,7 +43,6 @@ namespace Wheatech.ServiceModel.Ninject
                     _kernel.Dispose();
                     _kernel = null;
                 }
-                _scope = null;
             }
         }
 
@@ -92,15 +90,6 @@ namespace Wheatech.ServiceModel.Ninject
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
-            // key == null must be specifically handled as not asking for a specific keyed instance
-            // http://commonservicelocator.codeplex.com/wikipage?title=API%20Reference&referringTitle=Home
-            //     The implementation should be designed to expect a null for the string key parameter, 
-            //     and MUST interpret this as a request to get the "default" instance for the requested 
-            //     type. This meaning of default varies from locator to locator.
-            if (serviceName == null)
-            {
-                return _kernel.Get(serviceType);
-            }
             return _kernel.Get(serviceType, serviceName);
         }
 
@@ -132,16 +121,22 @@ namespace Wheatech.ServiceModel.Ninject
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
         protected override void DoRegister(Type serviceType, Type implementationType, string serviceName)
         {
-            if (_kernel == null)
-            {
-                throw new ObjectDisposedException("container");
-            }
-            var args = new NinjectServiceRegisterEventArgs(serviceType,implementationType,serviceName) {Scope = _scope};
+            if (_kernel == null) throw new ObjectDisposedException("container");
+            var args = new NinjectServiceRegisterEventArgs(serviceType, implementationType, serviceName) { Lifetime = _lifetime };
             OnRegistering(args);
-            var binding = _kernel.Bind(serviceType).To(implementationType).InScope(args.Scope);
-            if (serviceName != null)
+            var binding = _kernel.Bind(serviceType).To(implementationType);
+            if (serviceName != null) binding.Named(serviceName);
+            switch (args.Lifetime)
             {
-                binding.Named(serviceName);
+                case ServiceLifetime.Transient:
+                    binding.InScope(StandardScopeCallbacks.Transient);
+                    break;
+                case ServiceLifetime.Singleton:
+                    binding.InScope(StandardScopeCallbacks.Singleton);
+                    break;
+                case ServiceLifetime.Thread:
+                    binding.InScope(StandardScopeCallbacks.Thread);
+                    break;
             }
         }
     }

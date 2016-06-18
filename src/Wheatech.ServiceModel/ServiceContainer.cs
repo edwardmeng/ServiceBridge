@@ -12,6 +12,7 @@ namespace Wheatech.ServiceModel
     public static class ServiceContainer
     {
         private static Func<IServiceContainer> _currentProvider;
+        private static IServiceContainer _container;
 
         /// <summary>
         /// The current ambient container.
@@ -21,7 +22,7 @@ namespace Wheatech.ServiceModel
             get
             {
                 if (!HasProvider) throw new InvalidOperationException(Resources.ProviderNotSetMessage);
-                return _currentProvider();
+                return _container ?? (_container = _currentProvider());
             }
         }
 
@@ -33,6 +34,7 @@ namespace Wheatech.ServiceModel
         public static void SetProvider(Func<IServiceContainer> newProvider)
         {
             _currentProvider = newProvider;
+            _container = null;
         }
 
         /// <summary>

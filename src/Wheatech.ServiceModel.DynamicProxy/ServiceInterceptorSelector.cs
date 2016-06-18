@@ -18,7 +18,7 @@ namespace Wheatech.ServiceModel.DynamicProxy
 
         public IInterceptor[] SelectInterceptors(Type type, MethodInfo method, IInterceptor[] interceptors)
         {
-            return new List<IInterceptor>(interceptors) { new ServiceInterceptor(new PipelineManager(), _container) }.ToArray();
+            return new List<IInterceptor>(interceptors) { new ServiceInterceptor(_container.GetInstance<PipelineManager>(), _container) }.ToArray();
         }
     }
 }

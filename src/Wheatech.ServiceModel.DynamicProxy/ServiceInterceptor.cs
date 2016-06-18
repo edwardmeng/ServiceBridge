@@ -17,7 +17,7 @@ namespace Wheatech.ServiceModel.DynamicProxy
         /// </summary>
         /// <param name="pipelineManager">The <see cref="PipelineManager" /> for the new instance.</param>
         /// <param name="container">Service container that can be used to resolve interceptors.</param>
-        internal ServiceInterceptor(PipelineManager pipelineManager, IServiceContainer container)
+        public ServiceInterceptor(PipelineManager pipelineManager, IServiceContainer container)
         {
             _pipelineManager = pipelineManager;
             _container = container;
@@ -31,7 +31,7 @@ namespace Wheatech.ServiceModel.DynamicProxy
                 var mapping = implementationType.GetInterfaceMap(itf);
                 for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
                 {
-                    if (methodMappings.ContainsKey(mapping.TargetMethods[i]))
+                    if (!methodMappings.ContainsKey(mapping.TargetMethods[i]))
                     {
                         methodMappings[mapping.TargetMethods[i]] = mapping.InterfaceMethods[i];
                         _pipelineManager.InitializePipeline(mapping.InterfaceMethods[i], mapping.TargetMethods[i], _container);

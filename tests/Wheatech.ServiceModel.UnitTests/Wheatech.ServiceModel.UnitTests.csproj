@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8B393780-F4F7-45B5-8CF2-D922B120C8BA}</ProjectGuid>
+    <ProjectGuid>{38853C23-EAC3-447D-8BF6-87A2C57A0280}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wheatech.ServiceModel.Unity.UnitTest</RootNamespace>
-    <AssemblyName>Wheatech.ServiceModel.Unity.UnitTest</AssemblyName>
+    <RootNamespace>Wheatech.ServiceModel.UnitTests</RootNamespace>
+    <AssemblyName>Wheatech.ServiceModel.UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -41,6 +41,22 @@
     <AssemblyOriginatorKeyFile>..\..\tools\wheatech.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Extras.DynamicProxy2, Version=3.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.Extras.DynamicProxy2.3.0.7\lib\net40\Autofac.Extras.DynamicProxy2.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Castle.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Core.3.3.3\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Castle.Windsor, Version=3.3.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Castle.Windsor.3.3.0\lib\net45\Castle.Windsor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
       <Private>True</Private>
@@ -65,7 +81,32 @@
       <HintPath>..\..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Interception, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ninject.Extensions.Interception.3.2.0.0\lib\net45-full\Ninject.Extensions.Interception.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -80,18 +121,47 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AutofacServiceContainerFixture.cs" />
+    <Compile Include="Components\AdvancedLogger.cs" />
+    <Compile Include="Components\CanChangeParametersTarget.cs" />
+    <Compile Include="Components\DoubleInputInterceptor.cs" />
+    <Compile Include="Components\ICanChangeParameters.cs" />
+    <Compile Include="Components\ILogger.cs" />
+    <Compile Include="Components\SimpleLogger.cs" />
+    <Compile Include="Components\TripleOutputInterceptor.cs" />
+    <Compile Include="NinjectServiceContainerFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceContainerFixtureBase.cs" />
+    <Compile Include="UnityServiceContainerFixture.cs" />
+    <Compile Include="WindsorServiceContainerFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\tools\wheatech.snk">
       <Link>Properties\wheatech.snk</Link>
     </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Autofac.Interception\Wheatech.ServiceModel.Autofac.Interception.csproj">
+      <Project>{2984c4c5-f10e-4062-b574-9f274cf3c4da}</Project>
+      <Name>Wheatech.ServiceModel.Autofac.Interception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Autofac\Wheatech.ServiceModel.Autofac.csproj">
+      <Project>{1afd596c-6d58-4b6b-ad84-27375e41fecd}</Project>
+      <Name>Wheatech.ServiceModel.Autofac</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Interception\Wheatech.ServiceModel.Interception.csproj">
       <Project>{38426ec5-1a50-4da2-b459-5389b120a569}</Project>
       <Name>Wheatech.ServiceModel.Interception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Ninject.Interception\Wheatech.ServiceModel.Ninject.Interception.csproj">
+      <Project>{babea6c2-89af-46fd-a3f3-5ea777e77b07}</Project>
+      <Name>Wheatech.ServiceModel.Ninject.Interception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Ninject\Wheatech.ServiceModel.Ninject.csproj">
+      <Project>{f19e872b-cf52-440d-b44f-4df1aec8f8ff}</Project>
+      <Name>Wheatech.ServiceModel.Ninject</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Unity.Interception\Wheatech.ServiceModel.Unity.Interception.csproj">
       <Project>{60972548-f189-49d7-9c31-976307a3e03d}</Project>
@@ -100,6 +170,14 @@
     <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Unity\Wheatech.ServiceModel.Unity.csproj">
       <Project>{c0bf61e5-73f6-40c8-97e1-f257a60cab1a}</Project>
       <Name>Wheatech.ServiceModel.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Windsor.Interception\Wheatech.ServiceModel.Windsor.Interception.csproj">
+      <Project>{b233cd92-2d28-4304-be77-337f508e574b}</Project>
+      <Name>Wheatech.ServiceModel.Windsor.Interception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Windsor\Wheatech.ServiceModel.Windsor.csproj">
+      <Project>{37e0d2f9-83ee-4c13-8c72-da8494613552}</Project>
+      <Name>Wheatech.ServiceModel.Windsor</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
       <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>

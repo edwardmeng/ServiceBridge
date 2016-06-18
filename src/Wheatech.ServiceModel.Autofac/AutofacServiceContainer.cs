@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Autofac;
+using Autofac.Core;
 
 namespace Wheatech.ServiceModel.Autofac
 {
@@ -108,10 +108,11 @@ namespace Wheatech.ServiceModel.Autofac
                 throw new ArgumentNullException(nameof(serviceType));
             }
             var container = EnsureContainer();
-            var enumerableType = typeof(IEnumerable<>).MakeGenericType(serviceType);
-
-            object instance = container.Resolve(enumerableType);
-            return ((IEnumerable)instance).Cast<object>();
+            return from registration in container.ComponentRegistry.Registrations
+                where (from service in registration.Services
+                    where (service as TypedService)?.ServiceType == serviceType || (service as KeyedService)?.ServiceType == serviceType
+                    select service).Any()
+                select container.ResolveComponent(registration, Enumerable.Empty<Parameter>());
         }
 
         /// <summary>
