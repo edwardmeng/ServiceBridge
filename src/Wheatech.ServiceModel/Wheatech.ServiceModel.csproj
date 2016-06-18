@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivationException.cs" />
+    <Compile Include="InjectionAttribute.cs" />
     <Compile Include="IServiceContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

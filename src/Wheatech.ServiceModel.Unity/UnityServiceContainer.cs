@@ -11,7 +11,7 @@ namespace Wheatech.ServiceModel.Unity
     public class UnityServiceContainer : ServiceContainerBase
     {
         private IUnityContainer _container;
-        private ServiceLifetime _lifetime;
+        private readonly ServiceLifetime _lifetime;
         private InjectionMember[] _injectionMembers;
 
         /// <summary>
@@ -30,7 +30,9 @@ namespace Wheatech.ServiceModel.Unity
             _container = container ?? new UnityContainer();
             _lifetime = lifetime;
             _injectionMembers = injectionMembers ?? new InjectionMember[0];
-            _container.RegisterInstance<IServiceContainer>(this, new ExternallyControlledLifetimeManager());
+            _container
+                .AddNewExtension<UnityServiceContainerExtension>()
+                .RegisterInstance<IServiceContainer>(this, new ExternallyControlledLifetimeManager());
         }
 
         /// <summary>

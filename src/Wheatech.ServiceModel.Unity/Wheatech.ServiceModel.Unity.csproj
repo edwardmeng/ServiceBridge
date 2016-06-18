@@ -56,8 +56,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UnityConstructorSelectorPolicy.cs" />
+    <Compile Include="UnityPropertySelectorPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLifetime.cs" />
+    <Compile Include="UnityServiceContainerExtension.cs" />
     <Compile Include="UnityServiceContainer.cs" />
     <Compile Include="UnityServiceRegisterEventArgs.cs" />
   </ItemGroup>
