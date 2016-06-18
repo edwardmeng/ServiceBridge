@@ -15,7 +15,7 @@ namespace Wheatech.ServiceModel.Interception
         /// <summary>
         /// The method on <see cref="Target"/> that we're aiming at.
         /// </summary>
-        MethodBase MethodBase { get; }
+        MethodBase Method { get; }
 
         /// <summary>
         /// The object that the call is made on.

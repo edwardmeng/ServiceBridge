@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Ninject;
 using Ninject.Infrastructure;
+using Ninject.Syntax;
 
 namespace Wheatech.ServiceModel.Ninject
 {
@@ -122,10 +123,11 @@ namespace Wheatech.ServiceModel.Ninject
         protected override void DoRegister(Type serviceType, Type implementationType, string serviceName)
         {
             if (_kernel == null) throw new ObjectDisposedException("container");
-            var args = new NinjectServiceRegisterEventArgs(serviceType, implementationType, serviceName) { Lifetime = _lifetime };
-            OnRegistering(args);
             var binding = _kernel.Bind(serviceType).To(implementationType);
-            if (serviceName != null) binding.Named(serviceName);
+            IBindingSyntax syntax = binding;
+            if (serviceName != null) syntax = binding.Named(serviceName);
+            var args = new NinjectServiceRegisterEventArgs(serviceType, implementationType, serviceName, syntax) { Lifetime = _lifetime };
+            OnRegistering(args);
             switch (args.Lifetime)
             {
                 case ServiceLifetime.Transient:

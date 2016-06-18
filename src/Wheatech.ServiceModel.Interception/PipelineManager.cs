@@ -38,7 +38,7 @@ namespace Wheatech.ServiceModel.Interception
         }
 
         /// <summary>
-        /// Get the pipeline for the given method, creating it if necessary.
+        /// Initialize the pipeline for the given method, creating it if necessary.
         /// </summary>
         /// <param name="interfaceMethod"><see cref="MethodInfo"/> for the interface method (may be null if no interface).</param>
         /// <param name="implementMethod"><see cref="MethodInfo"/> for implementing method.</param>
@@ -60,6 +60,28 @@ namespace Wheatech.ServiceModel.Interception
             }
 
             return pipeline.Count > 0;
+        }
+
+        /// <summary>
+        /// Initialize the pipeline for the given type, creating it if necessary.
+        /// </summary>
+        /// <param name="implementType">The implementation type.</param>
+        /// <param name="container">Service container that can be used to resolve interceptors.</param>
+        public void InitializePipeline(Type implementType, IServiceContainer container)
+        {
+            var methodMappings = new Dictionary<MethodInfo, MethodInfo>();
+            foreach (Type itf in implementType.GetInterfaces())
+            {
+                var mapping = implementType.GetInterfaceMap(itf);
+                for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
+                {
+                    if (!methodMappings.ContainsKey(mapping.TargetMethods[i]))
+                    {
+                        methodMappings[mapping.TargetMethods[i]] = mapping.InterfaceMethods[i];
+                        InitializePipeline(mapping.InterfaceMethods[i], mapping.TargetMethods[i], container);
+                    }
+                }
+            }
         }
 
         private IEnumerable<InterceptorAttribute> GetInterceptorAttributes(MethodInfo interfaceMethod, MethodInfo implementMethod)

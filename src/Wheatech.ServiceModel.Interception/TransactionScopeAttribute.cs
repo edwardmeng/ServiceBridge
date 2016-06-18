@@ -158,7 +158,7 @@ namespace Wheatech.ServiceModel.Interception
         /// <returns>Return value from the target.</returns>
         public IMethodReturn Invoke(IMethodInvocation invocation, GetNextInterceptorHandler getNext)
         {
-            var method = (MethodInfo)invocation.MethodBase;
+            var method = (MethodInfo)invocation.Method;
             if (method.ReturnType == typeof(Task))
             {
                 return invocation.CreateMethodReturn(WrapNoReturnTask(invocation, getNext));

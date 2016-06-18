@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using Castle.DynamicProxy;
+using Ninject.Extensions.Interception;
 using Wheatech.ServiceModel.Interception;
 
-namespace Wheatech.ServiceModel.DynamicProxy
+namespace Wheatech.ServiceModel.Ninject.Interception
 {
-    internal class InterceptMethodReturn : IMethodReturn
+    internal class NinjectMethodReturn : IMethodReturn
     {
         private readonly IInvocation _invocation;
         private ParameterCollection _outputs;
 
-        public InterceptMethodReturn(IInvocation invocation)
+        public NinjectMethodReturn(IInvocation invocation)
         {
             _invocation = invocation;
         }
 
-        public InterceptMethodReturn(IInvocation invocation, Exception exception)
+        public NinjectMethodReturn(IInvocation invocation, Exception exception)
         {
             _invocation = invocation;
             Exception = exception;
@@ -30,12 +30,12 @@ namespace Wheatech.ServiceModel.DynamicProxy
                 if (_outputs == null)
                 {
                     var parameters = new List<IMethodParameter>();
-                    var methodParameters = _invocation.Method.GetParameters();
+                    var methodParameters = _invocation.Request.Method.GetParameters();
                     for (int i = 0; i < methodParameters.Length; i++)
                     {
                         if (methodParameters[i].ParameterType.IsByRef)
                         {
-                            parameters.Add(new InterceptMethodParameter(_invocation, i));
+                            parameters.Add(new NinjectMethodParameter(_invocation, i));
                         }
                     }
                     _outputs = new ParameterCollection(parameters);

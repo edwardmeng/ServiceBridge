@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Castle.DynamicProxy;
+using Ninject.Extensions.Interception;
 using Wheatech.ServiceModel.Interception;
 
-namespace Wheatech.ServiceModel.DynamicProxy
+namespace Wheatech.ServiceModel.Ninject.Interception
 {
-    internal class InterceptMethodInvocation : IMethodInvocation
+    internal class NinjectMethodInvocation : IMethodInvocation
     {
         private readonly IInvocation _invocation;
         private ParameterCollection _arguments;
 
-        public InterceptMethodInvocation(IInvocation invocation)
+        public NinjectMethodInvocation(IInvocation invocation)
         {
             _invocation = invocation;
         }
 
-        public MethodBase Method => _invocation.Method;
+        public MethodBase Method => _invocation.Request.Method;
 
-        public object Target => _invocation.InvocationTarget;
+        public object Target => _invocation.Request.Target;
 
         public ParameterCollection Arguments
         {
@@ -27,9 +27,9 @@ namespace Wheatech.ServiceModel.DynamicProxy
                 if (_arguments == null)
                 {
                     var parameters = new List<IMethodParameter>();
-                    for (int i = 0; i < _invocation.Arguments.Length; i++)
+                    for (int i = 0; i < _invocation.Request.Arguments.Length; i++)
                     {
-                        parameters.Add(new InterceptMethodParameter(_invocation, i));
+                        parameters.Add(new NinjectMethodParameter(_invocation, i));
                     }
                     _arguments = new ParameterCollection(parameters);
                 }
@@ -40,12 +40,12 @@ namespace Wheatech.ServiceModel.DynamicProxy
         public IMethodReturn CreateMethodReturn(object returnValue)
         {
             _invocation.ReturnValue = returnValue;
-            return new InterceptMethodReturn(_invocation);
+            return new NinjectMethodReturn(_invocation);
         }
 
         public IMethodReturn CreateExceptionReturn(Exception exception)
         {
-            return new InterceptMethodReturn(_invocation, exception);
+            return new NinjectMethodReturn(_invocation, exception);
         }
     }
 }

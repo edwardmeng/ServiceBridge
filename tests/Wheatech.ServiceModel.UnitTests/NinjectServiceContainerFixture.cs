@@ -1,4 +1,5 @@
 ﻿using Wheatech.ServiceModel.Ninject;
+using Wheatech.ServiceModel.Ninject.Interception;
 
 namespace Wheatech.ServiceModel.UnitTests
 {
@@ -6,7 +7,7 @@ namespace Wheatech.ServiceModel.UnitTests
     {
         protected override IServiceContainer CreateContainer()
         {
-            return new NinjectServiceContainer();
+            return new NinjectServiceContainer().AddExtension(new NinjectServiceContainerExtension());
         }
     }
 }

@@ -50,6 +50,11 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NinjectMethodInvocation.cs" />
+    <Compile Include="NinjectMethodParameter.cs" />
+    <Compile Include="NinjectMethodReturn.cs" />
+    <Compile Include="NinjectServiceContainerExtension.cs" />
+    <Compile Include="NinjectServiceInterceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -57,6 +62,20 @@
       <Link>Properties\wheatech.snk</Link>
     </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Wheatech.ServiceModel.Interception\Wheatech.ServiceModel.Interception.csproj">
+      <Project>{38426ec5-1a50-4da2-b459-5389b120a569}</Project>
+      <Name>Wheatech.ServiceModel.Interception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wheatech.ServiceModel.Ninject\Wheatech.ServiceModel.Ninject.csproj">
+      <Project>{f19e872b-cf52-440d-b44f-4df1aec8f8ff}</Project>
+      <Name>Wheatech.ServiceModel.Ninject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
+      <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
+      <Name>Wheatech.ServiceModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

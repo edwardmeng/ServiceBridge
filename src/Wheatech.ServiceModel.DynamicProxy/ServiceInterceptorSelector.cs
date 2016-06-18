@@ -7,7 +7,7 @@ using IInterceptor = Castle.DynamicProxy.IInterceptor;
 
 namespace Wheatech.ServiceModel.DynamicProxy
 {
-    public class ServiceInterceptorSelector : IInterceptorSelector
+    internal class ServiceInterceptorSelector : IInterceptorSelector
     {
         private readonly IServiceContainer _container;
 

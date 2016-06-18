@@ -19,7 +19,7 @@ namespace Wheatech.ServiceModel.Unity.Interception
             _invocation = invocation;
         }
 
-        public MethodBase MethodBase => _invocation.MethodBase;
+        public MethodBase Method => _invocation.MethodBase;
 
         public object Target => _invocation.Target;
 

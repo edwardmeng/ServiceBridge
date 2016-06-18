@@ -4,7 +4,7 @@ using Wheatech.ServiceModel.Interception;
 
 namespace Wheatech.ServiceModel.DynamicProxy
 {
-    public class InterceptMethodParameter : IMethodParameter
+    internal class InterceptMethodParameter : IMethodParameter
     {
         private readonly IInvocation _invocation;
         private readonly int _parameterIndex;
