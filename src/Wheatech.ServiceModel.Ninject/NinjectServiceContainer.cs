@@ -48,32 +48,6 @@ namespace Wheatech.ServiceModel.Ninject
         }
 
         /// <summary>
-        /// Checks if a particular type/name pair has been registered with the container. 
-        /// </summary>
-        /// <param name="serviceType">Type to check registration for.</param>
-        /// <param name="serviceName">Name to check registration for.</param>
-        /// <returns><c>true</c> if this type/name pair has been registered, <c>false</c> if not.</returns>
-        public override bool IsRegistered(Type serviceType, string serviceName = null)
-        {
-            if (_kernel == null)
-            {
-                throw new ObjectDisposedException("container");
-            }
-            if (serviceType == null)
-            {
-                throw new ArgumentNullException(nameof(serviceType));
-            }
-            if (serviceName == null)
-            {
-                return (bool)_kernel.CanResolve(serviceType);
-            }
-            else
-            {
-                return (bool)_kernel.CanResolve(serviceType, b => b.Name == serviceName);
-            }
-        }
-
-        /// <summary>
         /// Resolves the requested service instance.
         /// </summary>
         /// <param name="serviceType">Type of instance requested.</param>
@@ -86,10 +60,6 @@ namespace Wheatech.ServiceModel.Ninject
             if (_kernel == null)
             {
                 throw new ObjectDisposedException("container");
-            }
-            if (serviceType == null)
-            {
-                throw new ArgumentNullException(nameof(serviceType));
             }
             return _kernel.Get(serviceType, serviceName);
         }
@@ -106,10 +76,6 @@ namespace Wheatech.ServiceModel.Ninject
             if (_kernel == null)
             {
                 throw new ObjectDisposedException("container");
-            }
-            if (serviceType == null)
-            {
-                throw new ArgumentNullException(nameof(serviceType));
             }
             return _kernel.GetAll(serviceType);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -13,7 +14,37 @@ namespace Wheatech.ServiceModel
     /// </summary>
     public abstract class ServiceContainerBase : IServiceContainer, IDisposable
     {
-        private readonly List<IServiceContainerExtension> _extensions = new List<IServiceContainerExtension>();
+        private List<IServiceContainerExtension> _extensions = new List<IServiceContainerExtension>();
+
+        private ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>> _registrations =
+            new ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>>();
+
+        private struct ServiceName
+        {
+            public ServiceName(string name)
+            {
+                Name = name;
+            }
+
+            public string Name { get; }
+
+            public override string ToString()
+            {
+                return Name;
+            }
+
+            public override int GetHashCode()
+            {
+                return Name?.GetHashCode() ?? 0;
+            }
+
+            public override bool Equals(object obj)
+            {
+                if (ReferenceEquals(obj, null)) return false;
+                if (obj.GetType() != typeof(ServiceName)) return false;
+                return ((ServiceName)obj).Name == Name;
+            }
+        }
 
         #region IDisposable Implementation
 
@@ -51,6 +82,8 @@ namespace Wheatech.ServiceModel
                 }
 
                 _extensions.Clear();
+                _extensions = null;
+                _registrations = null;
             }
         }
 
@@ -78,6 +111,10 @@ namespace Wheatech.ServiceModel
         /// <returns>The requested service instance.</returns>
         public virtual object GetInstance(Type serviceType, string serviceName)
         {
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
             try
             {
                 return DoGetInstance(serviceType, serviceName);
@@ -99,6 +136,10 @@ namespace Wheatech.ServiceModel
         /// <returns>A sequence of instances of the requested <paramref name="serviceType"/>.</returns>
         public virtual IEnumerable<object> GetAllInstances(Type serviceType)
         {
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
             try
             {
                 return DoGetAllInstances(serviceType);
@@ -126,20 +167,53 @@ namespace Wheatech.ServiceModel
         /// </summary>
         /// <param name="serviceType">Type of service requested.</param>
         /// <returns>Sequence of service instance objects.</returns>
-        protected abstract IEnumerable<object> DoGetAllInstances(Type serviceType);
+        protected virtual IEnumerable<object> DoGetAllInstances(Type serviceType)
+        {
+            return GetRegistrations(serviceType).Select(registration => DoGetInstance(registration.ServiceType, registration.ServiceName));
+        }
 
         #endregion
 
         #region Register
 
         /// <summary>
-        /// When implemented by inheriting classes, this method will do the actual work of 
-        /// checking if a particular type/name pair has been registered with the container. 
+        /// Checking if a particular type/name pair has been registered with the container. 
         /// </summary>
         /// <param name="serviceType">Type to check registration for.</param>
         /// <param name="serviceName">Name to check registration for.</param>
         /// <returns><c>true</c> if this type/name pair has been registered, <c>false</c> if not.</returns>
-        public abstract bool IsRegistered(Type serviceType, string serviceName = null);
+        public virtual bool IsRegistered(Type serviceType, string serviceName = null)
+        {
+            if (_registrations == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
+            ConcurrentDictionary<ServiceName, ServiceRegistration> registrations;
+            return _registrations.TryGetValue(serviceType, out registrations) && registrations.ContainsKey(new ServiceName(serviceName));
+        }
+
+        /// <summary>
+        /// Gets all the registrations for the specified service type.
+        /// </summary>
+        /// <param name="serviceType">Type to check registration for.</param>
+        /// <returns>All the registrations for the <paramref name="serviceType"/>.</returns>
+        protected virtual IEnumerable<ServiceRegistration> GetRegistrations(Type serviceType)
+        {
+            if (_registrations == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
+            ConcurrentDictionary<ServiceName, ServiceRegistration> registrations;
+            return _registrations.TryGetValue(serviceType, out registrations) ? registrations.Values : Enumerable.Empty<ServiceRegistration>();
+        }
 
         /// <summary>
         /// Registers a type mapping with the container. 
@@ -150,9 +224,20 @@ namespace Wheatech.ServiceModel
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
         public IServiceContainer Register(Type serviceType, Type implementationType, string serviceName = null)
         {
+            if (_registrations == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
             try
             {
                 DoRegister(serviceType, implementationType, serviceName);
+                _registrations
+                    .GetOrAdd(serviceType, key => new ConcurrentDictionary<ServiceName, ServiceRegistration>())
+                    .GetOrAdd(new ServiceName(serviceName), name => new ServiceRegistration(serviceType, implementationType, serviceName));
                 return this;
             }
             catch (Exception ex)
@@ -195,6 +280,10 @@ namespace Wheatech.ServiceModel
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
         public virtual IServiceContainer AddExtension(IServiceContainerExtension extension)
         {
+            if (_extensions == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
             if (extension == null)
             {
                 throw new ArgumentNullException(nameof(extension));
@@ -215,6 +304,14 @@ namespace Wheatech.ServiceModel
         /// <returns>The requested extension's configuration interface, or null if not found.</returns>
         public virtual IServiceContainerExtension GetExtension(Type extensionType)
         {
+            if (_extensions == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            if (extensionType == null)
+            {
+                throw new ArgumentNullException(nameof(extensionType));
+            }
             return _extensions.FirstOrDefault(ex => extensionType.GetTypeInfo().IsAssignableFrom(ex.GetType().GetTypeInfo()));
         }
 

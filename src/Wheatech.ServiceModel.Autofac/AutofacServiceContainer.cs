@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Autofac;
-using Autofac.Core;
+using Autofac.Core.Activators.Reflection;
 
 namespace Wheatech.ServiceModel.Autofac
 {
@@ -11,7 +10,6 @@ namespace Wheatech.ServiceModel.Autofac
     /// </summary>
     public class AutofacServiceContainer : ServiceContainerBase
     {
-        private Dictionary<Tuple<Type, string>, Type> _registrations = new Dictionary<Tuple<Type, string>, Type>();
         private ContainerBuilder _builder;
         private IContainer _container;
         private readonly ServiceLifetime _lifetime;
@@ -40,7 +38,6 @@ namespace Wheatech.ServiceModel.Autofac
                     _container = null;
                 }
                 _builder = null;
-                _registrations = null;
             }
         }
 
@@ -54,29 +51,6 @@ namespace Wheatech.ServiceModel.Autofac
         }
 
         /// <summary>
-        /// Checks if a particular type/name pair has been registered with the container. 
-        /// </summary>
-        /// <param name="serviceType">Type to check registration for.</param>
-        /// <param name="serviceName">Name to check registration for.</param>
-        /// <returns><c>true</c> if this type/name pair has been registered, <c>false</c> if not.</returns>
-        public override bool IsRegistered(Type serviceType, string serviceName = null)
-        {
-            if (_builder == null)
-            {
-                throw new ObjectDisposedException("container");
-            }
-            if (serviceType == null)
-            {
-                throw new ArgumentNullException(nameof(serviceType));
-            }
-            if (_container == null)
-            {
-                return _registrations.ContainsKey(Tuple.Create(serviceType, serviceName));
-            }
-            return serviceName == null ? _container.IsRegistered(serviceType) : _container.IsRegisteredWithName(serviceName, serviceType);
-        }
-
-        /// <summary>
         /// Resolves the requested service instance.
         /// </summary>
         /// <param name="serviceType">Type of instance requested.</param>
@@ -86,33 +60,8 @@ namespace Wheatech.ServiceModel.Autofac
         /// </returns>
         protected override object DoGetInstance(Type serviceType, string serviceName)
         {
-            if (serviceType == null)
-            {
-                throw new ArgumentNullException(nameof(serviceType));
-            }
             var container = EnsureContainer();
             return serviceName != null ? container.ResolveNamed(serviceName, serviceType) : container.Resolve(serviceType);
-        }
-
-        /// <summary>
-        /// Resolves all the requested service instances.
-        /// </summary>
-        /// <param name="serviceType">Type of service requested.</param>
-        /// <returns>
-        ///     Sequence of service instance objects.
-        /// </returns>
-        protected override IEnumerable<object> DoGetAllInstances(Type serviceType)
-        {
-            if (serviceType == null)
-            {
-                throw new ArgumentNullException(nameof(serviceType));
-            }
-            var container = EnsureContainer();
-            return from registration in container.ComponentRegistry.Registrations
-                where (from service in registration.Services
-                    where (service as TypedService)?.ServiceType == serviceType || (service as KeyedService)?.ServiceType == serviceType
-                    select service).Any()
-                select container.ResolveComponent(registration, Enumerable.Empty<Parameter>());
         }
 
         /// <summary>
@@ -130,9 +79,9 @@ namespace Wheatech.ServiceModel.Autofac
             var registration = serviceName == null
                 ? _builder.RegisterType(implementationType).As(serviceType)
                 : _builder.RegisterType(implementationType).Named(serviceName, serviceType);
-            var args = new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, registration) { Lifetime = _lifetime };
-            OnRegistering(args);
-            switch (args.Lifetime)
+            var eventArgs = new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, registration) { Lifetime = _lifetime };
+            OnRegistering(eventArgs);
+            switch (eventArgs.Lifetime)
             {
                 case ServiceLifetime.Singleton:
                     registration.SingleInstance();
@@ -147,7 +96,20 @@ namespace Wheatech.ServiceModel.Autofac
                     registration.InstancePerRequest();
                     break;
             }
-            _registrations[Tuple.Create(serviceType, serviceName)] = implementationType;
+            registration
+                .FindConstructorsWith(type =>
+                {
+                    var constructors = InjectionAttribute.GetConstructors(type).ToArray();
+                    return constructors.Length >0 ? constructors : type.GetConstructors();
+                })
+                .UsingConstructor(new MostParametersConstructorSelector())
+                .OnActivated(args =>
+                {
+                    foreach (var property in InjectionAttribute.GetProperties(implementationType))
+                    {
+                        property.SetValue(args.Instance, _container.Resolve(property.PropertyType));
+                    }
+                });
         }
     }
 }

@@ -72,21 +72,6 @@ namespace Wheatech.ServiceModel.Unity
         }
 
         /// <summary>
-        /// Checks if a particular type/name pair has been registered with the container. 
-        /// </summary>
-        /// <param name="serviceType">Type to check registration for.</param>
-        /// <param name="serviceName">Name to check registration for.</param>
-        /// <returns><c>true</c> if this type/name pair has been registered, <c>false</c> if not.</returns>
-        public override bool IsRegistered(Type serviceType, string serviceName = null)
-        {
-            if (_container == null)
-            {
-                throw new ObjectDisposedException("container");
-            }
-            return _container.IsRegistered(serviceType, serviceName);
-        }
-
-        /// <summary>
         /// Resolves the requested service instance.
         /// </summary>
         /// <param name="serviceType">Type of instance requested.</param>
@@ -106,28 +91,6 @@ namespace Wheatech.ServiceModel.Unity
             }
 
             return _container.Resolve(serviceType, serviceName);
-        }
-
-        /// <summary>
-        /// Resolves all the requested service instances.
-        /// </summary>
-        /// <param name="serviceType">Type of service requested.</param>
-        /// <returns>
-        ///     Sequence of service instance objects.
-        /// </returns>
-        protected override IEnumerable<object> DoGetAllInstances(Type serviceType)
-        {
-            if (_container == null)
-            {
-                throw new ObjectDisposedException("container");
-            }
-            if (serviceType == null)
-            {
-                throw new ArgumentNullException(nameof(serviceType));
-            }
-            return from registration in _container.Registrations
-                where registration.RegisteredType == serviceType
-                select _container.Resolve(registration.RegisteredType, registration.Name);
         }
 
         /// <summary>

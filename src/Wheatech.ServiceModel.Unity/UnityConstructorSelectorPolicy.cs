@@ -25,7 +25,7 @@ namespace Wheatech.ServiceModel.Unity
         public SelectedConstructor SelectConstructor(IBuilderContext context, IPolicyList resolverPolicyDestination)
         {
             if(context == null)throw new ArgumentNullException(nameof(context));
-            Type typeToConstruct = context.BuildKey.Type;
+            var typeToConstruct = context.BuildKey.Type;
             var constructors = typeToConstruct.GetConstructors();
             var selectedConstructor =
                 SelectConstructor(constructors.Where(ctor => ctor.IsDefined(typeof(InjectionAttribute), true)).ToArray()) ??
@@ -36,7 +36,18 @@ namespace Wheatech.ServiceModel.Unity
                 var result = new SelectedConstructor(selectedConstructor);
                 foreach (var parameter in selectedConstructor.GetParameters())
                 {
-                    result.AddParameterResolver(new NamedTypeDependencyResolverPolicy(parameter.ParameterType, null));
+                    var attrs = parameter.GetCustomAttributes<DependencyResolutionAttribute>(false).ToArray();
+                    if (attrs.Length > 0)
+                    {
+                        // Since this attribute is defined with MultipleUse = false, the compiler will
+                        // enforce at most one. So we don't need to check for more.
+                        result.AddParameterResolver(attrs[0].CreateResolver(parameter.ParameterType));
+                    }
+                    else
+                    {
+                        // No attribute, just go back to the container for the default for that type.
+                        result.AddParameterResolver(new NamedTypeDependencyResolverPolicy(parameter.ParameterType, null));
+                    }
                 }
                 return result;
             }

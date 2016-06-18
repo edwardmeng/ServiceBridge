@@ -57,6 +57,7 @@
     <Compile Include="IServiceContainerExtension.cs" />
     <Compile Include="ServiceContainerExtensions.cs" />
     <Compile Include="ServiceRegisterEventArgs.cs" />
+    <Compile Include="ServiceRegistration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\tools\wheatech.snk">
