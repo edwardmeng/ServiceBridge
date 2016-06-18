@@ -12,7 +12,7 @@ namespace Wheatech.ServiceModel.UnitTests
         {
             ServiceContainer.SetProvider(CreateContainer);
             ServiceContainer.Register<ILogger, AdvancedLogger>().Register<ILogger, SimpleLogger>("Simple").Register<ILogger, AdvancedLogger>("Advanced");
-            ServiceContainer.Register<ICanChangeParameters, CanChangeParametersTarget>();
+            ServiceContainer.Register<ICanChangeParameters, CanChangeParametersTarget>().Register<ObjectWithInjection>();
         }
 
         [Fact]
@@ -20,6 +20,14 @@ namespace Wheatech.ServiceModel.UnitTests
         {
             var instance = ServiceContainer.GetInstance<ILogger>();
             Assert.NotNull(instance);
+        }
+
+        [Fact]
+        public void IsRegistered()
+        {
+            Assert.True(ServiceContainer.IsRegistered<ILogger>());
+            Assert.True(ServiceContainer.IsRegistered<ILogger>("Simple"));
+            Assert.True(ServiceContainer.IsRegistered(typeof(ILogger), "Advanced"));
         }
 
         [Fact]
@@ -100,6 +108,24 @@ namespace Wheatech.ServiceModel.UnitTests
                     genericLoggers[i].GetType(),
                     plainLoggers[i].GetType());
             }
+        }
+
+        [Fact]
+        public void CanInjectionConstructor()
+        {
+            var o = ServiceContainer.GetInstance<ObjectWithInjection>();
+
+            Assert.NotNull(o.InjectionFromConstructor);
+            Assert.Null(o.NotInjectionFromConstructor);
+        }
+
+        [Fact]
+        public void CanInjectionProperty()
+        {
+            var o = ServiceContainer.GetInstance<ObjectWithInjection>();
+
+            Assert.NotNull(o.InjectionFromProperty);
+            Assert.Null(o.NotInjectionFromProperty);
         }
 
         #region Interception
