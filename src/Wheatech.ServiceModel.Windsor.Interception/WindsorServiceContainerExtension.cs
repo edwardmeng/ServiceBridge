@@ -1,4 +1,7 @@
-﻿using Wheatech.ServiceModel.DynamicProxy;
+﻿using System;
+using System.Linq;
+using System.Reflection;
+using Wheatech.ServiceModel.DynamicProxy;
 using Wheatech.ServiceModel.Interception;
 using IInterceptor = Castle.DynamicProxy.IInterceptor;
 
@@ -19,7 +22,17 @@ namespace Wheatech.ServiceModel.Windsor.Interception
 
         private void OnRegistering(object sender, ServiceRegisterEventArgs e)
         {
-            ((WindsorServiceRegisterEventArgs)e).Registration.Interceptors<ServiceInterceptor>();
+            if (ShouldIntercept(e.ImplementType))
+            {
+                ((WindsorServiceRegisterEventArgs)e).Registration.Interceptors<ServiceInterceptor>();
+            }
+        }
+
+        private bool ShouldIntercept(Type type)
+        {
+            return type
+                .GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
+                .Any(method => method.DeclaringType != typeof(object) && !method.IsPrivate && !method.IsFinal);
         }
     }
 }
