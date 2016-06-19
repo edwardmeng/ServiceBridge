@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using Autofac;
 using Autofac.Core.Activators.Reflection;
 
@@ -79,6 +80,20 @@ namespace Wheatech.ServiceModel.Autofac
             var registration = serviceName == null
                 ? _builder.RegisterType(implementationType).As(serviceType)
                 : _builder.RegisterType(implementationType).Named(serviceName, serviceType);
+            registration
+                .FindConstructorsWith(type =>
+                {
+                    var constructors = InjectionAttribute.GetConstructors(type).ToArray();
+                    return constructors.Length > 0 ? constructors : type.GetConstructors();
+                })
+                .UsingConstructor(new MostParametersConstructorSelector())
+                .OnActivated(args =>
+                {
+                    foreach (var property in InjectionAttribute.GetProperties(implementationType))
+                    {
+                        property.SetValue(args.Instance, _container.Resolve(property.PropertyType));
+                    }
+                });
             var eventArgs = new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, registration) { Lifetime = _lifetime };
             OnRegistering(eventArgs);
             switch (eventArgs.Lifetime)
@@ -96,20 +111,6 @@ namespace Wheatech.ServiceModel.Autofac
                     registration.InstancePerRequest();
                     break;
             }
-            registration
-                .FindConstructorsWith(type =>
-                {
-                    var constructors = InjectionAttribute.GetConstructors(type).ToArray();
-                    return constructors.Length >0 ? constructors : type.GetConstructors();
-                })
-                .UsingConstructor(new MostParametersConstructorSelector())
-                .OnActivated(args =>
-                {
-                    foreach (var property in InjectionAttribute.GetProperties(implementationType))
-                    {
-                        property.SetValue(args.Instance, _container.Resolve(property.PropertyType));
-                    }
-                });
         }
     }
 }

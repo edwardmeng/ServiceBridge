@@ -24,8 +24,8 @@ namespace Wheatech.ServiceModel.UnitTests
         public ICanChangeParameters NotInjectionFromConstructor { get; set; }
 
         [Injection]
-        public ILogger InjectionFromProperty { get; set; }
+        public virtual ILogger InjectionFromProperty { get; set; }
 
-        public ILogger NotInjectionFromProperty { get; set; }
+        public virtual ILogger NotInjectionFromProperty { get; set; }
     }
 }

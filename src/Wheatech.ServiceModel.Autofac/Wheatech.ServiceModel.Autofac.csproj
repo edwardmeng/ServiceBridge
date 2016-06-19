@@ -49,7 +49,6 @@
     <Compile Include="AutofacServiceContainer.cs" />
     <Compile Include="AutofacServiceRegisterEventArgs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SelectorEqualityComparer.cs" />
     <Compile Include="ServiceLifetime.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Ninject;
 using Ninject.Infrastructure;
-using Ninject.Selection;
+using Ninject.Planning.Strategies;
 using Ninject.Syntax;
 
 namespace Wheatech.ServiceModel.Ninject
@@ -28,6 +28,10 @@ namespace Wheatech.ServiceModel.Ninject
         public NinjectServiceContainer(IKernel kernel = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         {
             _kernel = kernel ?? new StandardKernel(new NinjectSettings { InjectAttribute = typeof(InjectionAttribute) });
+            _kernel.Components.RemoveAll<IPlanningStrategy>();
+            _kernel.Components.Add<IPlanningStrategy, ConstructorStrategy>();
+            _kernel.Components.Add<IPlanningStrategy, PropertyStrategy>();
+            _kernel.Components.Add<IPlanningStrategy, MethodStrategy>();
             _kernel.Bind<IServiceContainer>().ToConstant(this);
             _lifetime = lifetime;
         }

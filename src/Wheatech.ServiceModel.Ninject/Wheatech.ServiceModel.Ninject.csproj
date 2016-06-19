@@ -44,9 +44,17 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConstructorDirective.cs" />
+    <Compile Include="ConstructorStrategy.cs" />
+    <Compile Include="MethodDirective.cs" />
+    <Compile Include="MethodStrategy.cs" />
     <Compile Include="NinjectServiceContainer.cs" />
     <Compile Include="NinjectServiceRegisterEventArgs.cs" />
+    <Compile Include="ParameterTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyDirective.cs" />
+    <Compile Include="PropertyStrategy.cs" />
+    <Compile Include="PropertyTarget.cs" />
     <Compile Include="ServiceLifetime.cs" />
   </ItemGroup>
   <ItemGroup>
