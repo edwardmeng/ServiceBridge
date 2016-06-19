@@ -17,6 +17,12 @@
             NotInjectionFromConstructor = obj;
         }
 
+        [Startup]
+        public void Initialize(ILogger logger)
+        {
+            InjectionFromMethod = logger;
+        }
+
         public ILogger InjectionFromConstructor { get; set; }
 
         public ICanChangeParameters NotInjectionFromConstructor { get; set; }
@@ -25,5 +31,7 @@
         public virtual ILogger InjectionFromProperty { get; set; }
 
         public virtual ILogger NotInjectionFromProperty { get; set; }
+
+        public virtual ILogger InjectionFromMethod { get; set; }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Practices.ObjectBuilder2;
+﻿using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
 
 namespace Wheatech.ServiceModel.Unity
@@ -10,6 +9,7 @@ namespace Wheatech.ServiceModel.Unity
         {
             Context.Policies.SetDefault<IConstructorSelectorPolicy>(new UnityConstructorSelectorPolicy());
             Context.Policies.SetDefault<IPropertySelectorPolicy>(new UnityPropertySelectorPolicy());
+            Context.Policies.SetDefault<IMethodSelectorPolicy>(new UnityMethodSelectorPolicy());
         }
     }
 }

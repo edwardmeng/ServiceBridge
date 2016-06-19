@@ -120,6 +120,13 @@ namespace Wheatech.ServiceModel.UnitTests
         }
 
         [Fact]
+        public void CanInjectionMethod()
+        {
+            var o = ServiceContainer.GetInstance<ObjectWithInjection>();
+            Assert.NotNull(o.InjectionFromMethod);
+        }
+
+        [Fact]
         public void CanInjectionProperty()
         {
             var o = ServiceContainer.GetInstance<ObjectWithInjection>();

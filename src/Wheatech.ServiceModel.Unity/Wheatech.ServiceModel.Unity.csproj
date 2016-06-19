@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="UnityConstructorSelectorPolicy.cs" />
+    <Compile Include="UnityMethodSelectorPolicy.cs" />
     <Compile Include="UnityPropertySelectorPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLifetime.cs" />
