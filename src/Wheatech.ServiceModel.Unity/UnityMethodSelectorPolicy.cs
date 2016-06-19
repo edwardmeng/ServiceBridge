@@ -28,7 +28,7 @@ namespace Wheatech.ServiceModel.Unity
 
             foreach (var method in candidateMethods)
             {
-                if (method.IsDefined(typeof(InjectionMethodAttribute), false) || method.IsDefined(typeof(StartupAttribute), false))
+                if (method.IsDefined(typeof(InjectionMethodAttribute), false) || method.IsDefined(typeof(InjectionAttribute), false))
                 {
                     yield return CreateSelectedMethod(method);
                 }

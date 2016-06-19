@@ -75,6 +75,7 @@ namespace Wheatech.ServiceModel.Windsor
             var registration = Component.For(serviceType)
                 .ImplementedBy(implementationType)
                 .Named(GetServiceName(serviceType, serviceName))
+                .AddDescriptor(new InjectionComponentDescriptor(implementationType))
                 .PropertiesIgnore(property => !property.CanWrite || (property.SetMethod ?? property.GetMethod).IsStatic || !property.IsDefined(typeof(InjectionAttribute)));
             var eventArgs = new WindsorServiceRegisterEventArgs(serviceType, implementationType, serviceName, registration) { Lifetime = _lifetime };
             OnRegistering(eventArgs);

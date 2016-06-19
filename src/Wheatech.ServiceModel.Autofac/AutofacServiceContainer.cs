@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Autofac;
 using Autofac.Core.Activators.Reflection;
@@ -86,11 +87,34 @@ namespace Wheatech.ServiceModel.Autofac
                     return constructors.Length > 0 ? constructors : type.GetConstructors();
                 })
                 .UsingConstructor(new MostParametersConstructorSelector())
-                .OnActivated(args =>
+                .OnActivating(args =>
                 {
                     foreach (var property in InjectionAttribute.GetProperties(implementationType))
                     {
                         property.SetValue(args.Instance, _container.Resolve(property.PropertyType));
+                    }
+                })
+                .OnActivated(args =>
+                {
+                    foreach (var method in InjectionAttribute.GetMethods(implementationType))
+                    {
+                        var arguments = new List<object>();
+                        foreach (var parameter in method.GetParameters())
+                        {
+                            if (parameter.IsOut)
+                            {
+                                arguments.Add(null);
+                            }
+                            else if (parameter.ParameterType.IsByRef)
+                            {
+                                arguments.Add(_container.Resolve(parameter.ParameterType.GetElementType()));
+                            }
+                            else
+                            {
+                                arguments.Add(_container.Resolve(parameter.ParameterType));
+                            }
+                        }
+                        method.Invoke(args.Instance, arguments.ToArray());
                     }
                 });
             var eventArgs = new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, registration) { Lifetime = _lifetime };

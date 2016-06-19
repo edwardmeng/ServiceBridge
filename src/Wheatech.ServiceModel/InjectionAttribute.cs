@@ -16,19 +16,22 @@ namespace Wheatech.ServiceModel
     /// For constructors, this attribute is used to indicate which constructor to choose when
     /// the container attempts to build a type.
     /// </para>
+    /// <para>
+    /// For methods, this attribute is used to indicate the methods should be called when
+    /// the container is building an object.
+    /// </para>
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Constructor | AttributeTargets.Property | AttributeTargets.Method)]
     public class InjectionAttribute : Attribute
     {
         /// <summary>
-        /// Returns the declared properties of a type or its base types.
+        /// Returns the declared properties of a type or its base types marked with <see cref="InjectionAttribute"/>.
         /// </summary>
         /// <param name="type">The type to inspect</param>
         /// <returns>An enumerable of the <see cref="T:System.Reflection.PropertyInfo" /> objects.</returns>
         public static IEnumerable<PropertyInfo> GetProperties(Type type)
         {
-            return GetPropertiesHierarchy(type)
-                .Where(property => property.CanWrite && !(property.SetMethod ?? property.GetMethod).IsStatic && property.IsDefined(typeof(InjectionAttribute)));
+            return GetPropertiesHierarchy(type).Where(property => property.IsDefined(typeof(InjectionAttribute), false));
         }
 
         /// <summary>
@@ -45,13 +48,51 @@ namespace Wheatech.ServiceModel
                 .OrderBy(constructor => constructor.GetParameters().Length);
         }
 
+        /// <summary>
+        /// Returns the declared methods of a type or its base types marked with <see cref="InjectionAttribute"/>.
+        /// </summary>
+        /// <param name="type">The type to inspect</param>
+        /// <returns>An enumerable of the <see cref="MethodInfo"/> objects.</returns>
+        public static IEnumerable<MethodInfo> GetMethods(Type type)
+        {
+            return GetMethodsHierarchy(type).Where(method => method.IsDefined(typeof(InjectionAttribute), false));
+        }
+
         private static IEnumerable<PropertyInfo> GetPropertiesHierarchy(Type type)
         {
-            if (type == null)
+            if (type == null|| type == typeof(object))
                 return Enumerable.Empty<PropertyInfo>();
-            if (type == typeof(object))
-                return type.GetTypeInfo().DeclaredProperties;
-            return type.GetTypeInfo().DeclaredProperties.Concat(GetPropertiesHierarchy(type.GetTypeInfo().BaseType));
+            var properties = new List<Tuple<PropertyInfo, PropertyInfo>>();
+            properties.AddRange(from property in type.GetTypeInfo().DeclaredProperties
+                let method = property.SetMethod ?? property.GetMethod
+                where property.CanWrite && !method.IsStatic && property.GetIndexParameters().Length == 0
+                select Tuple.Create(property, ReflectionHelper.GetPropertyFromMethod(method.GetBaseDefinition())));
+            foreach (var property in GetPropertiesHierarchy(type.BaseType))
+            {
+                if (properties.All(p => p.Item2 != property))
+                {
+                    properties.Add(Tuple.Create(property, ReflectionHelper.GetPropertyFromMethod((property.SetMethod ?? property.GetMethod).GetBaseDefinition())));
+                }
+            }
+            return properties.Select(p => p.Item1);
+        }
+
+        private static IEnumerable<MethodInfo> GetMethodsHierarchy(Type type)
+        {
+            if (type == null || type == typeof(object))
+                return Enumerable.Empty<MethodInfo>();
+            var methods = new List<Tuple<MethodInfo, MethodInfo>>();
+            methods.AddRange(from method in type.GetTypeInfo().DeclaredMethods
+                where !method.IsSpecialName && !method.IsStatic
+                select Tuple.Create(method, method.GetBaseDefinition()));
+            foreach (var method in GetMethodsHierarchy(type.BaseType))
+            {
+                if (methods.All(x => x.Item2 != method))
+                {
+                    methods.Add(Tuple.Create(method, method.GetBaseDefinition()));
+                }
+            }
+            return methods.Select(x => x.Item1);
         }
     }
 }

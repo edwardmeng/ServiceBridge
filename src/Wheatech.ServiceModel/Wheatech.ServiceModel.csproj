@@ -51,6 +51,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="ReflectionHelper.cs" />
     <Compile Include="RegistrationException.cs" />
     <Compile Include="ServiceContainer.cs" />
     <Compile Include="ServiceContainerBase.cs" />
@@ -58,7 +59,6 @@
     <Compile Include="ServiceContainerExtensions.cs" />
     <Compile Include="ServiceRegisterEventArgs.cs" />
     <Compile Include="ServiceRegistration.cs" />
-    <Compile Include="StartupAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\tools\wheatech.snk">

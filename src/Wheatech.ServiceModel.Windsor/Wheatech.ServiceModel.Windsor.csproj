@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InjectionComponentDescriptor.cs" />
+    <Compile Include="InjectionConcern.cs" />
     <Compile Include="SelectConstructorInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceLifetime.cs" />

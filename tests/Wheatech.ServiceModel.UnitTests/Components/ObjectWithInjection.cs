@@ -17,7 +17,7 @@
             NotInjectionFromConstructor = obj;
         }
 
-        [Startup]
+        [Injection]
         public void Initialize(ILogger logger)
         {
             InjectionFromMethod = logger;
