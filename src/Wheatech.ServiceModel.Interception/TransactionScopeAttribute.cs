@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Transactions;
+using Wheatech.ServiceModel.Interception.Properties;
 
 namespace Wheatech.ServiceModel.Interception
 {
@@ -122,12 +123,11 @@ namespace Wheatech.ServiceModel.Interception
             long ticks;
             if (long.TryParse(scopeTimeout, NumberStyles.Integer, CultureInfo.InvariantCulture, out ticks))
             {
-                _scopeTimeout = TimeSpan.FromSeconds(long.Parse(scopeTimeout, CultureInfo.InvariantCulture));
+                _scopeTimeout = TimeSpan.FromSeconds(ticks);
             }
             else if (!TimeSpan.TryParse(scopeTimeout, CultureInfo.InvariantCulture, out _scopeTimeout))
             {
-                throw new ArgumentException(string.Format("Cannot parse scope timeout '{0}'.", scopeTimeout),
-                                            nameof(scopeTimeout));
+                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Strings.TransactionScope_InvalidTimeout, scopeTimeout), nameof(scopeTimeout));
             }
         }
 

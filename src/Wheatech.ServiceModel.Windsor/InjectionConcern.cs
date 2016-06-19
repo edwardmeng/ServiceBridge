@@ -9,35 +9,18 @@ namespace Wheatech.ServiceModel.Windsor
     {
         private readonly IKernel _kernel;
         private readonly Type _implementType;
+        private readonly Action<IKernel, object> _injectionExpression;
 
         public InjectionConcern(IKernel kernel, Type implementType)
         {
             _kernel = kernel;
             _implementType = implementType;
+            _injectionExpression = new DynamicInjectionBuilder(implementType).Build();
         }
 
         public void Apply(ComponentModel model, object component)
         {
-            foreach (var method in InjectionAttribute.GetMethods(_implementType))
-            {
-                var arguments = new List<object>();
-                foreach (var parameter in method.GetParameters())
-                {
-                    if (parameter.IsOut)
-                    {
-                        arguments.Add(null);
-                    }
-                    else if (parameter.ParameterType.IsByRef)
-                    {
-                        arguments.Add(_kernel.Resolve(parameter.ParameterType.GetElementType()));
-                    }
-                    else
-                    {
-                        arguments.Add(_kernel.Resolve(parameter.ParameterType));
-                    }
-                }
-                method.Invoke(component, arguments.ToArray());
-            }
+            _injectionExpression(_kernel, component);
         }
     }
 }
