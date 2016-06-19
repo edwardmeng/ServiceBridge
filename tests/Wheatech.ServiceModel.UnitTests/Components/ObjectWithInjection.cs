@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Wheatech.ServiceModel.UnitTests
+﻿namespace Wheatech.ServiceModel.UnitTests
 {
     public class ObjectWithInjection
     {
+        public ObjectWithInjection()
+        {
+        }
+
         [Injection]
         public ObjectWithInjection(ILogger logger)
         {
