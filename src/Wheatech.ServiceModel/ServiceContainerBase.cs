@@ -14,10 +14,16 @@ namespace Wheatech.ServiceModel
     /// </summary>
     public abstract class ServiceContainerBase : IServiceContainer, IDisposable
     {
+        #region Fields
+
         private List<IServiceContainerExtension> _extensions = new List<IServiceContainerExtension>();
 
         private ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>> _registrations =
             new ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>>();
+
+        #endregion
+
+        #region ServiceName
 
         private struct ServiceName
         {
@@ -45,6 +51,8 @@ namespace Wheatech.ServiceModel
                 return ((ServiceName)obj).Name == Name;
             }
         }
+
+        #endregion
 
         #region IDisposable Implementation
 
