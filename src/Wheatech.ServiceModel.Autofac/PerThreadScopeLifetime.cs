@@ -1,18 +1,19 @@
 ﻿using System;
+using System.Threading;
 using Autofac;
 using Autofac.Core;
+using Autofac.Core.Lifetime;
 
 namespace Wheatech.ServiceModel.Autofac
 {
     internal class PerThreadScopeLifetime : IComponentLifetime
     {
         [ThreadStatic]
-        private static ISharingLifetimeScope _threadScope;
+        private static ILifetimeScope _threadScope;
 
         public ISharingLifetimeScope FindScope(ISharingLifetimeScope mostNestedVisibleScope)
         {
-
-            return _threadScope ?? (_threadScope = (ISharingLifetimeScope)mostNestedVisibleScope.BeginLifetimeScope());
+            return (ISharingLifetimeScope)(_threadScope ?? (_threadScope = new LifetimeScope(mostNestedVisibleScope.ComponentRegistry)));
         }
     }
 }

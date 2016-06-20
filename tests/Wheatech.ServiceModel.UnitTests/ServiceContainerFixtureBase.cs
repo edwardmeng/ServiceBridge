@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Wheatech.ServiceModel.UnitTests.Components;
 using Xunit;
 
 namespace Wheatech.ServiceModel.UnitTests
@@ -168,6 +170,57 @@ namespace Wheatech.ServiceModel.UnitTests
 
             Assert.Equal((2 + 3 + 5) * 3, output);
         }
+        #endregion
+
+        #region Lifetime
+
+        [Fact]
+        public void SingletonInThreads()
+        {
+            ServiceContainer.Current.Registering += SingletonRegistering;
+
+            ServiceContainer.Register<LifetimeObject>();
+            LifetimeObject result1 = null;
+            LifetimeObject result2 = null;
+            Thread thread1 = new Thread(delegate ()
+            {
+                result1 = ServiceContainer.GetInstance<LifetimeObject>();
+            });
+
+            Thread thread2 = new Thread(delegate ()
+            {
+                result2 = ServiceContainer.GetInstance<LifetimeObject>();
+            });
+            thread1.Start();
+            thread2.Start();
+
+            thread2.Join();
+            thread1.Join();
+
+            Assert.NotNull(result1);
+            Assert.Same(result1, result2);
+
+            ServiceContainer.Current.Registering -= SingletonRegistering;
+        }
+
+        private void SingletonRegistering(object sender, ServiceRegisterEventArgs e)
+        {
+            e.Lifetime = ServiceLifetime.Singleton;
+        }
+
+        [Fact]
+        public void SingletonInstances()
+        {
+            ServiceContainer.Current.Registering += SingletonRegistering;
+            ServiceContainer.Register<LifetimeObject>();
+            LifetimeObject result1 = ServiceContainer.GetInstance<LifetimeObject>();
+            LifetimeObject result2 = ServiceContainer.GetInstance<LifetimeObject>();
+            Assert.NotNull(result1);
+            Assert.Same(result1, result2);
+
+            ServiceContainer.Current.Registering -= SingletonRegistering;
+        }
+
         #endregion
     }
 }
