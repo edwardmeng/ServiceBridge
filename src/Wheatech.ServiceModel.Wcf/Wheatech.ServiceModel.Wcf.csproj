@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C0BF61E5-73F6-40C8-97E1-F257A60CAB1A}</ProjectGuid>
+    <ProjectGuid>{3191F441-18B9-496E-8867-DB5F34511BA5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wheatech.ServiceModel.Unity</RootNamespace>
-    <AssemblyName>Wheatech.ServiceModel.Unity</AssemblyName>
+    <RootNamespace>Wheatech.ServiceModel.Wcf</RootNamespace>
+    <AssemblyName>Wheatech.ServiceModel.Wcf</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,46 +36,37 @@
     <AssemblyOriginatorKeyFile>..\..\tools\wheatech.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.Configuration, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Web" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PerRequestLifetimeManager.cs" />
-    <Compile Include="UnityConstructorSelectorPolicy.cs" />
-    <Compile Include="UnityMethodSelectorPolicy.cs" />
-    <Compile Include="UnityPropertySelectorPolicy.cs" />
+    <Compile Include="Client\ClientBase.cs" />
+    <Compile Include="Client\ClientServiceFactory.cs" />
+    <Compile Include="Server\ContainerInstanceProvider.cs" />
+    <Compile Include="Server\ContainerServiceAttribute.cs" />
+    <Compile Include="Server\ContainerServiceBehavior.cs" />
+    <Compile Include="Client\InnerClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UnityServiceContainerExtension.cs" />
-    <Compile Include="UnityServiceContainer.cs" />
-    <Compile Include="UnityServiceRegisterEventArgs.cs" />
+    <Compile Include="Client\ServiceClientFactory.cs" />
+    <Compile Include="Server\ContainerServiceHost.cs" />
+    <Compile Include="Server\ContainerServiceHostFactory.cs" />
+    <Compile Include="Server\ServiceContainerBehaviorElement.cs" />
+    <Compile Include="Server\WcfServiceContainerExtension.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\tools\wheatech.snk">
+      <Link>Properties\wheatech.snk</Link>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
       <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
       <Name>Wheatech.ServiceModel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\tools\wheatech.snk">
-      <Link>Properties\wheatech.snk</Link>
-    </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

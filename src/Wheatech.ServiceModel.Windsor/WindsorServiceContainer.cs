@@ -81,12 +81,6 @@ namespace Wheatech.ServiceModel.Windsor
             OnRegistering(eventArgs);
             switch (eventArgs.Lifetime)
             {
-                case ServiceLifetime.Poolable:
-                    registration = eventArgs.Registration.LifestylePooled();
-                    break;
-                case ServiceLifetime.Scoped:
-                    registration = eventArgs.Registration.LifestyleScoped();
-                    break;
                 case ServiceLifetime.Singleton:
                     registration = eventArgs.Registration.LifestyleSingleton();
                     break;

@@ -1,9 +1,7 @@
-﻿namespace Wheatech.ServiceModel.Windsor
+﻿namespace Wheatech.ServiceModel
 {
     public enum ServiceLifetime
     {
-        Poolable,
-        Scoped,
         Singleton,
         Transient,
         PerThread,

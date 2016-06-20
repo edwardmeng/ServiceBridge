@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Practices.Unity;
 
 namespace Wheatech.ServiceModel.Unity
@@ -123,8 +121,8 @@ namespace Wheatech.ServiceModel.Unity
                 case ServiceLifetime.PerThread:
                     lifetimeManager = new PerThreadLifetimeManager();
                     break;
-                case ServiceLifetime.PerResolve:
-                    lifetimeManager = new PerResolveLifetimeManager();
+                case ServiceLifetime.PerRequest:
+                    lifetimeManager = new PerRequestLifetimeManager();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

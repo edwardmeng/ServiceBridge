@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Autofac;
+using Autofac.Core;
 using Autofac.Core.Activators.Reflection;
 
 namespace Wheatech.ServiceModel.Autofac
@@ -95,14 +96,16 @@ namespace Wheatech.ServiceModel.Autofac
                 case ServiceLifetime.Singleton:
                     registration.SingleInstance();
                     break;
-                case ServiceLifetime.PerDependency:
+                case ServiceLifetime.Transient:
                     registration.InstancePerDependency();
                     break;
-                case ServiceLifetime.PerLifetimeScope:
-                    registration.InstancePerLifetimeScope();
+                case ServiceLifetime.PerThread:
+                    registration.RegistrationData.Sharing = InstanceSharing.Shared;
+                    registration.RegistrationData.Lifetime = new PerThreadScopeLifetime();
                     break;
                 case ServiceLifetime.PerRequest:
-                    registration.InstancePerRequest();
+                    registration.RegistrationData.Sharing = InstanceSharing.Shared;
+                    registration.RegistrationData.Lifetime = new PerRequestScopeLifetime();
                     break;
             }
         }

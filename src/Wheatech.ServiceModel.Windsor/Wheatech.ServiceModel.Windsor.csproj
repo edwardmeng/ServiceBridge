@@ -60,7 +60,6 @@
     <Compile Include="InjectionConcern.cs" />
     <Compile Include="SelectConstructorInspector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceLifetime.cs" />
     <Compile Include="WindsorServiceContainer.cs" />
     <Compile Include="WindsorServiceRegisterEventArgs.cs" />
   </ItemGroup>

@@ -34,5 +34,10 @@ namespace Wheatech.ServiceModel
         /// Gets the type to map to.
         /// </summary>
         public Type ImplementType { get; }
+
+        /// <summary>
+        /// Gets or sets the life time for the resolved instances.
+        /// </summary>
+        public ServiceLifetime Lifetime { get; set; }
     }
 }

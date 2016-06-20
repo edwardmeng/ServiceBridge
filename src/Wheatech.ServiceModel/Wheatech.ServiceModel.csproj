@@ -57,6 +57,7 @@
     <Compile Include="ServiceContainerBase.cs" />
     <Compile Include="IServiceContainerExtension.cs" />
     <Compile Include="ServiceContainerExtensions.cs" />
+    <Compile Include="ServiceLifetime.cs" />
     <Compile Include="ServiceRegisterEventArgs.cs" />
     <Compile Include="ServiceRegistration.cs" />
   </ItemGroup>
