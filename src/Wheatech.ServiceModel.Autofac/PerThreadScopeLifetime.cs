@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using Autofac;
 using Autofac.Core;
 using Autofac.Core.Lifetime;

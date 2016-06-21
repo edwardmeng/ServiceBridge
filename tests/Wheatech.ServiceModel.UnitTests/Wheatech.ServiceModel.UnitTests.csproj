@@ -81,6 +81,18 @@
       <HintPath>..\..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Interception, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ninject.Extensions.Interception.3.2.0.0\lib\net45-full\Ninject.Extensions.Interception.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Extensions.Interception.DynamicProxy, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ninject.Extensions.Interception.DynamicProxy.3.2.0.0\lib\net45-full\Ninject.Extensions.Interception.DynamicProxy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
@@ -123,6 +135,7 @@
     <Compile Include="Components\ObjectWithInjection.cs" />
     <Compile Include="Components\SimpleLogger.cs" />
     <Compile Include="Components\TripleOutputInterceptor.cs" />
+    <Compile Include="NinjectServiceContainerFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceContainerFixtureBase.cs" />
     <Compile Include="UnityServiceContainerFixture.cs" />
@@ -147,6 +160,14 @@
     <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Interception\Wheatech.ServiceModel.Interception.csproj">
       <Project>{38426ec5-1a50-4da2-b459-5389b120a569}</Project>
       <Name>Wheatech.ServiceModel.Interception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Ninject.Interception\Wheatech.ServiceModel.Ninject.Interception.csproj">
+      <Project>{b8765a35-b885-465b-9a6b-f4c2aaba6bea}</Project>
+      <Name>Wheatech.ServiceModel.Ninject.Interception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Ninject\Wheatech.ServiceModel.Ninject.csproj">
+      <Project>{ccf5528e-e26b-408a-933f-d2e9e1927a98}</Project>
+      <Name>Wheatech.ServiceModel.Ninject</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Unity.Interception\Wheatech.ServiceModel.Unity.Interception.csproj">
       <Project>{60972548-f189-49d7-9c31-976307a3e03d}</Project>

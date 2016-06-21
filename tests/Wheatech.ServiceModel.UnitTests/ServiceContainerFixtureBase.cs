@@ -203,11 +203,6 @@ namespace Wheatech.ServiceModel.UnitTests
             ServiceContainer.Current.Registering -= SingletonRegistering;
         }
 
-        private void SingletonRegistering(object sender, ServiceRegisterEventArgs e)
-        {
-            e.Lifetime = ServiceLifetime.Singleton;
-        }
-
         [Fact]
         public void SingletonInstances()
         {
@@ -219,6 +214,87 @@ namespace Wheatech.ServiceModel.UnitTests
             Assert.Same(result1, result2);
 
             ServiceContainer.Current.Registering -= SingletonRegistering;
+        }
+
+        private void SingletonRegistering(object sender, ServiceRegisterEventArgs e)
+        {
+            e.Lifetime = ServiceLifetime.Singleton;
+        }
+
+        [Fact]
+        public void PerThreadInstances()
+        {
+            ServiceContainer.Current.Registering += PerThreadRegistering;
+
+            ServiceContainer.Register<LifetimeObject>();
+            LifetimeObject result1 = null;
+            LifetimeObject result2 = null;
+            LifetimeObject result3 = null;
+            Thread thread1 = new Thread(delegate ()
+            {
+                result1 = ServiceContainer.GetInstance<LifetimeObject>();
+            });
+
+            Thread thread2 = new Thread(delegate ()
+            {
+                result2 = ServiceContainer.GetInstance<LifetimeObject>();
+                result3 = ServiceContainer.GetInstance<LifetimeObject>();
+            });
+            thread1.Start();
+            thread2.Start();
+
+            thread2.Join();
+            thread1.Join();
+
+            Assert.NotNull(result1);
+            Assert.NotNull(result2);
+            Assert.NotNull(result3);
+            Assert.NotSame(result1, result2);
+            Assert.Same(result3, result2);
+
+            ServiceContainer.Current.Registering -= PerThreadRegistering;
+        }
+
+        private void PerThreadRegistering(object sender, ServiceRegisterEventArgs e)
+        {
+            e.Lifetime = ServiceLifetime.PerThread;
+        }
+
+        [Fact]
+        public void TransientInstances()
+        {
+            ServiceContainer.Current.Registering += TransientRegistering;
+            ServiceContainer.Register<LifetimeObject>();
+            LifetimeObject result1 = null;
+            LifetimeObject result2 = null;
+            LifetimeObject result3 = null;
+            Thread thread1 = new Thread(delegate ()
+            {
+                result1 = ServiceContainer.GetInstance<LifetimeObject>();
+            });
+
+            Thread thread2 = new Thread(delegate ()
+            {
+                result2 = ServiceContainer.GetInstance<LifetimeObject>();
+                result3 = ServiceContainer.GetInstance<LifetimeObject>();
+            });
+            thread1.Start();
+            thread2.Start();
+
+            thread2.Join();
+            thread1.Join();
+
+            Assert.NotNull(result1);
+            Assert.NotNull(result2);
+            Assert.NotNull(result3);
+            Assert.NotSame(result1, result2);
+            Assert.NotSame(result3, result2);
+            ServiceContainer.Current.Registering -= TransientRegistering;
+        }
+
+        private void TransientRegistering(object sender, ServiceRegisterEventArgs e)
+        {
+            e.Lifetime = ServiceLifetime.Transient;
         }
 
         #endregion

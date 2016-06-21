@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Autofac;
 using Autofac.Core;
 using Autofac.Core.Activators.Reflection;
@@ -14,6 +15,7 @@ namespace Wheatech.ServiceModel.Autofac
         private ContainerBuilder _builder;
         private IContainer _container;
         private readonly ServiceLifetime _lifetime;
+        private readonly object _lockobj = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacServiceContainer" /> class.
@@ -48,7 +50,18 @@ namespace Wheatech.ServiceModel.Autofac
             {
                 throw new ObjectDisposedException("container");
             }
-            return _container ?? (_container = _builder.Build());
+            if (_container == null)
+            {
+                Thread.MemoryBarrier();
+                lock (_lockobj)
+                {
+                    if (_container == null)
+                    {
+                        _container = _builder.Build();
+                    }
+                }
+            }
+            return _container;
         }
 
         /// <summary>

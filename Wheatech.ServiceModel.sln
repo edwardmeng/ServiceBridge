@@ -37,6 +37,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.UnitT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Wcf", "src\Wheatech.ServiceModel.Wcf\Wheatech.ServiceModel.Wcf.csproj", "{3191F441-18B9-496E-8867-DB5F34511BA5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Ninject", "src\Wheatech.ServiceModel.Ninject\Wheatech.ServiceModel.Ninject.csproj", "{CCF5528E-E26B-408A-933F-D2E9E1927A98}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ninject", "Ninject", "{AB1FEDB3-EB92-48F2-983E-78A34163735E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Ninject.Interception", "src\Wheatech.ServiceModel.Ninject.Interception\Wheatech.ServiceModel.Ninject.Interception.csproj", "{B8765A35-B885-465B-9A6B-F4C2AABA6BEA}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{b233cd92-2d28-4304-be77-337f508e574b}*SharedItemsImports = 4
@@ -88,6 +94,14 @@ Global
 		{3191F441-18B9-496E-8867-DB5F34511BA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3191F441-18B9-496E-8867-DB5F34511BA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3191F441-18B9-496E-8867-DB5F34511BA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCF5528E-E26B-408A-933F-D2E9E1927A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCF5528E-E26B-408A-933F-D2E9E1927A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCF5528E-E26B-408A-933F-D2E9E1927A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCF5528E-E26B-408A-933F-D2E9E1927A98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8765A35-B885-465B-9A6B-F4C2AABA6BEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8765A35-B885-465B-9A6B-F4C2AABA6BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8765A35-B885-465B-9A6B-F4C2AABA6BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8765A35-B885-465B-9A6B-F4C2AABA6BEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,5 +121,8 @@ Global
 		{B233CD92-2D28-4304-BE77-337F508E574B} = {F342CEBE-A653-4633-B8A0-C14064926113}
 		{38853C23-EAC3-447D-8BF6-87A2C57A0280} = {830309B2-BF70-4BC5-8CA1-5EB40F60A76B}
 		{3191F441-18B9-496E-8867-DB5F34511BA5} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
+		{CCF5528E-E26B-408A-933F-D2E9E1927A98} = {AB1FEDB3-EB92-48F2-983E-78A34163735E}
+		{AB1FEDB3-EB92-48F2-983E-78A34163735E} = {FEAADEE8-46F3-4353-9F80-EE2F736D1784}
+		{B8765A35-B885-465B-9A6B-F4C2AABA6BEA} = {AB1FEDB3-EB92-48F2-983E-78A34163735E}
 	EndGlobalSection
 EndGlobal

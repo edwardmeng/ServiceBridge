@@ -11,8 +11,6 @@ namespace Wheatech.ServiceModel.Autofac
             Registration = registration;
         }
 
-        public ServiceLifetime Lifetime { get; set; }
-
         public IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> Registration { get; }
     }
 }

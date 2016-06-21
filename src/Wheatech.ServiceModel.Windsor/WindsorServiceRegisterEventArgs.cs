@@ -11,8 +11,6 @@ namespace Wheatech.ServiceModel.Windsor
             Registration = registration;
         }
 
-        public ServiceLifetime Lifetime { get; set; }
-
         public ComponentRegistration<object> Registration { get; }
     }
 }
