@@ -42,6 +42,7 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Activation" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\ClientBase.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Server\ContainerServiceHostFactory.cs" />
     <Compile Include="Server\ServiceContainerBehaviorElement.cs" />
     <Compile Include="Server\WcfServiceContainerExtension.cs" />
+    <Compile Include="ServiceModelStartup.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\tools\wheatech.snk">

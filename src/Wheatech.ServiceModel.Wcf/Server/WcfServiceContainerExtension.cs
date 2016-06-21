@@ -31,7 +31,7 @@ namespace Wheatech.ServiceModel.Wcf
                         case InstanceContextMode.Single:
                             e.Lifetime = ServiceLifetime.Singleton;
                             break;
-                        default:
+                        case InstanceContextMode.PerSession:
                             e.Lifetime = ServiceLifetime.PerThread;
                             break;
                     }

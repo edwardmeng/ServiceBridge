@@ -17,7 +17,6 @@ namespace Wheatech.ServiceModel.Wcf
         /// </summary>
         /// <param name="contractDescription">The contract to validate.</param>
         /// <param name="endpoint">The endpoint to validate.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
         public void Validate(ContractDescription contractDescription, ServiceEndpoint endpoint)
         {
         }
@@ -28,7 +27,6 @@ namespace Wheatech.ServiceModel.Wcf
         /// <param name="contractDescription">The contract description to be modified.</param>
         /// <param name="endpoint">The endpoint that exposes the contract.</param>
         /// <param name="dispatchRuntime">The dispatch runtime that controls service execution.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
         public void ApplyDispatchBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint,
                                           DispatchRuntime dispatchRuntime)
         {
@@ -41,7 +39,6 @@ namespace Wheatech.ServiceModel.Wcf
         /// <param name="contractDescription">The contract description for which the extension is intended.</param>
         /// <param name="endpoint">The endpoint.</param>
         /// <param name="clientRuntime">The client runtime.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
         public void ApplyClientBehavior(ContractDescription contractDescription, ServiceEndpoint endpoint,
                                         ClientRuntime clientRuntime)
         {
@@ -53,7 +50,6 @@ namespace Wheatech.ServiceModel.Wcf
         /// <param name="contractDescription">The contract description to modify.</param>
         /// <param name="endpoint">The endpoint to modify.</param>
         /// <param name="bindingParameters">The objects that binding elements require to support the behavior.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
         public void AddBindingParameters(ContractDescription contractDescription, ServiceEndpoint endpoint,
                                          BindingParameterCollection bindingParameters)
         {

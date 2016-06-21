@@ -59,10 +59,10 @@ namespace Wheatech.ServiceModel.Wcf
         /// </param>
         public object GetInstance(InstanceContext instanceContext, Message message)
         {
-            if (!ServiceContainer.IsRegistered(ContractType, Address))
-            {
-                ServiceContainer.Register(ContractType, ServiceType, Address);
-            }
+            //if (!ServiceContainer.IsRegistered(ContractType, Address))
+            //{
+            //    ServiceContainer.Register(ContractType, ServiceType, Address);
+            //}
             var instance = ServiceContainer.GetInstance(ContractType, Address);
             if (instance == null)
             {
