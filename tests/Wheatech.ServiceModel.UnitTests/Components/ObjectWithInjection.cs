@@ -23,9 +23,9 @@
             InjectionFromMethod = logger;
         }
 
-        public ILogger InjectionFromConstructor { get; set; }
+        public virtual ILogger InjectionFromConstructor { get; set; }
 
-        public ICanChangeParameters NotInjectionFromConstructor { get; set; }
+        public virtual ICanChangeParameters NotInjectionFromConstructor { get; set; }
 
         [Injection]
         public virtual ILogger InjectionFromProperty { get; set; }

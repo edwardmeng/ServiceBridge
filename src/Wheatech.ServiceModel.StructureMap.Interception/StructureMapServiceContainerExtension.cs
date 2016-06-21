@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Ninject.Extensions.Interception.Infrastructure.Language;
-using Ninject.Syntax;
 using Wheatech.ServiceModel.Interception;
 
-namespace Wheatech.ServiceModel.Ninject.Interception
+namespace Wheatech.ServiceModel.StructureMap.Interception
 {
-    public class NinjectServiceContainerExtension : IServiceContainerExtension
+    public class StructureMapServiceContainerExtension : IServiceContainerExtension
     {
         public void Initialize(IServiceContainer container)
         {
-            container.Register<PipelineManager>();
             container.Registering += OnRegistering;
+            container.Register<PipelineManager>();
         }
 
         public void Remove(IServiceContainer container)
@@ -28,12 +26,9 @@ namespace Wheatech.ServiceModel.Ninject.Interception
             }
             else if (ShouldIntercept(e.ImplementType))
             {
-                var binding = ((NinjectServiceRegisterEventArgs)e).Binding;
-                var container = (IServiceContainer)sender;
-                (binding as IBindingOnSyntax<object>)?.Intercept().With(new NinjectServiceInterceptor(container.GetInstance<PipelineManager>(), container));
+                ((StructureMapServiceRegisterEventArgs)e).Configuration.AddInterceptor(new DynamicProxyInterceptor(e.ServiceType, e.ImplementType));
             }
         }
-
         private bool ShouldIntercept(Type type)
         {
             return !type.IsSealed && type

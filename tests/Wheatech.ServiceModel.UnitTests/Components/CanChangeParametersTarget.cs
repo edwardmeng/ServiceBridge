@@ -2,7 +2,7 @@
 {
     public class CanChangeParametersTarget:ICanChangeParameters
     {
-        public int MostRecentInput { get; set; }
+        public virtual int MostRecentInput { get; set; }
 
         public virtual void DoSomething(int i)
         {

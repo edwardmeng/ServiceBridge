@@ -43,9 +43,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ninject", "Ninject", "{AB1F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Ninject.Interception", "src\Wheatech.ServiceModel.Ninject.Interception\Wheatech.ServiceModel.Ninject.Interception.csproj", "{B8765A35-B885-465B-9A6B-F4C2AABA6BEA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StructureMap", "StructureMap", "{59126E2C-9CA2-450D-96D6-3FA0DAC5D0C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.StructureMap", "src\Wheatech.ServiceModel.StructureMap\Wheatech.ServiceModel.StructureMap.csproj", "{DAA97815-4118-48F3-972F-EB339A0CB1ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.StructureMap.Interception", "src\Wheatech.ServiceModel.StructureMap.Interception\Wheatech.ServiceModel.StructureMap.Interception.csproj", "{793AF29F-1186-45B7-92EB-8605EBCE3CFE}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{b233cd92-2d28-4304-be77-337f508e574b}*SharedItemsImports = 4
+		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{793af29f-1186-45b7-92eb-8605ebce3cfe}*SharedItemsImports = 4
 		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{ac0a52e0-11fc-46c1-ae5d-83aded57d4fe}*SharedItemsImports = 13
 		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{2984c4c5-f10e-4062-b574-9f274cf3c4da}*SharedItemsImports = 4
 	EndGlobalSection
@@ -102,6 +109,14 @@ Global
 		{B8765A35-B885-465B-9A6B-F4C2AABA6BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8765A35-B885-465B-9A6B-F4C2AABA6BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8765A35-B885-465B-9A6B-F4C2AABA6BEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAA97815-4118-48F3-972F-EB339A0CB1ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAA97815-4118-48F3-972F-EB339A0CB1ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAA97815-4118-48F3-972F-EB339A0CB1ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAA97815-4118-48F3-972F-EB339A0CB1ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{793AF29F-1186-45B7-92EB-8605EBCE3CFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{793AF29F-1186-45B7-92EB-8605EBCE3CFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{793AF29F-1186-45B7-92EB-8605EBCE3CFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{793AF29F-1186-45B7-92EB-8605EBCE3CFE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,5 +139,8 @@ Global
 		{CCF5528E-E26B-408A-933F-D2E9E1927A98} = {AB1FEDB3-EB92-48F2-983E-78A34163735E}
 		{AB1FEDB3-EB92-48F2-983E-78A34163735E} = {FEAADEE8-46F3-4353-9F80-EE2F736D1784}
 		{B8765A35-B885-465B-9A6B-F4C2AABA6BEA} = {AB1FEDB3-EB92-48F2-983E-78A34163735E}
+		{59126E2C-9CA2-450D-96D6-3FA0DAC5D0C0} = {FEAADEE8-46F3-4353-9F80-EE2F736D1784}
+		{DAA97815-4118-48F3-972F-EB339A0CB1ED} = {59126E2C-9CA2-450D-96D6-3FA0DAC5D0C0}
+		{793AF29F-1186-45B7-92EB-8605EBCE3CFE} = {59126E2C-9CA2-450D-96D6-3FA0DAC5D0C0}
 	EndGlobalSection
 EndGlobal

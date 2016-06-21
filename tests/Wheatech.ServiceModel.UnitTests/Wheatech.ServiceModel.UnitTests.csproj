@@ -35,7 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>..\..\tools\wheatech.snk</AssemblyOriginatorKeyFile>
@@ -82,7 +82,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
+      <HintPath>..\..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject.Extensions.Interception, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -91,6 +91,14 @@
     </Reference>
     <Reference Include="Ninject.Extensions.Interception.DynamicProxy, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Ninject.Extensions.Interception.DynamicProxy.3.2.0.0\lib\net45-full\Ninject.Extensions.Interception.DynamicProxy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap, Version=4.2.0.402, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.2.0.402\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=4.2.0.402, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\structuremap.4.2.0.402\lib\net40\StructureMap.Net4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -138,6 +146,7 @@
     <Compile Include="NinjectServiceContainerFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceContainerFixtureBase.cs" />
+    <Compile Include="StructureMapServiceContainerFixture.cs" />
     <Compile Include="UnityServiceContainerFixture.cs" />
     <Compile Include="WindsorServiceContainerFixture.cs" />
   </ItemGroup>
@@ -168,6 +177,14 @@
     <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Ninject\Wheatech.ServiceModel.Ninject.csproj">
       <Project>{ccf5528e-e26b-408a-933f-d2e9e1927a98}</Project>
       <Name>Wheatech.ServiceModel.Ninject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.StructureMap.Interception\Wheatech.ServiceModel.StructureMap.Interception.csproj">
+      <Project>{793af29f-1186-45b7-92eb-8605ebce3cfe}</Project>
+      <Name>Wheatech.ServiceModel.StructureMap.Interception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.StructureMap\Wheatech.ServiceModel.StructureMap.csproj">
+      <Project>{daa97815-4118-48f3-972f-eb339a0cb1ed}</Project>
+      <Name>Wheatech.ServiceModel.StructureMap</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Unity.Interception\Wheatech.ServiceModel.Unity.Interception.csproj">
       <Project>{60972548-f189-49d7-9c31-976307a3e03d}</Project>
