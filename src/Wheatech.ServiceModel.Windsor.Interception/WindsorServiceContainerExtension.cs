@@ -3,18 +3,28 @@ using System.Linq;
 using System.Reflection;
 using Wheatech.ServiceModel.DynamicProxy;
 using Wheatech.ServiceModel.Interception;
-using IInterceptor = Castle.DynamicProxy.IInterceptor;
 
 namespace Wheatech.ServiceModel.Windsor.Interception
 {
-    public class WindsorServiceContainerExtension: IServiceContainerExtension
+    /// <summary>
+    /// The service container extension to enable interception mechanism for the <see cref="WindsorServiceContainer"/>.
+    /// </summary>
+    public class WindsorServiceContainerExtension : IServiceContainerExtension
     {
+        /// <summary>
+        /// Initial the container with this extension's functionality. 
+        /// </summary>
+        /// <param name="container">The container this extension to extend.</param>
         public void Initialize(IServiceContainer container)
         {
             container.Registering += OnRegistering;
-            ((WindsorServiceContainer) container).RegisterInstance(typeof(ServiceInterceptor), new ServiceInterceptor(new PipelineManager(), container));
+            ((WindsorServiceContainer)container).RegisterInstance(typeof(ServiceInterceptor), new ServiceInterceptor(new PipelineManager(), container));
         }
 
+        /// <summary>
+        /// Removes the extension's functions from the container. 
+        /// </summary>
+        /// <param name="container">The container this extension to extend.</param>
         public void Remove(IServiceContainer container)
         {
             container.Registering -= OnRegistering;

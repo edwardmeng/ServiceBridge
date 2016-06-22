@@ -4,12 +4,18 @@ using Microsoft.Practices.Unity;
 
 namespace Wheatech.ServiceModel.Unity
 {
+    /// <summary>
+    /// Event argument for the <see cref="IServiceContainer.Registering"/> event raised in <see cref="UnityServiceContainer"/>.
+    /// </summary>
     public class UnityServiceRegisterEventArgs : ServiceRegisterEventArgs
     {
-        public UnityServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName) : base(serviceType, implementType, serviceName)
+        internal UnityServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName) : base(serviceType, implementType, serviceName)
         {
         }
 
+        /// <summary>
+        /// Gets the injection members for the Unity service mapping.
+        /// </summary>
         public List<InjectionMember> InjectionMembers { get; } = new List<InjectionMember>();
     }
 }

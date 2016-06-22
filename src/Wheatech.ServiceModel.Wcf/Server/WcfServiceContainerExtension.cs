@@ -4,13 +4,27 @@ using System.ServiceModel;
 
 namespace Wheatech.ServiceModel.Wcf
 {
+    /// <summary>
+    /// The service container extension for controlling the lifetime of the registing services.
+    /// </summary>
+    /// <remarks>
+    /// This extension should be used in the WCF host server side.
+    /// </remarks>
     public class WcfServiceContainerExtension : IServiceContainerExtension
     {
+        /// <summary>
+        /// Initial the container with this extension's functionality. 
+        /// </summary>
+        /// <param name="container">The container this extension to extend.</param>
         public void Initialize(IServiceContainer container)
         {
             container.Registering += OnRegistering;
         }
 
+        /// <summary>
+        /// Removes the extension's functions from the container. 
+        /// </summary>
+        /// <param name="container">The container this extension to extend.</param>
         public void Remove(IServiceContainer container)
         {
             container.Registering -= OnRegistering;

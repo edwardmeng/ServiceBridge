@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Wheatech.ServiceModel</id>
+    <version>1.0.0</version>
+    <authors>edwardmeng</authors>
+    <owners>edwardmeng</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>
+      The Wheatech.ServiceModel library contains shared classes for service registration and service resolution to provides an abstraction over IoC containers.
+    </description>
+    <copyright>Copyright 2016</copyright>
+    <dependencies>
+      <dependency id="Wheatech.Hosting" version="(,2.0)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="lib\**\*.dll" target="lib" />
+    <file src="lib\**\*.xml" target="lib" />
+  </files>
+</package>

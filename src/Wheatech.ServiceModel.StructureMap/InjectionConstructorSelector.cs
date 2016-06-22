@@ -6,7 +6,7 @@ using StructureMap.Pipeline;
 
 namespace Wheatech.ServiceModel.StructureMap
 {
-    public class InjectionConstructorSelector : IConstructorSelector
+    internal class InjectionConstructorSelector : IConstructorSelector
     {
         public ConstructorInfo Find(Type pluggedType, DependencyCollection dependencies, PluginGraph graph)
         {

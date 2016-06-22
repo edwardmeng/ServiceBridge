@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Wheatech.ServiceModel.StructureMap.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -46,11 +47,15 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="Wheatech.Hosting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dfa3bda2996d7b44, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Wheatech.Hosting.1.0.0-rc2\lib\net461\Wheatech.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DynamicInjectionBuilder.cs" />
+    <Compile Include="HostingEnvironmentExtensions.cs" />
     <Compile Include="InjectionConstructorSelector.cs" />
-    <Compile Include="InjectionMethodPolicy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StructureMapServiceContainer.cs" />
     <Compile Include="StructureMapServiceRegisterEventArgs.cs" />

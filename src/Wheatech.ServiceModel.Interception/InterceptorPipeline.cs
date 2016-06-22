@@ -8,6 +8,9 @@ namespace Wheatech.ServiceModel.Interception
     /// </summary>
     public class InterceptorPipeline
     {
+        /// <summary>
+        /// The empty interceptor pipeline.
+        /// </summary>
         public static readonly InterceptorPipeline Empty = new InterceptorPipeline();
 
         private readonly List<IInterceptor> _handlers;

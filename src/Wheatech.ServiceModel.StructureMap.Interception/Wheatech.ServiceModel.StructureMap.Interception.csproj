@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Wheatech.ServiceModel.StructureMap.Interception.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -54,6 +55,7 @@
   <ItemGroup>
     <Compile Include="DynamicProxyInterceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceContainerExtensions.cs" />
     <Compile Include="StructureMapServiceContainerExtension.cs" />
   </ItemGroup>
   <ItemGroup>

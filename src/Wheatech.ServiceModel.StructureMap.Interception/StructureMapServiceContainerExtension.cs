@@ -5,14 +5,25 @@ using Wheatech.ServiceModel.Interception;
 
 namespace Wheatech.ServiceModel.StructureMap.Interception
 {
+    /// <summary>
+    /// The service container extension to enable interception mechanism for the <see cref="StructureMapServiceContainer"/>.
+    /// </summary>
     public class StructureMapServiceContainerExtension : IServiceContainerExtension
     {
+        /// <summary>
+        /// Initial the container with this extension's functionality. 
+        /// </summary>
+        /// <param name="container">The container this extension to extend.</param>
         public void Initialize(IServiceContainer container)
         {
             container.Registering += OnRegistering;
             container.Register<PipelineManager>();
         }
 
+        /// <summary>
+        /// Removes the extension's functions from the container. 
+        /// </summary>
+        /// <param name="container">The container this extension to extend.</param>
         public void Remove(IServiceContainer container)
         {
             container.Registering -= OnRegistering;

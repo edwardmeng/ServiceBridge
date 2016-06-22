@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Wheatech.ServiceModel.Unity.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -55,8 +56,13 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Web" />
+    <Reference Include="Wheatech.Hosting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dfa3bda2996d7b44, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Wheatech.Hosting.1.0.0-rc2\lib\net461\Wheatech.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HostingEnvironmentExtensions.cs" />
     <Compile Include="PerRequestLifetimeManager.cs" />
     <Compile Include="UnityConstructorSelectorPolicy.cs" />
     <Compile Include="UnityMethodSelectorPolicy.cs" />

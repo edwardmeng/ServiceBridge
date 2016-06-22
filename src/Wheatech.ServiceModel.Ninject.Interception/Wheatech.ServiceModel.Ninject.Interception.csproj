@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Wheatech.ServiceModel.Ninject.Interception.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -54,6 +55,7 @@
     <Compile Include="NinjectServiceContainerExtension.cs" />
     <Compile Include="NinjectServiceInterceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceContainerExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\tools\wheatech.snk">

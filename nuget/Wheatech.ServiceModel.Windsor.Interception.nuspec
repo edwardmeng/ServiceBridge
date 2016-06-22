@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Wheatech.ServiceModel.Windsor.Interception</id>
+    <version>1.0.0</version>
+    <authors>edwardmeng</authors>
+    <owners>edwardmeng</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>
+      Wheatech.ServiceModel.Interception implementation for Castle Windsor.
+    </description>
+    <copyright>Copyright 2016</copyright>
+    <dependencies>
+      <dependency id="Wheatech.ServiceModel" version="(,2.0)" />
+      <dependency id="Wheatech.ServiceModel.Interception" version="(,2.0)" />
+      <dependency id="Wheatech.ServiceModel.Windsor" version="(,2.0)" />
+      <dependency id="Castle.Core" version="[3.3.0,)" />
+      <dependency id="Castle.Windsor" version="[4.0.0,)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="lib\**\*.dll" target="lib" />
+    <file src="lib\**\*.xml" target="lib" />
+  </files>
+</package>

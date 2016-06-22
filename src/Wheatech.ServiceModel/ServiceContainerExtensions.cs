@@ -230,5 +230,35 @@ namespace Wheatech.ServiceModel
         }
 
         #endregion
+
+        #region Extension
+
+        /// <summary>
+        /// Creates a new extension object and adds it to the container.
+        /// </summary>
+        /// <typeparam name="TExtension">Type of <see cref="IServiceContainerExtension"/> to add.</typeparam>
+        /// <param name="container">Container to add the extension to.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on (this in C#, Me in Visual Basic).</returns>
+        public static IServiceContainer AddNewExtension<TExtension>(this IServiceContainer container)
+            where TExtension : IServiceContainerExtension, new ()
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            return container.AddExtension(new TExtension());
+        }
+
+        /// <summary>
+        /// Resolve access to an extension object.
+        /// </summary>
+        /// <typeparam name="TExtension">Type of <see cref="IServiceContainerExtension"/> required.</typeparam>
+        /// <param name="container">Container to resolve extension.</param>
+        /// <returns>The requested extension, or null if not found.</returns>
+        public static TExtension GetExtension<TExtension>(this IServiceContainer container)
+            where TExtension : IServiceContainerExtension
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            return (TExtension)container.GetExtension(typeof(TExtension));
+        }
+
+        #endregion
     }
 }

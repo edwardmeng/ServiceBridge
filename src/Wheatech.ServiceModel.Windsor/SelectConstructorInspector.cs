@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using Castle.Core;
-using Castle.Core.Internal;
 using Castle.MicroKernel;
 using Castle.MicroKernel.ModelBuilder;
 
@@ -15,7 +14,7 @@ namespace Wheatech.ServiceModel.Windsor
     ///   according to a heuristic.
     /// </summary>
 	[Serializable]
-    internal class SelectConstructorInspector: IContributeComponentModelConstruction
+    internal class SelectConstructorInspector : IContributeComponentModelConstruction
     {
         public virtual void ProcessModel(IKernel kernel, ComponentModel model)
         {
@@ -39,7 +38,7 @@ namespace Wheatech.ServiceModel.Windsor
         protected virtual ConstructorCandidate CreateConstructorCandidate(ComponentModel model, ConstructorInfo constructor)
         {
             var parameters = constructor.GetParameters();
-            var dependencies = parameters.ConvertAll(BuildParameterDependency);
+            var dependencies = Array.ConvertAll(parameters, BuildParameterDependency);
             return new ConstructorCandidate(constructor, dependencies);
         }
 

@@ -7,11 +7,11 @@ using System.ServiceModel;
 using System.ServiceModel.Configuration;
 using Wheatech.Hosting;
 
-[assembly:AssemblyStartup(typeof(Wheatech.ServiceModel.Wcf.ServiceModelStartup))]
+[assembly: AssemblyStartup(typeof(Wheatech.ServiceModel.Wcf.ServiceModelStartup))]
 
 namespace Wheatech.ServiceModel.Wcf
 {
-    public class ServiceModelStartup
+    internal class ServiceModelStartup
     {
         public void Configure(IHostingEnvironment environment, IServiceContainer container)
         {
@@ -30,7 +30,7 @@ namespace Wheatech.ServiceModel.Wcf
                 types.AddRange(assemblyTypes);
             }
             ConfigureServices(container, (ServicesSection)ConfigurationManager.GetSection("system.serviceModel/services"), types.ToArray());
-            ConfigureClients(container, (ClientSection) ConfigurationManager.GetSection("system.serviceModel/client"), types.ToArray());
+            ConfigureClients(container, (ClientSection)ConfigurationManager.GetSection("system.serviceModel/client"), types.ToArray());
         }
 
         /// <summary>

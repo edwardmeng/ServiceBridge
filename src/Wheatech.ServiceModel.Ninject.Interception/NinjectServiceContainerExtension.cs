@@ -7,14 +7,25 @@ using Wheatech.ServiceModel.Interception;
 
 namespace Wheatech.ServiceModel.Ninject.Interception
 {
+    /// <summary>
+    /// The service container extension to enable interception mechanism for the <see cref="NinjectServiceContainer"/>.
+    /// </summary>
     public class NinjectServiceContainerExtension : IServiceContainerExtension
     {
+        /// <summary>
+        /// Initial the container with this extension's functionality. 
+        /// </summary>
+        /// <param name="container">The container this extension to extend.</param>
         public void Initialize(IServiceContainer container)
         {
             container.Register<PipelineManager>();
             container.Registering += OnRegistering;
         }
 
+        /// <summary>
+        /// Removes the extension's functions from the container. 
+        /// </summary>
+        /// <param name="container">The container this extension to extend.</param>
         public void Remove(IServiceContainer container)
         {
             container.Registering -= OnRegistering;
