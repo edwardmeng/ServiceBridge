@@ -102,7 +102,7 @@ namespace Wheatech.ServiceModel.StructureMap
                         instance.LifecycleIs<ThreadLocalStorageLifecycle>();
                         break;
                     case ServiceLifetime.PerRequest:
-                        //instance.LifecycleIs<>()
+                        instance.LifecycleIs<PerRequestLifecycle>();
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
 using Ninject;
 using Ninject.Infrastructure;
 using Ninject.Planning.Strategies;
@@ -111,7 +112,7 @@ namespace Wheatech.ServiceModel.Ninject
                     binding.InScope(StandardScopeCallbacks.Thread);
                     break;
                 case ServiceLifetime.PerRequest:
-                    binding.InScope(StandardScopeCallbacks.Thread);
+                    binding.InScope(ctx => HttpContext.Current);
                     break;
             }
         }

@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Castle.Core;
+using Castle.MicroKernel;
+using Castle.MicroKernel.Lifestyle;
 using Castle.MicroKernel.ModelBuilder.Inspectors;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
+using Castle.Windsor.Installer;
 
 namespace Wheatech.ServiceModel.Windsor
 {
@@ -14,6 +17,20 @@ namespace Wheatech.ServiceModel.Windsor
     /// </summary>
     public class WindsorServiceContainer : ServiceContainerBase
     {
+        private class WindsorKernel : DefaultKernel
+        {
+            public override ILifestyleManager CreateLifestyleManager(ComponentModel model, IComponentActivator activator)
+            {
+                if (model.LifestyleType == LifestyleType.PerWebRequest)
+                {
+                    var manager = new ScopedLifestyleManager(new PerRequestScopeAccessor());
+                    manager.Init(activator, this, model);
+                    return manager;
+                }
+                return base.CreateLifestyleManager(model, activator);
+            }
+        }
+
         private IWindsorContainer _container;
         private readonly ServiceLifetime _lifetime;
 
@@ -30,10 +47,10 @@ namespace Wheatech.ServiceModel.Windsor
         public WindsorServiceContainer(IWindsorContainer container = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         {
             _lifetime = lifetime;
-            _container = container ?? new WindsorContainer();
+            _container = container ?? new WindsorContainer(new WindsorKernel(), new DefaultComponentInstaller());
             var modelBuilder = _container.Kernel.ComponentModelBuilder;
             var oldInspector = modelBuilder.Contributors.OfType<ConstructorDependenciesModelInspector>().SingleOrDefault();
-            if (oldInspector!=null)
+            if (oldInspector != null)
             {
                 modelBuilder.RemoveContributor(oldInspector);
             }

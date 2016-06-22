@@ -7,13 +7,21 @@ namespace Wheatech.ServiceModel.Autofac
     {
         public ISharingLifetimeScope FindScope(ISharingLifetimeScope mostNestedVisibleScope)
         {
-            if (HttpContext.Current == null) return mostNestedVisibleScope;
-            var scope = (ISharingLifetimeScope) HttpContext.Current.Items[typeof(IComponentLifetime)];
-            if (scope == null)
+            if (HttpContext.Current == null) return null;
+            if (!HttpContext.Current.Items.Contains(typeof(IComponentLifetime)))
             {
-                HttpContext.Current.Items[typeof(IComponentLifetime)] = scope = (ISharingLifetimeScope)mostNestedVisibleScope.BeginLifetimeScope();
+                lock (HttpContext.Current.Items.SyncRoot)
+                {
+                    if (!HttpContext.Current.Items.Contains(typeof(IComponentLifetime)))
+                    {
+                        var scope = (ISharingLifetimeScope)mostNestedVisibleScope.BeginLifetimeScope();
+                        HttpContext.Current.Items[typeof(IComponentLifetime)] = scope;
+                        HttpContext.Current.DisposeOnPipelineCompleted(scope);
+                        return scope;
+                    }
+                }
             }
-            return scope;
+            return (ISharingLifetimeScope) HttpContext.Current.Items[typeof(IComponentLifetime)];
         }
     }
 }

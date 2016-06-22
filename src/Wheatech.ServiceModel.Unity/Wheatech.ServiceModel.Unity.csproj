@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="HostingEnvironmentExtensions.cs" />
+    <Compile Include="PerRequestInstanceContainer.cs" />
     <Compile Include="PerRequestLifetimeManager.cs" />
     <Compile Include="UnityConstructorSelectorPolicy.cs" />
     <Compile Include="UnityMethodSelectorPolicy.cs" />

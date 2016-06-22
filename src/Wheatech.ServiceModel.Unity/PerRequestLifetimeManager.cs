@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web;
 using Microsoft.Practices.Unity;
 
@@ -34,11 +33,7 @@ namespace Wheatech.ServiceModel.Unity
         /// stored for the current web request.</returns>
         public override object GetValue()
         {
-            var values = EnsureValues();
-            if (values == null) return null;
-            object result;
-            values.TryGetValue(_key, out result);
-            return result;
+            return EnsureValues()?.GetValue(_key);
         }
 
         /// <summary>
@@ -48,9 +43,7 @@ namespace Wheatech.ServiceModel.Unity
         /// <param name="newValue">The object being stored.</param>
         public override void SetValue(object newValue)
         {
-            var values = EnsureValues();
-            if (values == null) return;
-            values[_key] = newValue;
+            EnsureValues()?.SetValue(_key,newValue);
         }
 
         /// <summary>
@@ -62,16 +55,23 @@ namespace Wheatech.ServiceModel.Unity
             values?.Remove(_key);
         }
 
-        private static Dictionary<Guid, object> EnsureValues()
+        private static PerRequestInstanceContainer EnsureValues()
         {
             if (HttpContext.Current == null) return null;
-            var values = (Dictionary<Guid, object>) HttpContext.Current.Items[typeof(PerRequestLifetimeManager)];
-            // no need for locking, values is TLS
-            if (values == null)
+            if (!HttpContext.Current.Items.Contains(typeof(PerRequestLifetimeManager)))
             {
-                HttpContext.Current.Items[typeof(PerRequestLifetimeManager)] = values = new Dictionary<Guid, object>();
+                lock (HttpContext.Current.Items.SyncRoot)
+                {
+                    if (!HttpContext.Current.Items.Contains(typeof(PerRequestLifetimeManager)))
+                    {
+                        var values = new PerRequestInstanceContainer();
+                        HttpContext.Current.Items[typeof(PerRequestLifetimeManager)] = values;
+                        HttpContext.Current.DisposeOnPipelineCompleted(values);
+                        return values;
+                    }
+                }
             }
-            return values;
+            return (PerRequestInstanceContainer) HttpContext.Current.Items[typeof(PerRequestLifetimeManager)];
         }
     }
 }
