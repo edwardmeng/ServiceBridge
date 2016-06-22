@@ -24,7 +24,7 @@ namespace Wheatech.ServiceModel.Ninject
         ///     interface implementation.
         /// </param>
         /// <param name="lifetime">
-        ///     The <see cref="lifetime"/> to register type mapping with.
+        ///     The <see cref="ServiceLifetime"/> to register type mapping with.
         /// </param>
         public NinjectServiceContainer(IKernel kernel = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         {
