@@ -5,17 +5,18 @@ using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Configuration;
-using System.Web.Compilation;
+using Wheatech.Hosting;
+
+[assembly:AssemblyStartup(typeof(Wheatech.ServiceModel.Wcf.ServiceModelStartup))]
 
 namespace Wheatech.ServiceModel.Wcf
 {
     public class ServiceModelStartup
     {
-        public void Configure(IServiceContainer container)
+        public void Configure(IHostingEnvironment environment, IServiceContainer container)
         {
             var types = new List<TypeInfo>();
-            var referencedAssemblies = BuildManager.GetReferencedAssemblies();
-            foreach (Assembly assembly in referencedAssemblies)
+            foreach (Assembly assembly in environment.GetAssemblies())
             {
                 IEnumerable<TypeInfo> assemblyTypes;
                 try

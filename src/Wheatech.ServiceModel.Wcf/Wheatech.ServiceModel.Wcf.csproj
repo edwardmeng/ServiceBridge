@@ -43,6 +43,10 @@
     <Reference Include="System.ServiceModel.Activation" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web" />
+    <Reference Include="Wheatech.Hosting, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Wheatech.Hosting.1.0.0-beta\lib\net461\Wheatech.Hosting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\ClientBase.cs" />
@@ -63,6 +67,7 @@
     <None Include="..\..\tools\wheatech.snk">
       <Link>Properties\wheatech.snk</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
