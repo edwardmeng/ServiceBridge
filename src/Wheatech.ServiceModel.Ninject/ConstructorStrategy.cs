@@ -46,7 +46,10 @@ namespace Wheatech.ServiceModel.Ninject
             {
                 foreach (var constructor in constructors)
                 {
-                    plan.Add(new ConstructorDirective(constructor, InjectorFactory.Create(constructor)));
+                    plan.Add(new ConstructorDirective(constructor, InjectorFactory.Create(constructor))
+                    {
+                        HasInjectAttribute = constructor.IsDefined(Settings.InjectAttribute, false)
+                    });
                 }
             }
         }

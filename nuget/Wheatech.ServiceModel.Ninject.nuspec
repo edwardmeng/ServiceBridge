@@ -14,7 +14,7 @@
     <dependencies>
       <dependency id="Wheatech.Hosting" version="(,2.0)" />
       <dependency id="Wheatech.ServiceModel" version="(,2.0)" />
-      <dependency id="Ninject" version="[3.0.0,)" />
+      <dependency id="Ninject" version="[3.2.0,)" />
     </dependencies>
   </metadata>
   <files>

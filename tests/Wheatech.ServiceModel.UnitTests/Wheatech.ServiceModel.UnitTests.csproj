@@ -102,6 +102,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
     <Reference Include="System.Xml" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
       <HintPath>..\..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
@@ -193,6 +195,10 @@
     <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Unity\Wheatech.ServiceModel.Unity.csproj">
       <Project>{c0bf61e5-73f6-40c8-97e1-f257a60cab1a}</Project>
       <Name>Wheatech.ServiceModel.Unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Wcf\Wheatech.ServiceModel.Wcf.csproj">
+      <Project>{3191f441-18b9-496e-8867-db5f34511ba5}</Project>
+      <Name>Wheatech.ServiceModel.Wcf</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Windsor.Interception\Wheatech.ServiceModel.Windsor.Interception.csproj">
       <Project>{b233cd92-2d28-4304-be77-337f508e574b}</Project>
