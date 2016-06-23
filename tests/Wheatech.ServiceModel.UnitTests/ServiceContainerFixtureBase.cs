@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Wheatech.ServiceModel.UnitTests.Components;
 using Xunit;
 
 namespace Wheatech.ServiceModel.UnitTests
@@ -115,8 +116,10 @@ namespace Wheatech.ServiceModel.UnitTests
             }
         }
 
+        #region Injection
+
         [Fact]
-        public void CanInjectionConstructor()
+        public void RegistrationInjectConstructor()
         {
             var o = ServiceContainer.GetInstance<ObjectWithInjection>();
 
@@ -125,20 +128,61 @@ namespace Wheatech.ServiceModel.UnitTests
         }
 
         [Fact]
-        public void CanInjectionMethod()
+        public void RegistrationInjectMethod()
         {
             var o = ServiceContainer.GetInstance<ObjectWithInjection>();
             Assert.NotNull(o.InjectionFromMethod);
+            Assert.Null(o.NotInjection);
         }
 
         [Fact]
-        public void CanInjectionProperty()
+        public void RegistrationInjectProperty()
         {
             var o = ServiceContainer.GetInstance<ObjectWithInjection>();
 
             Assert.NotNull(o.InjectionFromProperty);
-            Assert.Null(o.NotInjectionFromProperty);
+            Assert.Null(o.NotInjection);
         }
+
+        [Fact]
+        public void InjectRegisteredInstanceMethod()
+        {
+            var o = new ObjectWithInjection();
+            ServiceContainer.InjectInstance(o);
+            Assert.NotNull(o.InjectionFromMethod);
+            Assert.Null(o.NotInjection);
+            Assert.Null(o.InjectionFromConstructor);
+        }
+
+        [Fact]
+        public void InjectRegisteredInstanceProperty()
+        {
+            var o = new ObjectWithInjection();
+            ServiceContainer.InjectInstance(o);
+            Assert.NotNull(o.InjectionFromProperty);
+            Assert.Null(o.NotInjection);
+            Assert.Null(o.InjectionFromConstructor);
+        }
+
+        [Fact]
+        public void InjectUnregisteredInstanceMethod()
+        {
+            var o = new UnregisteredInjectionObject();
+            ServiceContainer.InjectInstance(o);
+            Assert.NotNull(o.InjectionFromMethod);
+            Assert.Null(o.NotInjection);
+        }
+
+        [Fact]
+        public void InjectUnregisteredInstanceProperty()
+        {
+            var o = new UnregisteredInjectionObject();
+            ServiceContainer.InjectInstance(o);
+            Assert.NotNull(o.InjectionFromProperty);
+            Assert.Null(o.NotInjection);
+        }
+
+        #endregion
 
         #region Interception
 

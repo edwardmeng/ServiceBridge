@@ -8,13 +8,12 @@
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>
-      This library integrates Wheatech.ServiceModel with ASP.NET MVC 5 controllers.
+      This library integrates Wheatech.ServiceModel with ASP.NET web pages and user controls.
     </description>
     <copyright>Copyright 2016</copyright>
     <dependencies>
       <dependency id="Wheatech.Hosting" version="(,2.0)" />
       <dependency id="Wheatech.ServiceModel" version="(,2.0)" />
-      <dependency id="Microsoft.AspNet.Mvc" version="[5.0.0,6.0.0)" />
     </dependencies>
   </metadata>
   <files>

@@ -67,7 +67,7 @@ namespace Wheatech.ServiceModel.Windsor
                             method, GetParameterExpressions(containerParameter, method)));
                     }
                 }
-                var planDelegate = buildPlanExpressions.Count > 0 ? Expression.Lambda(Expression.Block(buildPlanExpressions), containerParameter, containerParameter).Compile() : null;
+                var planDelegate = buildPlanExpressions.Count > 0 ? Expression.Lambda(Expression.Block(buildPlanExpressions), containerParameter, instanceParameter).Compile() : null;
                 return (container, instance) =>
                 {
                     try

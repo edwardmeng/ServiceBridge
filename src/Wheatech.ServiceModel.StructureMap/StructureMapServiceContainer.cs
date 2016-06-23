@@ -85,7 +85,7 @@ namespace Wheatech.ServiceModel.StructureMap
             {
                 throw new ObjectDisposedException("container");
             }
-            _container.BuildUp(instance);
+            DynamicInjectionBuilder.GetOrCreateForInject(instance.GetType())(_container, instance);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Wheatech.ServiceModel.StructureMap
                         throw new ArgumentOutOfRangeException();
                 }
                 // Enable the method injection
-                instance.AddInterceptor(new ActivatorInterceptor<object>((context, x) => DynamicInjectionBuilder.GetOrCreate(implementationType, false, true)(context, x)));
+                instance.AddInterceptor(new ActivatorInterceptor<object>((context, x) => DynamicInjectionBuilder.GetOrCreateForRegister(implementationType)(context, x)));
                 // Enable the constructor injection
                 registry.Policies.ConstructorSelector<InjectionConstructorSelector>();
                 // Enable the property injection

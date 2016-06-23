@@ -30,7 +30,7 @@
         [Injection]
         public virtual ILogger InjectionFromProperty { get; set; }
 
-        public virtual ILogger NotInjectionFromProperty { get; set; }
+        public virtual ILogger NotInjection { get; set; }
 
         public virtual ILogger InjectionFromMethod { get; set; }
     }

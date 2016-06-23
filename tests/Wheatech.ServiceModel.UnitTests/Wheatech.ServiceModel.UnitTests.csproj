@@ -141,6 +141,7 @@
     <Compile Include="Components\ObjectWithInjection.cs" />
     <Compile Include="Components\SimpleLogger.cs" />
     <Compile Include="Components\TripleOutputInterceptor.cs" />
+    <Compile Include="Components\UnregisteredInjectionObject.cs" />
     <Compile Include="NinjectServiceContainerFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceContainerFixtureBase.cs" />
