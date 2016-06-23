@@ -15,6 +15,8 @@ namespace Wheatech.ServiceModel.Wcf
     {
         public void Configure(IHostingEnvironment environment, IServiceContainer container)
         {
+            // We have to register the services at the application configuration stage.
+            // Since there are some IoC implementations cannot register types after resolve instances.
             var types = new List<TypeInfo>();
             foreach (Assembly assembly in environment.GetAssemblies())
             {
