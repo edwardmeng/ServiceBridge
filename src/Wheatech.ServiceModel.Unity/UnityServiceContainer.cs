@@ -78,12 +78,20 @@ namespace Wheatech.ServiceModel.Unity
             {
                 throw new ObjectDisposedException("container");
             }
-            if (serviceType == null)
-            {
-                throw new ArgumentNullException(nameof(serviceType));
-            }
-
             return _container.Resolve(serviceType, serviceName);
+        }
+
+        /// <summary>
+        /// Run an existing object through the container and perform injection on it.
+        /// </summary>
+        /// <param name="instance">The existing instance to be injected.</param>
+        protected override void DoInjectInstance(object instance)
+        {
+            if (_container == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            _container.BuildUp(instance.GetType(), instance);
         }
 
         /// <summary>

@@ -82,6 +82,19 @@ namespace Wheatech.ServiceModel.Ninject
         }
 
         /// <summary>
+        /// Run an existing object through the container and perform injection on it.
+        /// </summary>
+        /// <param name="instance">The existing instance to be injected.</param>
+        protected override void DoInjectInstance(object instance)
+        {
+            if (_kernel == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            _kernel.Inject(instance);
+        }
+
+        /// <summary>
         /// Registers the type mapping.
         /// </summary>
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>

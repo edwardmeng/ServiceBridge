@@ -10,12 +10,12 @@ namespace Wheatech.ServiceModel
     public class RegistrationException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.RegistrationException" /> class.
+        /// Initializes a new instance of the <see cref="RegistrationException" /> class.
         /// </summary>
         public RegistrationException() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.RegistrationException" /> class with a specified error message.
+        /// Initializes a new instance of the <see cref="RegistrationException" /> class with a specified error message.
         /// </summary>
         /// <param name="message">
         /// The message that describes the error. 
@@ -23,7 +23,7 @@ namespace Wheatech.ServiceModel
         public RegistrationException(string message) : base(message) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.RegistrationException" /> class with a specified error message and a reference to the inner exception that is the cause of this exception.
+        /// Initializes a new instance of the <see cref="RegistrationException" /> class with a specified error message and a reference to the inner exception that is the cause of this exception.
         /// </summary>
         /// <param name="message">
         /// The error message that explains the reason for the exception. 
@@ -34,7 +34,7 @@ namespace Wheatech.ServiceModel
         public RegistrationException(string message, Exception innerException) : base(message, innerException) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.RegistrationException" /> class with serialized data.
+        /// Initializes a new instance of the <see cref="RegistrationException" /> class with serialized data.
         /// </summary>
         /// <param name="info">
         /// The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown. 

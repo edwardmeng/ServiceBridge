@@ -77,6 +77,19 @@ namespace Wheatech.ServiceModel.Autofac
         }
 
         /// <summary>
+        /// Run an existing object through the container and perform injection on it.
+        /// </summary>
+        /// <param name="instance">The existing instance to be injected.</param>
+        protected override void DoInjectInstance(object instance)
+        {
+            if (_builder == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            DynamicInjectionBuilder.Build(instance.GetType())(EnsureContainer(), instance);
+        }
+
+        /// <summary>
         /// Registers the type mapping.
         /// </summary>
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
@@ -92,7 +105,7 @@ namespace Wheatech.ServiceModel.Autofac
             var registration = serviceName == null
                 ? _builder.RegisterType(implementationType).As(serviceType)
                 : _builder.RegisterType(implementationType).Named(serviceName, serviceType);
-            var injectionExpression = new DynamicInjectionBuilder(implementationType).Build();
+            var injectionExpression = DynamicInjectionBuilder.Build(implementationType);
             registration
                 .FindConstructorsWith(type =>
                 {

@@ -79,6 +79,15 @@ namespace Wheatech.ServiceModel.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Injection error occurred while trying to inject an existing instance of type {0}. 的本地化字符串。
+        /// </summary>
+        internal static string InjectionExceptionMessage {
+            get {
+                return ResourceManager.GetString("InjectionExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 The provider for the service container must be set. 的本地化字符串。
         /// </summary>
         internal static string ProviderNotSetMessage {
@@ -88,7 +97,7 @@ namespace Wheatech.ServiceModel.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Activation error occurred while trying to register type mapping from {0} to {1}, key &quot;{2}&quot;. 的本地化字符串。
+        ///   查找类似 Registration error occurred while trying to register type mapping from {0} to {1}, key &quot;{2}&quot;. 的本地化字符串。
         /// </summary>
         internal static string RegistrationExceptionMessage {
             get {

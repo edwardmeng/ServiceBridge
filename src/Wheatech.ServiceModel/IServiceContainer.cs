@@ -11,6 +11,19 @@ namespace Wheatech.ServiceModel
     public interface IServiceContainer : IServiceProvider
     {
         /// <summary>
+        /// Run an existing object through the container and perform injection on it.
+        /// </summary>
+        /// <param name="instance">The existing instance to be injected.</param>
+        /// <remarks>
+        /// <para>
+        /// This method is useful when you don't control the construction of an
+        /// instance (ASP.NET pages or objects created via XAML, for instance)
+        /// but you still want properties and other injection performed.
+        /// </para>
+        /// </remarks>
+        void InjectInstance(object instance);
+
+        /// <summary>
         /// Get an instance of the given named <paramref name="serviceType"/>.
         /// </summary>
         /// <param name="serviceType">Type of object requested.</param>

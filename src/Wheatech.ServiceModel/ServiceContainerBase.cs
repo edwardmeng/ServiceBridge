@@ -129,9 +129,7 @@ namespace Wheatech.ServiceModel
             }
             catch (Exception ex)
             {
-                throw new ActivationException(
-                    FormatActivationExceptionMessage(ex, serviceType, serviceName),
-                    ex);
+                throw new ActivationException(FormatActivationExceptionMessage(ex, serviceType, serviceName), ex);
             }
         }
 
@@ -154,9 +152,7 @@ namespace Wheatech.ServiceModel
             }
             catch (Exception ex)
             {
-                throw new ActivationException(
-                    FormatActivateAllExceptionMessage(ex, serviceType),
-                    ex);
+                throw new ActivationException(FormatActivateAllExceptionMessage(ex, serviceType), ex);
             }
         }
 
@@ -179,6 +175,37 @@ namespace Wheatech.ServiceModel
         {
             return GetRegistrations(serviceType).Select(registration => DoGetInstance(registration.ServiceType, registration.ServiceName));
         }
+
+        #endregion
+
+        #region Inject
+
+        /// <summary>
+        /// Run an existing object through the container and perform injection on it.
+        /// </summary>
+        /// <param name="instance">The existing instance to be injected.</param>
+        public virtual void InjectInstance(object instance)
+        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException(nameof(instance));
+            }
+            try
+            {
+                DoInjectInstance(instance);
+            }
+            catch (Exception ex)
+            {
+                throw new ActivationException(FormatInjectionExceptionMessage(ex, instance), ex);
+            }
+        }
+
+        /// <summary>
+        /// When implemented by inheriting classes, this method will do the actual work of performing injection on an existing instance.
+        /// </summary>
+        /// <param name="instance">The existing instance to be injected.</param>
+        /// <returns>The requested service instance.</returns>
+        protected abstract void DoInjectInstance(object instance);
 
         #endregion
 
@@ -339,7 +366,7 @@ namespace Wheatech.ServiceModel
         /// <returns>The formatted exception message string.</returns>
         protected virtual string FormatActivationExceptionMessage(Exception actualException, Type serviceType, string serviceName)
         {
-            return string.Format(CultureInfo.CurrentUICulture, Resources.ActivationExceptionMessage, serviceType.Name, serviceName);
+            return string.Format(CultureInfo.CurrentUICulture, Resources.ActivationExceptionMessage, serviceType, serviceName);
         }
 
         /// <summary>
@@ -351,7 +378,7 @@ namespace Wheatech.ServiceModel
         /// <returns>The formatted exception message string.</returns>
         protected virtual string FormatActivateAllExceptionMessage(Exception actualException, Type serviceType)
         {
-            return string.Format(CultureInfo.CurrentUICulture, Resources.ActivateAllExceptionMessage, serviceType.Name);
+            return string.Format(CultureInfo.CurrentUICulture, Resources.ActivateAllExceptionMessage, serviceType);
         }
 
         /// <summary>
@@ -365,7 +392,19 @@ namespace Wheatech.ServiceModel
         /// <returns>The formatted exception message string.</returns>
         protected virtual string FormatRegistrationExceptionMessage(Exception actualException, Type serviceType, Type implementationType, string serviceName)
         {
-            return string.Format(CultureInfo.CurrentUICulture, Resources.RegistrationExceptionMessage, serviceType.Name, implementationType.Name, serviceName);
+            return string.Format(CultureInfo.CurrentUICulture, Resources.RegistrationExceptionMessage, serviceType, implementationType, serviceName);
+        }
+
+        /// <summary>
+        /// Format the exception message for use in an <see cref="InjectionException"/>
+        /// that occurs while injecting an existing instance.
+        /// </summary>
+        /// <param name="actualException">The actual exception thrown by the implementation.</param>
+        /// <param name="instance">The existing instance to be injected.</param>
+        /// <returns>The formatted exception message string.</returns>
+        protected virtual string FormatInjectionExceptionMessage(Exception actualException, object instance)
+        {
+            return string.Format(CultureInfo.CurrentUICulture, Resources.InjectionExceptionMessage, instance.GetType());
         }
 
         #endregion

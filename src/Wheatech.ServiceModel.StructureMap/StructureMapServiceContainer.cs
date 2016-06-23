@@ -52,6 +52,10 @@ namespace Wheatech.ServiceModel.StructureMap
         /// </returns>
         protected override object DoGetInstance(Type serviceType, string serviceName)
         {
+            if (_container == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
             return string.IsNullOrEmpty(serviceName) ? _container.GetInstance(serviceType) : _container.GetInstance(serviceType, serviceName);
         }
 
@@ -64,7 +68,24 @@ namespace Wheatech.ServiceModel.StructureMap
         /// </returns>
         protected override IEnumerable<object> DoGetAllInstances(Type serviceType)
         {
+            if (_container == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
             return _container.GetAllInstances(serviceType).Cast<object>();
+        }
+
+        /// <summary>
+        /// Run an existing object through the container and perform injection on it.
+        /// </summary>
+        /// <param name="instance">The existing instance to be injected.</param>
+        protected override void DoInjectInstance(object instance)
+        {
+            if (_container == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            _container.BuildUp(instance);
         }
 
         /// <summary>
@@ -76,6 +97,10 @@ namespace Wheatech.ServiceModel.StructureMap
         /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
         protected override void DoRegister(Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
         {
+            if (_container == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
             _container.Configure(configure =>
             {
                 var registry = new Registry();

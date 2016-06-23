@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -8,75 +9,73 @@ namespace Wheatech.ServiceModel.Autofac
 {
     internal class DynamicInjectionBuilder
     {
-        private readonly Type _typeToBuild;
-        private readonly ParameterExpression _containerParameter;
-        private readonly ParameterExpression _instanceParameter;
-        private readonly Queue<Expression> _buildPlanExpressions;
         private static readonly MethodInfo _resolveDependencyMethod;
+        private static readonly ConcurrentDictionary<Type, Action<IContainer, object>> _cache;
 
         static DynamicInjectionBuilder()
         {
+            _cache = new ConcurrentDictionary<Type, Action<IContainer, object>>();
             _resolveDependencyMethod = typeof(ResolutionExtensions).GetMethod("Resolve", BindingFlags.Static | BindingFlags.Public, null, new[] { typeof(IComponentContext), typeof(Type) }, null);
         }
 
-        public DynamicInjectionBuilder(Type typeToBuild)
-        {
-            _typeToBuild = typeToBuild;
-            _containerParameter = Expression.Parameter(typeof(IContainer), "container");
-            _instanceParameter = Expression.Parameter(typeToBuild, "instance");
-            _buildPlanExpressions = new Queue<Expression>();
-        }
-
-        private IEnumerable<Expression> GetParameterExpressions(MethodInfo method)
+        private static IEnumerable<Expression> GetParameterExpressions(ParameterExpression container, MethodInfo method)
         {
             foreach (var parameter in method.GetParameters())
             {
                 yield return Expression.Convert(
                         Expression.Call(_resolveDependencyMethod,
-                            Expression.Convert(_containerParameter, typeof(IComponentContext)),
+                            Expression.Convert(container, typeof(IComponentContext)),
                             Expression.Constant(parameter.ParameterType)), parameter.ParameterType);
             }
         }
 
-        private Expression GetPropertyExpression(PropertyInfo property)
+        private static Expression GetPropertyExpression(ParameterExpression container, ParameterExpression instance, PropertyInfo property)
         {
             var setMethod = property.SetMethod;
             if (setMethod == null) return null;
             var parameterValue = Expression.Convert(
-                Expression.Call(_resolveDependencyMethod, Expression.Convert(_containerParameter, typeof(IComponentContext)),
+                Expression.Call(_resolveDependencyMethod, Expression.Convert(container, typeof(IComponentContext)),
                     Expression.Constant(property.PropertyType)), property.PropertyType);
-            return Expression.Call(setMethod.DeclaringType != null ? (Expression)Expression.Convert(_instanceParameter, setMethod.DeclaringType) : _instanceParameter,
+            return Expression.Call(setMethod.DeclaringType != null ? (Expression)Expression.Convert(instance, setMethod.DeclaringType) : instance,
                 setMethod, parameterValue);
         }
 
-        public Action<IContainer, object> Build()
+        public static Action<IContainer, object> Build(Type typeToBuild)
         {
-            foreach (var property in InjectionAttribute.GetProperties(_typeToBuild))
+            return _cache.GetOrAdd(typeToBuild, type =>
             {
-                var expr = GetPropertyExpression(property);
-                if (expr != null)
+                var buildPlanExpressions = new Queue<Expression>();
+                var containerParameter = Expression.Parameter(typeof(IContainer), "container");
+                var instanceParameter = Expression.Parameter(type, "instance");
+                foreach (var property in InjectionAttribute.GetProperties(type))
                 {
-                    _buildPlanExpressions.Enqueue(expr);
+                    var expr = GetPropertyExpression(containerParameter, instanceParameter, property);
+                    if (expr != null)
+                    {
+                        buildPlanExpressions.Enqueue(expr);
+                    }
                 }
-            }
-            foreach (var method in InjectionAttribute.GetMethods(_typeToBuild))
-            {
-                _buildPlanExpressions.Enqueue(Expression.Call(
-                    method.DeclaringType != null ? (Expression)Expression.Convert(_instanceParameter, method.DeclaringType) : _instanceParameter,
-                    method, GetParameterExpressions(method)));
-            }
-            var planDelegate = _buildPlanExpressions.Count > 0 ? Expression.Lambda(Expression.Block(_buildPlanExpressions), _containerParameter, _instanceParameter).Compile() : null;
-            return (container, instance) =>
-            {
-                try
+                foreach (var method in InjectionAttribute.GetMethods(type))
                 {
-                    planDelegate?.DynamicInvoke(container, instance);
+                    buildPlanExpressions.Enqueue(Expression.Call(
+                        method.DeclaringType != null ? (Expression) Expression.Convert(instanceParameter, method.DeclaringType) : instanceParameter,
+                        method, GetParameterExpressions(containerParameter, method)));
                 }
-                catch (TargetInvocationException e)
+                var planDelegate = buildPlanExpressions.Count > 0
+                    ? Expression.Lambda(Expression.Block(buildPlanExpressions), containerParameter, instanceParameter).Compile()
+                    : null;
+                return (container, instance) =>
                 {
-                    throw e.InnerException;
-                }
-            };
+                    try
+                    {
+                        planDelegate?.DynamicInvoke(container, instance);
+                    }
+                    catch (TargetInvocationException e)
+                    {
+                        throw e.InnerException;
+                    }
+                };
+            });
         }
     }
 }
