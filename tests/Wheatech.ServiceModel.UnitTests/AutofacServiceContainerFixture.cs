@@ -9,5 +9,7 @@ namespace Wheatech.ServiceModel.UnitTests
         {
             return new AutofacServiceContainer().AddExtension(new AutofacServiceContainerExtension());
         }
+
+        protected override string WebName => "autofac";
     }
 }

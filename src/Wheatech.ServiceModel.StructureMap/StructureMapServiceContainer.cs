@@ -13,7 +13,6 @@ namespace Wheatech.ServiceModel.StructureMap
     public class StructureMapServiceContainer : ServiceContainerBase
     {
         private IContainer _container;
-        private readonly ServiceLifetime _lifetime;
 
         /// <summary>
         ///     Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -38,13 +37,9 @@ namespace Wheatech.ServiceModel.StructureMap
         ///     The <see cref="IContainer" /> to wrap with the <see cref="IServiceContainer" />
         ///     interface implementation.
         /// </param>
-        /// <param name="lifetime">
-        ///     The <see cref="ServiceLifetime"/> to register type mapping with.
-        /// </param>
-        public StructureMapServiceContainer(IContainer container = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+        public StructureMapServiceContainer(IContainer container = null)
         {
             _container = container ?? new Container();
-            _lifetime = lifetime;
         }
 
         /// <summary>
@@ -78,7 +73,8 @@ namespace Wheatech.ServiceModel.StructureMap
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        protected override void DoRegister(Type serviceType, Type implementationType, string serviceName)
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        protected override void DoRegister(Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
         {
             _container.Configure(configure =>
             {
@@ -88,9 +84,8 @@ namespace Wheatech.ServiceModel.StructureMap
                 {
                     instance.Named(serviceName);
                 }
-                var args = new StructureMapServiceRegisterEventArgs(serviceType, implementationType, serviceName, instance) {Lifetime = _lifetime};
-                OnRegistering(args);
-                switch (args.Lifetime)
+                OnRegistering(new StructureMapServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, instance));
+                switch (lifetime)
                 {
                     case ServiceLifetime.Singleton:
                         instance.Singleton();

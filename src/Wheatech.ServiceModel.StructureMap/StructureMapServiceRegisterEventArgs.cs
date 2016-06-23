@@ -8,8 +8,8 @@ namespace Wheatech.ServiceModel.StructureMap
     /// </summary>
     public class StructureMapServiceRegisterEventArgs : ServiceRegisterEventArgs
     {
-        internal StructureMapServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName, ConfiguredInstance configuration) 
-            : base(serviceType, implementType, serviceName)
+        internal StructureMapServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName, ServiceLifetime lifetime, ConfiguredInstance configuration) 
+            : base(serviceType, implementType, serviceName, lifetime)
         {
             Configuration = configuration;
         }

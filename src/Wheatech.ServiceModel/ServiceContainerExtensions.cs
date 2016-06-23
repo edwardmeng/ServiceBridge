@@ -48,6 +48,20 @@ namespace Wheatech.ServiceModel
         #region Register
 
         /// <summary>
+        /// Registers a type mapping with the container. 
+        /// </summary>
+        /// <param name="container">Container to register with.</param>
+        /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        public static IServiceContainer Register(this IServiceContainer container, Type serviceType, string serviceName = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            return container.Register(serviceType, serviceType, serviceName, lifetime);
+        }
+
+        /// <summary>
         /// Register a type mapping with the container. 
         /// </summary>
         /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
@@ -64,6 +78,39 @@ namespace Wheatech.ServiceModel
         }
 
         /// <summary>
+        /// Register a type mapping with the container. 
+        /// </summary>
+        /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
+        /// <typeparam name="TImplementation"><see cref="Type"/> that will actually be returned.</typeparam>
+        /// <param name="container">Container to register with.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        /// <exception cref="RegistrationException">If there are errors registering the type mapping.</exception>
+        public static IServiceContainer Register<TService, TImplementation>(this IServiceContainer container, ServiceLifetime lifetime)
+            where TImplementation : TService
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            return container.Register(typeof(TService), typeof(TImplementation), null, lifetime);
+        }
+
+        /// <summary>
+        /// Register a type mapping with the container. 
+        /// </summary>
+        /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
+        /// <typeparam name="TImplementation"><see cref="Type"/> that will actually be returned.</typeparam>
+        /// <param name="container">Container to register with.</param>
+        /// <param name="serviceName">Name of this mapping.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        /// <exception cref="RegistrationException">If there are errors registering the type mapping.</exception>
+        public static IServiceContainer Register<TService, TImplementation>(this IServiceContainer container, string serviceName, ServiceLifetime lifetime)
+            where TImplementation : TService
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            return container.Register(typeof(TService), typeof(TImplementation), serviceName, lifetime);
+        }
+
+        /// <summary>
         /// Register a given type with the container. 
         /// </summary>
         /// <typeparam name="T">The type to be registered.</typeparam>
@@ -74,7 +121,36 @@ namespace Wheatech.ServiceModel
         public static IServiceContainer Register<T>(this IServiceContainer container, string serviceName = null)
         {
             if (container == null) throw new ArgumentNullException(nameof(container));
-            return container.Register(typeof(T), typeof(T), serviceName);
+            return container.Register(typeof(T), serviceName);
+        }
+
+        /// <summary>
+        /// Register a given type with the container. 
+        /// </summary>
+        /// <typeparam name="T">The type to be registered.</typeparam>
+        /// <param name="container">Container to register with.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        /// <exception cref="RegistrationException">If there are errors registering the type mapping.</exception>
+        public static IServiceContainer Register<T>(this IServiceContainer container, ServiceLifetime lifetime)
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            return container.Register(typeof(T), null, lifetime);
+        }
+
+        /// <summary>
+        /// Register a given type with the container. 
+        /// </summary>
+        /// <typeparam name="T">The type to be registered.</typeparam>
+        /// <param name="container">Container to register with.</param>
+        /// <param name="serviceName">Name of this registration.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        /// <exception cref="RegistrationException">If there are errors registering the type mapping.</exception>
+        public static IServiceContainer Register<T>(this IServiceContainer container, string serviceName, ServiceLifetime lifetime)
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            return container.Register(typeof(T), serviceName, lifetime);
         }
 
         /// <summary>
@@ -150,7 +226,7 @@ namespace Wheatech.ServiceModel
                         var matchingType = implementedTypes.FirstOrDefault(i => string.Equals(i.Name, matchingInterfaceName, StringComparison.Ordinal));
                         return matchingType != null ? new[] { matchingType } : implementedTypes;
                     }
-                    return new []{ type };
+                    return new[] { type };
                 };
             }
             if (getName == null)
@@ -240,7 +316,7 @@ namespace Wheatech.ServiceModel
         /// <param name="container">Container to add the extension to.</param>
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on (this in C#, Me in Visual Basic).</returns>
         public static IServiceContainer AddNewExtension<TExtension>(this IServiceContainer container)
-            where TExtension : IServiceContainerExtension, new ()
+            where TExtension : IServiceContainerExtension, new()
         {
             if (container == null) throw new ArgumentNullException(nameof(container));
             return container.AddExtension(new TExtension());

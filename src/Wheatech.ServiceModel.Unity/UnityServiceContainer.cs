@@ -9,7 +9,6 @@ namespace Wheatech.ServiceModel.Unity
     public class UnityServiceContainer : ServiceContainerBase
     {
         private IUnityContainer _container;
-        private readonly ServiceLifetime _lifetime;
         private InjectionMember[] _injectionMembers;
 
         /// <summary>
@@ -23,10 +22,9 @@ namespace Wheatech.ServiceModel.Unity
         ///     The <see cref="ServiceLifetime"/> to register type mapping with.
         /// </param>
         /// <param name="injectionMembers">The <see cref="InjectionMember"/>s to register type mapping with.</param>
-        public UnityServiceContainer(IUnityContainer container = null, ServiceLifetime lifetime = ServiceLifetime.Singleton, InjectionMember[] injectionMembers = null)
+        public UnityServiceContainer(IUnityContainer container = null, InjectionMember[] injectionMembers = null)
         {
             _container = container ?? new UnityContainer();
-            _lifetime = lifetime;
             _injectionMembers = injectionMembers ?? new InjectionMember[0];
             _container
                 .AddNewExtension<UnityServiceContainerExtension>()
@@ -97,20 +95,18 @@ namespace Wheatech.ServiceModel.Unity
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        protected override void DoRegister(Type serviceType, Type implementationType, string serviceName)
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        protected override void DoRegister(Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
         {
             if (_container == null)
             {
                 throw new ObjectDisposedException("container");
             }
-            var args = new UnityServiceRegisterEventArgs(serviceType, implementationType, serviceName)
-            {
-                Lifetime = _lifetime,
-            };
+            var args = new UnityServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime);
             args.InjectionMembers.AddRange(_injectionMembers);
             OnRegistering(args);
             LifetimeManager lifetimeManager;
-            switch (args.Lifetime)
+            switch (lifetime)
             {
                 case ServiceLifetime.Singleton:
                     lifetimeManager = new ContainerControlledLifetimeManager();

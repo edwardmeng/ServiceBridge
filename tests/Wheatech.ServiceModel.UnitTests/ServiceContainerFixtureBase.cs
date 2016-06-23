@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Threading;
+using System.Threading.Tasks;
 using Wheatech.ServiceModel.UnitTests.Components;
 using Xunit;
 
@@ -174,12 +177,12 @@ namespace Wheatech.ServiceModel.UnitTests
 
         #region Lifetime
 
+        protected abstract string WebName { get; }
+
         [Fact]
         public void SingletonInThreads()
         {
-            ServiceContainer.Current.Registering += SingletonRegistering;
-
-            ServiceContainer.Register<LifetimeObject>();
+            ServiceContainer.Register<LifetimeObject>(ServiceLifetime.Singleton);
             LifetimeObject result1 = null;
             LifetimeObject result2 = null;
             Thread thread1 = new Thread(delegate ()
@@ -199,34 +202,22 @@ namespace Wheatech.ServiceModel.UnitTests
 
             Assert.NotNull(result1);
             Assert.Same(result1, result2);
-
-            ServiceContainer.Current.Registering -= SingletonRegistering;
         }
 
         [Fact]
         public void SingletonInstances()
         {
-            ServiceContainer.Current.Registering += SingletonRegistering;
-            ServiceContainer.Register<LifetimeObject>();
+            ServiceContainer.Register<LifetimeObject>(ServiceLifetime.Singleton);
             LifetimeObject result1 = ServiceContainer.GetInstance<LifetimeObject>();
             LifetimeObject result2 = ServiceContainer.GetInstance<LifetimeObject>();
             Assert.NotNull(result1);
             Assert.Same(result1, result2);
-
-            ServiceContainer.Current.Registering -= SingletonRegistering;
-        }
-
-        private void SingletonRegistering(object sender, ServiceRegisterEventArgs e)
-        {
-            e.Lifetime = ServiceLifetime.Singleton;
         }
 
         [Fact]
         public void PerThreadInstances()
         {
-            ServiceContainer.Current.Registering += PerThreadRegistering;
-
-            ServiceContainer.Register<LifetimeObject>();
+            ServiceContainer.Register<LifetimeObject>(ServiceLifetime.PerThread);
             LifetimeObject result1 = null;
             LifetimeObject result2 = null;
             LifetimeObject result3 = null;
@@ -251,20 +242,32 @@ namespace Wheatech.ServiceModel.UnitTests
             Assert.NotNull(result3);
             Assert.NotSame(result1, result2);
             Assert.Same(result3, result2);
-
-            ServiceContainer.Current.Registering -= PerThreadRegistering;
         }
 
-        private void PerThreadRegistering(object sender, ServiceRegisterEventArgs e)
+        [Fact]
+        public async Task PerRequestInstances()
         {
-            e.Lifetime = ServiceLifetime.PerThread;
+            Assert.Equal("Success", await ProcessWebRequest($"http://localhost/LifetimeHandler.ashx?action=initialize&container={WebName}"));
+            Assert.Equal("Custom", await ProcessWebRequest("http://localhost/LifetimeHandler.ashx?action=one&value=Custom"));
+            Assert.Equal("Default", await ProcessWebRequest("http://localhost/LifetimeHandler.ashx"));
+        }
+
+        private async Task<string> ProcessWebRequest(string url)
+        {
+            var request = WebRequest.Create(url);
+            var response = await request.GetResponseAsync();
+            var stream = response.GetResponseStream();
+            if (stream == null) return null;
+            using (var reader = new StreamReader(stream))
+            {
+                return await reader.ReadToEndAsync();
+            }
         }
 
         [Fact]
         public void TransientInstances()
         {
-            ServiceContainer.Current.Registering += TransientRegistering;
-            ServiceContainer.Register<LifetimeObject>();
+            ServiceContainer.Register<LifetimeObject>(ServiceLifetime.Transient);
             LifetimeObject result1 = null;
             LifetimeObject result2 = null;
             LifetimeObject result3 = null;
@@ -289,12 +292,6 @@ namespace Wheatech.ServiceModel.UnitTests
             Assert.NotNull(result3);
             Assert.NotSame(result1, result2);
             Assert.NotSame(result3, result2);
-            ServiceContainer.Current.Registering -= TransientRegistering;
-        }
-
-        private void TransientRegistering(object sender, ServiceRegisterEventArgs e)
-        {
-            e.Lifetime = ServiceLifetime.Transient;
         }
 
         #endregion

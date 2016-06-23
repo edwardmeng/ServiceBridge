@@ -8,7 +8,8 @@ namespace Wheatech.ServiceModel.Ninject
     /// </summary>
     public class NinjectServiceRegisterEventArgs : ServiceRegisterEventArgs
     {
-        internal NinjectServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName, IBindingSyntax binding) : base(serviceType, implementType, serviceName)
+        internal NinjectServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName, ServiceLifetime lifetime, IBindingSyntax binding) : 
+            base(serviceType, implementType, serviceName, lifetime)
         {
             Binding = binding;
         }

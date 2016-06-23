@@ -8,8 +8,8 @@ namespace Wheatech.ServiceModel.Windsor
     /// </summary>
     public class WindsorServiceRegisterEventArgs : ServiceRegisterEventArgs
     {
-        internal WindsorServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName, ComponentRegistration<object> registration)
-            : base(serviceType, implementType, serviceName)
+        internal WindsorServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName, ServiceLifetime lifetime, ComponentRegistration<object> registration)
+            : base(serviceType, implementType, serviceName, lifetime)
         {
             Registration = registration;
         }

@@ -229,8 +229,9 @@ namespace Wheatech.ServiceModel
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        /// <param name="lifetime">The lifetime to the resolved instances.</param>
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        public IServiceContainer Register(Type serviceType, Type implementationType, string serviceName = null)
+        public IServiceContainer Register(Type serviceType, Type implementationType, string serviceName = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         {
             if (_registrations == null)
             {
@@ -242,7 +243,7 @@ namespace Wheatech.ServiceModel
             }
             try
             {
-                DoRegister(serviceType, implementationType, serviceName);
+                DoRegister(serviceType, implementationType, serviceName, lifetime);
                 _registrations
                     .GetOrAdd(serviceType, key => new ConcurrentDictionary<ServiceName, ServiceRegistration>())
                     .GetOrAdd(new ServiceName(serviceName), name => new ServiceRegistration(serviceType, implementationType, serviceName));
@@ -261,7 +262,8 @@ namespace Wheatech.ServiceModel
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        protected abstract void DoRegister(Type serviceType, Type implementationType, string serviceName);
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        protected abstract void DoRegister(Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime);
 
         /// <summary>
         /// This event is raised when the <see cref="IServiceContainer.Register"/> method is called. 

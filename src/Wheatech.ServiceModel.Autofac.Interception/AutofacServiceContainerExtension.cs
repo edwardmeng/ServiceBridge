@@ -20,7 +20,7 @@ namespace Wheatech.ServiceModel.Autofac.Interception
         public void Initialize(IServiceContainer container)
         {
             container.Registering += OnRegistering;
-            container.Register<PipelineManager>();
+            container.Register<PipelineManager>(ServiceLifetime.Singleton);
         }
 
         /// <summary>
@@ -34,11 +34,7 @@ namespace Wheatech.ServiceModel.Autofac.Interception
 
         private void OnRegistering(object sender, ServiceRegisterEventArgs e)
         {
-            if (e.ServiceType == typeof(PipelineManager))
-            {
-                ((AutofacServiceRegisterEventArgs)e).Lifetime = ServiceLifetime.Singleton;
-            }
-            else
+            if (e.ServiceType != typeof(PipelineManager))
             {
                 ((AutofacServiceRegisterEventArgs)e).Registration.EnableClassInterceptors(new ProxyGenerationOptions
                 {

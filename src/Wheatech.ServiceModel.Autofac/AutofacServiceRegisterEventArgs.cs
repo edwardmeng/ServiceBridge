@@ -8,9 +8,9 @@ namespace Wheatech.ServiceModel.Autofac
     /// </summary>
     public class AutofacServiceRegisterEventArgs : ServiceRegisterEventArgs
     {
-        internal AutofacServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName,
+        internal AutofacServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName, ServiceLifetime lifetime,
             IRegistrationBuilder<object, ConcreteReflectionActivatorData, SingleRegistrationStyle> registration)
-            : base(serviceType, implementType, serviceName)
+            : base(serviceType, implementType, serviceName, lifetime)
         {
             Registration = registration;
         }

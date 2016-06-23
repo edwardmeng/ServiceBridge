@@ -17,7 +17,7 @@ namespace Wheatech.ServiceModel.StructureMap.Interception
         public void Initialize(IServiceContainer container)
         {
             container.Registering += OnRegistering;
-            container.Register<PipelineManager>();
+            container.Register<PipelineManager>(ServiceLifetime.Singleton);
         }
 
         /// <summary>
@@ -31,11 +31,7 @@ namespace Wheatech.ServiceModel.StructureMap.Interception
 
         private void OnRegistering(object sender, ServiceRegisterEventArgs e)
         {
-            if (e.ServiceType == typeof(PipelineManager))
-            {
-                e.Lifetime = ServiceLifetime.Singleton;
-            }
-            else if (ShouldIntercept(e.ImplementType))
+            if (e.ServiceType != typeof(PipelineManager)&& ShouldIntercept(e.ImplementType))
             {
                 ((StructureMapServiceRegisterEventArgs)e).Configuration.AddInterceptor(new DynamicProxyInterceptor(e.ServiceType, e.ImplementType));
             }

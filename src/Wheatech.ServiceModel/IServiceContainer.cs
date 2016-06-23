@@ -34,8 +34,9 @@ namespace Wheatech.ServiceModel
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        IServiceContainer Register(Type serviceType, Type implementationType, string serviceName = null);
+        IServiceContainer Register(Type serviceType, Type implementationType, string serviceName = null, ServiceLifetime lifetime = ServiceLifetime.Singleton);
 
         /// <summary>
         /// Check if a particular type/name pair has been registered with the container. 

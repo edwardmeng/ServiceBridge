@@ -14,7 +14,6 @@ namespace Wheatech.ServiceModel.Ninject
     public class NinjectServiceContainer : ServiceContainerBase
     {
         private IKernel _kernel;
-        private readonly ServiceLifetime _lifetime;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="NinjectServiceContainer" /> class for a container.
@@ -23,10 +22,7 @@ namespace Wheatech.ServiceModel.Ninject
         ///     The <see cref="IKernel" /> to wrap with the <see cref="IServiceContainer" />
         ///     interface implementation.
         /// </param>
-        /// <param name="lifetime">
-        ///     The <see cref="ServiceLifetime"/> to register type mapping with.
-        /// </param>
-        public NinjectServiceContainer(IKernel kernel = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+        public NinjectServiceContainer(IKernel kernel = null)
         {
             _kernel = kernel ?? new StandardKernel(new NinjectSettings { InjectAttribute = typeof(InjectionAttribute) });
             _kernel.Components.RemoveAll<IPlanningStrategy>();
@@ -34,7 +30,6 @@ namespace Wheatech.ServiceModel.Ninject
             _kernel.Components.Add<IPlanningStrategy, PropertyStrategy>();
             _kernel.Components.Add<IPlanningStrategy, MethodStrategy>();
             _kernel.Bind<IServiceContainer>().ToConstant(this);
-            _lifetime = lifetime;
         }
 
         /// <summary>
@@ -92,15 +87,15 @@ namespace Wheatech.ServiceModel.Ninject
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        protected override void DoRegister(Type serviceType, Type implementationType, string serviceName)
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        protected override void DoRegister(Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
         {
             if (_kernel == null) throw new ObjectDisposedException("container");
             var binding = _kernel.Bind(serviceType).To(implementationType);
             IBindingSyntax syntax = binding;
             if (serviceName != null) syntax = binding.Named(serviceName);
-            var args = new NinjectServiceRegisterEventArgs(serviceType, implementationType, serviceName, syntax) { Lifetime = _lifetime };
-            OnRegistering(args);
-            switch (args.Lifetime)
+            OnRegistering(new NinjectServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, syntax));
+            switch (lifetime)
             {
                 case ServiceLifetime.Transient:
                     binding.InScope(StandardScopeCallbacks.Transient);

@@ -32,7 +32,6 @@ namespace Wheatech.ServiceModel.Windsor
         }
 
         private IWindsorContainer _container;
-        private readonly ServiceLifetime _lifetime;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WindsorServiceContainer" /> class for a container.
@@ -41,12 +40,8 @@ namespace Wheatech.ServiceModel.Windsor
         ///     The <see cref="IWindsorContainer" /> to wrap with the <see cref="IServiceContainer" />
         ///     interface implementation.
         /// </param>
-        /// <param name="lifetime">
-        ///     The <see cref="ServiceLifetime"/> to register type mapping with.
-        /// </param>
-        public WindsorServiceContainer(IWindsorContainer container = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+        public WindsorServiceContainer(IWindsorContainer container = null)
         {
-            _lifetime = lifetime;
             _container = container ?? new WindsorContainer(new WindsorKernel(), new DefaultComponentInstaller());
             var modelBuilder = _container.Kernel.ComponentModelBuilder;
             var oldInspector = modelBuilder.Contributors.OfType<ConstructorDependenciesModelInspector>().SingleOrDefault();
@@ -121,7 +116,8 @@ namespace Wheatech.ServiceModel.Windsor
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        protected override void DoRegister(Type serviceType, Type implementationType, string serviceName)
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        protected override void DoRegister(Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
         {
             if (_container == null)
             {
@@ -134,21 +130,20 @@ namespace Wheatech.ServiceModel.Windsor
                 .AddDescriptor(new InjectionComponentDescriptor(implementationType))
                 // Enable property injection
                 .PropertiesIgnore(property => !property.CanWrite || (property.SetMethod ?? property.GetMethod).IsStatic || !property.IsDefined(typeof(InjectionAttribute)));
-            var eventArgs = new WindsorServiceRegisterEventArgs(serviceType, implementationType, serviceName, registration) { Lifetime = _lifetime };
-            OnRegistering(eventArgs);
-            switch (eventArgs.Lifetime)
+            OnRegistering(new WindsorServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, registration));
+            switch (lifetime)
             {
                 case ServiceLifetime.Singleton:
-                    registration = eventArgs.Registration.LifestyleSingleton();
+                    registration.LifestyleSingleton();
                     break;
                 case ServiceLifetime.Transient:
-                    registration = eventArgs.Registration.LifestyleTransient();
+                    registration.LifestyleTransient();
                     break;
                 case ServiceLifetime.PerThread:
-                    registration = eventArgs.Registration.LifestylePerThread();
+                    registration.LifestylePerThread();
                     break;
                 case ServiceLifetime.PerRequest:
-                    registration = eventArgs.Registration.LifestylePerWebRequest();
+                    registration.LifestylePerWebRequest();
                     break;
             }
             _container.Register(registration);

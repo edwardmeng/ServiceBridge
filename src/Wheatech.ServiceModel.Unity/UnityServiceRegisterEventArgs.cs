@@ -9,7 +9,8 @@ namespace Wheatech.ServiceModel.Unity
     /// </summary>
     public class UnityServiceRegisterEventArgs : ServiceRegisterEventArgs
     {
-        internal UnityServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName) : base(serviceType, implementType, serviceName)
+        internal UnityServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName, ServiceLifetime lifetime) 
+            : base(serviceType, implementType, serviceName, lifetime)
         {
         }
 

@@ -13,11 +13,13 @@ namespace Wheatech.ServiceModel
         /// <param name="serviceType">Type to map from.</param>
         /// <param name="implementType">Type to map to.</param>
         /// <param name="serviceName">Name for the registration.</param>
-        public ServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName)
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        public ServiceRegisterEventArgs(Type serviceType, Type implementType, string serviceName, ServiceLifetime lifetime)
         {
             ServiceType = serviceType;
             ImplementType = implementType;
             ServiceName = serviceName;
+            Lifetime = lifetime;
         }
 
         /// <summary>
@@ -36,8 +38,8 @@ namespace Wheatech.ServiceModel
         public Type ImplementType { get; }
 
         /// <summary>
-        /// Gets or sets the life time for the resolved instances.
+        /// Gets the life time for the resolved instances.
         /// </summary>
-        public ServiceLifetime Lifetime { get; set; }
+        public ServiceLifetime Lifetime { get; }
     }
 }

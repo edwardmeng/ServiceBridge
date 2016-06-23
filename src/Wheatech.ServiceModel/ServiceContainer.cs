@@ -11,8 +11,14 @@ namespace Wheatech.ServiceModel
     /// </summary>
     public static class ServiceContainer
     {
+        #region Fields
+
         private static Func<IServiceContainer> _currentProvider;
         private static IServiceContainer _container;
+
+        #endregion
+
+        #region Ambient
 
         /// <summary>
         /// The current ambient container.
@@ -41,6 +47,10 @@ namespace Wheatech.ServiceModel
         /// Returns a value indicates whether the provider for the service container has been specified.
         /// </summary>
         public static bool HasProvider => _currentProvider != null;
+
+        #endregion
+
+        #region GetInstance
 
         /// <summary>
         /// Get an instance of the given named <paramref name="serviceType"/>.
@@ -88,16 +98,62 @@ namespace Wheatech.ServiceModel
             return Current.GetAllInstances<TService>();
         }
 
+        #endregion
+
+        #region Register
+
         /// <summary>
         /// Registers a type mapping. 
         /// </summary>
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        public static IServiceContainer Register(Type serviceType, Type implementationType, string serviceName = null)
+        public static IServiceContainer Register(Type serviceType, Type implementationType, string serviceName = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
         {
-            return Current.Register(serviceType, implementationType, serviceName);
+            return Current.Register(serviceType, implementationType, serviceName, lifetime);
+        }
+
+        /// <summary>
+        /// Registers a type mapping. 
+        /// </summary>
+        /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        public static IServiceContainer Register(Type serviceType, string serviceName = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+        {
+            return Current.Register(serviceType, serviceType, serviceName, lifetime);
+        }
+
+        /// <summary>
+        /// Register a type mapping. 
+        /// </summary>
+        /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
+        /// <typeparam name="TImplementation"><see cref="Type"/> that will actually be returned.</typeparam>
+        /// <param name="serviceName">Name of this mapping.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        /// <exception cref="RegistrationException">If there are errors registering the type mapping.</exception>
+        public static IServiceContainer Register<TService, TImplementation>(string serviceName, ServiceLifetime lifetime)
+            where TImplementation : TService
+        {
+            return Current.Register<TService, TImplementation>(serviceName, lifetime);
+        }
+
+        /// <summary>
+        /// Register a type mapping. 
+        /// </summary>
+        /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
+        /// <typeparam name="TImplementation"><see cref="Type"/> that will actually be returned.</typeparam>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        /// <exception cref="RegistrationException">If there are errors registering the type mapping.</exception>
+        public static IServiceContainer Register<TService, TImplementation>(ServiceLifetime lifetime)
+            where TImplementation : TService
+        {
+            return Current.Register<TService, TImplementation>(lifetime);
         }
 
         /// <summary>
@@ -119,12 +175,41 @@ namespace Wheatech.ServiceModel
         /// </summary>
         /// <typeparam name="T">The type to be registered.</typeparam>
         /// <param name="serviceName">Name of this registration.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        /// <exception cref="RegistrationException">If there are errors registering the type mapping.</exception>
+        public static IServiceContainer Register<T>(string serviceName, ServiceLifetime lifetime)
+        {
+            return Current.Register<T>(serviceName, lifetime);
+        }
+
+        /// <summary>
+        /// Register a given type. 
+        /// </summary>
+        /// <typeparam name="T">The type to be registered.</typeparam>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        /// <exception cref="RegistrationException">If there are errors registering the type mapping.</exception>
+        public static IServiceContainer Register<T>(ServiceLifetime lifetime)
+        {
+            return Current.Register<T>(lifetime);
+        }
+
+        /// <summary>
+        /// Register a given type. 
+        /// </summary>
+        /// <typeparam name="T">The type to be registered.</typeparam>
+        /// <param name="serviceName">Name of this registration.</param>
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
         /// <exception cref="RegistrationException">If there are errors registering the type mapping.</exception>
         public static IServiceContainer Register<T>(string serviceName = null)
         {
             return Current.Register<T>(serviceName);
         }
+
+        #endregion
+
+        #region IsRegistered
 
         /// <summary>
         /// Check if a particular type/name pair has been registered. 
@@ -147,5 +232,7 @@ namespace Wheatech.ServiceModel
         {
             return Current.IsRegistered<T>(serviceName);
         }
+
+        #endregion
     }
 }

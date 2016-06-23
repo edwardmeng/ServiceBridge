@@ -18,7 +18,7 @@ namespace Wheatech.ServiceModel.Ninject.Interception
         /// <param name="container">The container this extension to extend.</param>
         public void Initialize(IServiceContainer container)
         {
-            container.Register<PipelineManager>();
+            container.Register<PipelineManager>(ServiceLifetime.Singleton);
             container.Registering += OnRegistering;
         }
 
@@ -33,11 +33,7 @@ namespace Wheatech.ServiceModel.Ninject.Interception
 
         private void OnRegistering(object sender, ServiceRegisterEventArgs e)
         {
-            if (e.ServiceType == typeof(PipelineManager))
-            {
-                e.Lifetime = ServiceLifetime.Singleton;
-            }
-            else if (ShouldIntercept(e.ImplementType))
+            if (e.ServiceType != typeof(PipelineManager)&& ShouldIntercept(e.ImplementType))
             {
                 var binding = ((NinjectServiceRegisterEventArgs)e).Binding;
                 var container = (IServiceContainer)sender;

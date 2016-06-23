@@ -14,15 +14,13 @@ namespace Wheatech.ServiceModel.Autofac
     {
         private ContainerBuilder _builder;
         private IContainer _container;
-        private readonly ServiceLifetime _lifetime;
         private readonly object _lockobj = new object();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacServiceContainer" /> class.
         /// </summary>
-        public AutofacServiceContainer(ContainerBuilder builder = null, ServiceLifetime lifetime = ServiceLifetime.Singleton)
+        public AutofacServiceContainer(ContainerBuilder builder = null)
         {
-            _lifetime = lifetime;
             _builder = builder ?? new ContainerBuilder();
             _builder.RegisterInstance(this).As<IServiceContainer>().ExternallyOwned();
         }
@@ -84,7 +82,8 @@ namespace Wheatech.ServiceModel.Autofac
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        protected override void DoRegister(Type serviceType, Type implementationType, string serviceName)
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        protected override void DoRegister(Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
         {
             if (_builder == null)
             {
@@ -102,9 +101,8 @@ namespace Wheatech.ServiceModel.Autofac
                 })
                 .UsingConstructor(new MostParametersConstructorSelector())
                 .OnActivated(args => injectionExpression(_container, args.Instance));
-            var eventArgs = new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, registration) { Lifetime = _lifetime };
-            OnRegistering(eventArgs);
-            switch (eventArgs.Lifetime)
+            OnRegistering(new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, registration));
+            switch (lifetime)
             {
                 case ServiceLifetime.Singleton:
                     registration.SingleInstance();
