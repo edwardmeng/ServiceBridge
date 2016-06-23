@@ -9,5 +9,7 @@ namespace Wheatech.ServiceModel.UnitTests
         {
             return new WindsorServiceContainer().AddExtension(new WindsorServiceContainerExtension());
         }
+
+        protected override string WebName => "windsor";
     }
 }

@@ -9,5 +9,7 @@ namespace Wheatech.ServiceModel.UnitTests
         {
             return new NinjectServiceContainer().AddExtension(new NinjectServiceContainerExtension());
         }
+
+        protected override string WebName => "ninject";
     }
 }

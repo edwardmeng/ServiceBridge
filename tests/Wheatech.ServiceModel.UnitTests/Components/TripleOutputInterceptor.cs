@@ -1,6 +1,6 @@
 ﻿using Wheatech.ServiceModel.Interception;
 
-namespace Wheatech.ServiceModel.UnitTests.Components
+namespace Wheatech.ServiceModel.UnitTests
 {
     public class TripleOutputInterceptor : InterceptorAttribute, IInterceptor
     {

@@ -61,7 +61,6 @@
     <Compile Include="Server\ContainerServiceHost.cs" />
     <Compile Include="Server\ContainerServiceHostFactory.cs" />
     <Compile Include="Server\ServiceContainerBehaviorElement.cs" />
-    <Compile Include="Server\WcfServiceContainerExtension.cs" />
     <Compile Include="ServiceModelStartup.cs" />
   </ItemGroup>
   <ItemGroup>

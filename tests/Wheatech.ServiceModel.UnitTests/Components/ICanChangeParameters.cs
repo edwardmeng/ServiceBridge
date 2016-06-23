@@ -1,6 +1,4 @@
-﻿using Wheatech.ServiceModel.UnitTests.Components;
-
-namespace Wheatech.ServiceModel.UnitTests
+﻿namespace Wheatech.ServiceModel.UnitTests
 {
     public interface ICanChangeParameters
     {

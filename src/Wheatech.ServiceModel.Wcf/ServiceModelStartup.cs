@@ -99,6 +99,23 @@ namespace Wheatech.ServiceModel.Wcf
                 }
                 if (serviceType != null)
                 {
+                    var attribute = serviceType.GetCustomAttribute<ServiceBehaviorAttribute>();
+                    var lifetime = ServiceLifetime.PerThread;
+                    if (attribute != null)
+                    {
+                        switch (attribute.InstanceContextMode)
+                        {
+                            case InstanceContextMode.PerCall:
+                                lifetime = ServiceLifetime.Transient;
+                                break;
+                            case InstanceContextMode.Single:
+                                lifetime = ServiceLifetime.Singleton;
+                                break;
+                            case InstanceContextMode.PerSession:
+                                lifetime = ServiceLifetime.PerThread;
+                                break;
+                        }
+                    }
                     for (int j = 0; j < element.Endpoints.Count; j++)
                     {
                         var endpoint = element.Endpoints[j];
@@ -109,7 +126,7 @@ namespace Wheatech.ServiceModel.Wcf
                         }
                         if (contractType != null)
                         {
-                            container.Register(contractType, serviceType, endpoint.Address?.ToString());
+                            container.Register(contractType, serviceType, endpoint.Address?.ToString(), lifetime);
                         }
                     }
                 }

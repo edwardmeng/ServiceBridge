@@ -4,7 +4,7 @@ using System.IO;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Wheatech.ServiceModel.UnitTests.Components;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Wheatech.ServiceModel.UnitTests
@@ -245,11 +245,35 @@ namespace Wheatech.ServiceModel.UnitTests
         }
 
         [Fact]
-        public async Task PerRequestInstances()
+        public async Task WebApiPerRequestLifetime()
         {
-            Assert.Equal("Success", await ProcessWebRequest($"http://localhost/LifetimeHandler.ashx?action=initialize&container={WebName}"));
-            Assert.Equal("Custom", await ProcessWebRequest("http://localhost/LifetimeHandler.ashx?action=one&value=Custom"));
-            Assert.Equal("Default", await ProcessWebRequest("http://localhost/LifetimeHandler.ashx"));
+            Assert.Equal("Success", JsonConvert.DeserializeObject(await ProcessWebRequest($"http://localhost:62232/api/Lifetime?container={WebName}")));
+            Assert.Equal("12345", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/api/Lifetime?value=12345")));
+            Assert.Equal("Default", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/api/Lifetime")));
+        }
+
+        [Fact]
+        public async Task HttpHandlerPerRequestLifetime()
+        {
+            Assert.Equal("Success", await ProcessWebRequest($"http://localhost:62232/LifetimeHandler.ashx?container={WebName}"));
+            Assert.Equal("12345", await ProcessWebRequest("http://localhost:62232/LifetimeHandler.ashx?value=12345"));
+            Assert.Equal("Default", await ProcessWebRequest("http://localhost:62232/LifetimeHandler.ashx"));
+        }
+
+        [Fact]
+        public async Task MvcPerRequestLifetime()
+        {
+            Assert.Equal("Success", JsonConvert.DeserializeObject(await ProcessWebRequest($"http://localhost:62232/Lifetime/Initialize?container={WebName}")));
+            Assert.Equal("12345", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/Lifetime/SetValue?value=12345")));
+            Assert.Equal("Default", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/Lifetime/GetValue")));
+        }
+
+        [Fact]
+        public async Task WebPagePerRequestLifetime()
+        {
+            Assert.Equal("Success", await ProcessWebRequest($"http://localhost:62232/LifetimePage.aspx?container={WebName}"));
+            Assert.Equal("12345", await ProcessWebRequest("http://localhost:62232/LifetimePage.aspx?value=12345"));
+            Assert.Equal("Default", await ProcessWebRequest("http://localhost:62232/LifetimePage.aspx"));
         }
 
         private async Task<string> ProcessWebRequest(string url)

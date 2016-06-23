@@ -9,5 +9,7 @@ namespace Wheatech.ServiceModel.UnitTests
         {
             return new UnityServiceContainer().AddExtension(new UnityServiceContainerExtension());
         }
+
+        protected override string WebName => "unity";
     }
 }

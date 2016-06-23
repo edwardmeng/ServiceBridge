@@ -1,23 +1,20 @@
-﻿using System.Web;
+﻿using System;
 using Wheatech.ServiceModel.UnitTests.WebApp.Components;
 
 namespace Wheatech.ServiceModel.UnitTests.WebApp
 {
-    /// <summary>
-    /// LifetimeHandler 的摘要说明
-    /// </summary>
-    public class LifetimeHandler : IHttpHandler
+    public partial class LifetimePage : System.Web.UI.Page
     {
-        public void ProcessRequest(HttpContext context)
+        protected void Page_Load(object sender, EventArgs e)
         {
-            var container = context.Request.QueryString["container"];
-            var value = context.Request.QueryString["value"];
+            var container = Request.QueryString["container"];
+            var value = Request.QueryString["value"];
             if (!string.IsNullOrEmpty(container))
             {
                 Helper.InitializeServiceContainer(container);
                 ServiceContainer.Current.Register<LifetimeTarget>(ServiceLifetime.PerRequest);
-                context.Response.Write("Success");
-                context.Response.End();
+                Response.Write("Success");
+                Response.End();
             }
             else if (!string.IsNullOrEmpty(value))
             {
@@ -25,15 +22,15 @@ namespace Wheatech.ServiceModel.UnitTests.WebApp
                 target.Value = value;
 
                 var target2 = ServiceContainer.GetInstance<LifetimeTarget>();
-                context.Response.Write(target2?.Value);
+                Response.Write(target2?.Value);
             }
             else
             {
                 var target = ServiceContainer.GetInstance<LifetimeTarget>();
-                context.Response.Write(target?.Value);
+                Response.Write(target?.Value);
             }
+            Response.Flush();
+            Response.End();
         }
-
-        public bool IsReusable => false;
     }
 }

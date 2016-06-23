@@ -1,4 +1,4 @@
-﻿namespace Wheatech.ServiceModel.UnitTests.Components
+﻿namespace Wheatech.ServiceModel.UnitTests
 {
     public class LifetimeObject
     {

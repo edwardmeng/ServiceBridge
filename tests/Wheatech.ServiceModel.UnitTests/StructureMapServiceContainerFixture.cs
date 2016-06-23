@@ -9,5 +9,7 @@ namespace Wheatech.ServiceModel.UnitTests
         {
             return new StructureMapServiceContainer().AddExtension(new StructureMapServiceContainerExtension());
         }
+
+        protected override string WebName => "structuremap";
     }
 }
