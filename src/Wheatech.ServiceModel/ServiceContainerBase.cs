@@ -196,7 +196,7 @@ namespace Wheatech.ServiceModel
             }
             catch (Exception ex)
             {
-                throw new ActivationException(FormatInjectionExceptionMessage(ex, instance), ex);
+                throw new InjectionException(FormatInjectionExceptionMessage(ex, instance), ex);
             }
         }
 

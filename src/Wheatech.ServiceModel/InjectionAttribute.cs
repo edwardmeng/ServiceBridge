@@ -58,15 +58,36 @@ namespace Wheatech.ServiceModel
             return GetMethodsHierarchy(type).Where(method => method.IsDefined(typeof(InjectionAttribute), false));
         }
 
+        /// <summary>
+        /// Returns a value indicating the specified property can be injected.
+        /// </summary>
+        /// <param name="property">The property to be checked.</param>
+        /// <returns><c>true</c> if the specified property can be injected; otherwise, <c>false</c>.</returns>
+        public static bool Matches(PropertyInfo property)
+        {
+            var method = property.SetMethod ?? property.GetMethod;
+            return property.CanWrite && !method.IsStatic && property.GetIndexParameters().Length == 0 && property.IsDefined(typeof(InjectionAttribute), false);
+        }
+
+        /// <summary>
+        /// Returns a value indicating the specified method or constructor can be injected.
+        /// </summary>
+        /// <param name="method">The method or constructor to be checked.</param>
+        /// <returns><c>true</c> if the specified method or constructor can be injected; otherwise, <c>false</c>.</returns>
+        public static bool Matches(MethodBase method)
+        {
+            return !method.IsStatic && method.IsPublic && method.IsDefined(typeof(InjectionAttribute)) && (method.IsConstructor || !method.IsSpecialName);
+        }
+
         private static IEnumerable<PropertyInfo> GetPropertiesHierarchy(Type type)
         {
-            if (type == null|| type == typeof(object))
+            if (type == null || type == typeof(object))
                 return Enumerable.Empty<PropertyInfo>();
             var properties = new List<Tuple<PropertyInfo, PropertyInfo>>();
             properties.AddRange(from property in type.GetTypeInfo().DeclaredProperties
-                let method = property.SetMethod ?? property.GetMethod
-                where property.CanWrite && !method.IsStatic && property.GetIndexParameters().Length == 0
-                select Tuple.Create(property, ReflectionHelper.GetPropertyFromMethod(method.GetBaseDefinition())));
+                                let method = property.SetMethod ?? property.GetMethod
+                                where property.CanWrite && !method.IsStatic && property.GetIndexParameters().Length == 0
+                                select Tuple.Create(property, ReflectionHelper.GetPropertyFromMethod(method.GetBaseDefinition())));
             foreach (var property in GetPropertiesHierarchy(type.BaseType))
             {
                 if (properties.All(p => p.Item2 != property))
@@ -83,8 +104,8 @@ namespace Wheatech.ServiceModel
                 return Enumerable.Empty<MethodInfo>();
             var methods = new List<Tuple<MethodInfo, MethodInfo>>();
             methods.AddRange(from method in type.GetTypeInfo().DeclaredMethods
-                where !method.IsSpecialName && !method.IsStatic
-                select Tuple.Create(method, method.GetBaseDefinition()));
+                             where !method.IsSpecialName && !method.IsStatic
+                             select Tuple.Create(method, method.GetBaseDefinition()));
             foreach (var method in GetMethodsHierarchy(type.BaseType))
             {
                 if (methods.All(x => x.Item2 != method))

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Castle.Core;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Lifestyle;
@@ -120,7 +119,7 @@ namespace Wheatech.ServiceModel.Windsor
             {
                 throw new ObjectDisposedException("container");
             }
-            throw new NotImplementedException();
+            DynamicInjectionBuilder.GetOrCreate(instance.GetType(), true, true)(_container.Kernel, instance);
         }
 
         /// <summary>
@@ -142,7 +141,7 @@ namespace Wheatech.ServiceModel.Windsor
                 // Enable method injection.
                 .AddDescriptor(new InjectionComponentDescriptor(implementationType))
                 // Enable property injection
-                .PropertiesIgnore(property => !property.CanWrite || (property.SetMethod ?? property.GetMethod).IsStatic || !property.IsDefined(typeof(InjectionAttribute)));
+                .PropertiesIgnore(property => !InjectionAttribute.Matches(property));
             OnRegistering(new WindsorServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, registration));
             switch (lifetime)
             {

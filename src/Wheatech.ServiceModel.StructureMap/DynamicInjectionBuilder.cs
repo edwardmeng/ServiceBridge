@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -6,58 +7,78 @@ using StructureMap;
 
 namespace Wheatech.ServiceModel.StructureMap
 {
-    internal class DynamicInjectionBuilder
+    internal static class DynamicInjectionBuilder
     {
-        private readonly Type _typeToBuild;
-        private readonly ParameterExpression _contextParameter;
-        private readonly ParameterExpression _instanceParameter;
-        private readonly Queue<Expression> _buildPlanExpressions;
         private static readonly MethodInfo _resolveDependencyMethod;
+        private static readonly ConcurrentDictionary<Tuple<Type, bool, bool>, Action<IContext, object>> _cache;
 
         static DynamicInjectionBuilder()
         {
             _resolveDependencyMethod = typeof(IContext).GetMethod("GetInstance", BindingFlags.Instance | BindingFlags.Public, null, new[] { typeof(Type) }, null);
+            _cache = new ConcurrentDictionary<Tuple<Type, bool, bool>, Action<IContext, object>>();
         }
 
-        public DynamicInjectionBuilder(Type typeToBuild)
-        {
-            _typeToBuild = typeToBuild;
-            _contextParameter = Expression.Parameter(typeof(IContext), "context");
-            _instanceParameter = Expression.Parameter(typeToBuild, "instance");
-            _buildPlanExpressions = new Queue<Expression>();
-        }
-
-        private IEnumerable<Expression> GetParameterExpressions(MethodInfo method)
+        private static IEnumerable<Expression> GetParameterExpressions(ParameterExpression container, MethodInfo method)
         {
             foreach (var parameter in method.GetParameters())
             {
                 yield return Expression.Convert(
-                    Expression.Call(Expression.Convert(_contextParameter, typeof(IContext)),
+                    Expression.Call(Expression.Convert(container, typeof(IContext)),
                         _resolveDependencyMethod,
                         Expression.Constant(parameter.ParameterType)), parameter.ParameterType);
             }
         }
 
-        public Action<IContext, object> Build()
+        private static Expression GetPropertyExpression(ParameterExpression container, ParameterExpression instance, PropertyInfo property)
         {
-            foreach (var method in InjectionAttribute.GetMethods(_typeToBuild))
+            var setMethod = property.SetMethod;
+            if (setMethod == null) return null;
+            var parameterValue = Expression.Convert(
+                Expression.Call(Expression.Convert(container, typeof(IContext)), _resolveDependencyMethod, Expression.Constant(property.PropertyType)), property.PropertyType);
+            return Expression.Call(setMethod.DeclaringType != null ? (Expression)Expression.Convert(instance, setMethod.DeclaringType) : instance,
+                setMethod, parameterValue);
+        }
+
+        public static Action<IContext, object> GetOrCreate(Type typeToBuild, bool includeProperties, bool includeMethods)
+        {
+            return _cache.GetOrAdd(Tuple.Create(typeToBuild, includeProperties, includeMethods), key =>
             {
-                _buildPlanExpressions.Enqueue(Expression.Call(
-                    method.DeclaringType != null ? (Expression)Expression.Convert(_instanceParameter, method.DeclaringType) : _instanceParameter,
-                    method, GetParameterExpressions(method)));
-            }
-            var planDelegate = _buildPlanExpressions.Count > 0 ? Expression.Lambda(Expression.Block(_buildPlanExpressions), _contextParameter, _instanceParameter).Compile() : null;
-            return (context, instance) =>
-            {
-                try
+                var contextParameter = Expression.Parameter(typeof(IContext), "context");
+                var instanceParameter = Expression.Parameter(key.Item1, "instance");
+                var buildPlanExpressions = new Queue<Expression>();
+                if (key.Item2)
                 {
-                    planDelegate?.DynamicInvoke(context, instance);
+                    foreach (var property in InjectionAttribute.GetProperties(key.Item1))
+                    {
+                        var expr = GetPropertyExpression(contextParameter, instanceParameter, property);
+                        if (expr != null)
+                        {
+                            buildPlanExpressions.Enqueue(expr);
+                        }
+                    }
                 }
-                catch (TargetInvocationException e)
+                if (key.Item3)
                 {
-                    throw e.InnerException;
+                    foreach (var method in InjectionAttribute.GetMethods(typeToBuild))
+                    {
+                        buildPlanExpressions.Enqueue(Expression.Call(
+                            method.DeclaringType != null ? (Expression)Expression.Convert(instanceParameter, method.DeclaringType) : instanceParameter,
+                            method, GetParameterExpressions(contextParameter, method)));
+                    }
                 }
-            };
+                var planDelegate = buildPlanExpressions.Count > 0 ? Expression.Lambda(Expression.Block(buildPlanExpressions), contextParameter, instanceParameter).Compile() : null;
+                return (context, instance) =>
+                {
+                    try
+                    {
+                        planDelegate?.DynamicInvoke(context, instance);
+                    }
+                    catch (TargetInvocationException e)
+                    {
+                        throw e.InnerException;
+                    }
+                };
+            });
         }
     }
 }

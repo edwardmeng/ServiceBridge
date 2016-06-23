@@ -12,7 +12,7 @@ namespace Wheatech.ServiceModel.Windsor
         public InjectionConcern(IKernel kernel, Type implementType)
         {
             _kernel = kernel;
-            _injectionExpression = new DynamicInjectionBuilder(implementType).Build();
+            _injectionExpression = DynamicInjectionBuilder.GetOrCreate(implementType, false, true);
         }
 
         public void Apply(ComponentModel model, object component)

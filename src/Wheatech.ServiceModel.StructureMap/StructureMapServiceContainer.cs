@@ -127,18 +127,12 @@ namespace Wheatech.ServiceModel.StructureMap
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
-                var methodsInjection = new DynamicInjectionBuilder(implementationType).Build();
                 // Enable the method injection
-                instance.AddInterceptor(new ActivatorInterceptor<object>((context, x) => methodsInjection(context,x)));
+                instance.AddInterceptor(new ActivatorInterceptor<object>((context, x) => DynamicInjectionBuilder.GetOrCreate(implementationType, false, true)(context, x)));
                 // Enable the constructor injection
                 registry.Policies.ConstructorSelector<InjectionConstructorSelector>();
                 // Enable the property injection
-                registry.Policies.SetAllProperties(
-                    convention =>
-                        convention.Matching(
-                            property =>
-                                property.CanWrite && !(property.SetMethod ?? property.GetMethod).IsStatic && property.GetIndexParameters().Length == 0 &&
-                                property.IsDefined(typeof(InjectionAttribute), false)));
+                registry.Policies.SetAllProperties(convention => convention.Matching(InjectionAttribute.Matches));
                 configure.AddRegistry(registry);
             });
         }
