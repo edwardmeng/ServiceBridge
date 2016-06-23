@@ -14,6 +14,7 @@ Features
 * Constructor Injection
 * Property Injection
 * Method Injection
+* Instance Injection
 * Method & Property Interception
 * Extension mechanism
 * Windows Communication Foundation(WCF) Integration
