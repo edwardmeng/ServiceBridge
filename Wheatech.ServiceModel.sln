@@ -54,6 +54,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{54F52CBD
 		nuget\Wheatech.ServiceModel.Autofac.Interception.nuspec = nuget\Wheatech.ServiceModel.Autofac.Interception.nuspec
 		nuget\Wheatech.ServiceModel.Autofac.nuspec = nuget\Wheatech.ServiceModel.Autofac.nuspec
 		nuget\Wheatech.ServiceModel.Interception.nuspec = nuget\Wheatech.ServiceModel.Interception.nuspec
+		nuget\Wheatech.ServiceModel.Mvc.nuspec = nuget\Wheatech.ServiceModel.Mvc.nuspec
 		nuget\Wheatech.ServiceModel.Ninject.Interception.nuspec = nuget\Wheatech.ServiceModel.Ninject.Interception.nuspec
 		nuget\Wheatech.ServiceModel.Ninject.nuspec = nuget\Wheatech.ServiceModel.Ninject.nuspec
 		nuget\Wheatech.ServiceModel.nuspec = nuget\Wheatech.ServiceModel.nuspec

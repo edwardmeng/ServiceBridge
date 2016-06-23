@@ -31,6 +31,7 @@ rem Core packages
 call :Package Wheatech.ServiceModel
 call :Package Wheatech.ServiceModel.Interception
 call :Package Wheatech.ServiceModel.Wcf
+call :Package Wheatech.ServiceModel.Mvc
 
 rem Integration packages
 call :Package Wheatech.ServiceModel.Autofac

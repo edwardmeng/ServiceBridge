@@ -18,9 +18,6 @@ namespace Wheatech.ServiceModel.Unity
         ///     The <see cref="IUnityContainer" /> to wrap with the <see cref="IServiceContainer" />
         ///     interface implementation.
         /// </param>
-        /// <param name="lifetime">
-        ///     The <see cref="ServiceLifetime"/> to register type mapping with.
-        /// </param>
         /// <param name="injectionMembers">The <see cref="InjectionMember"/>s to register type mapping with.</param>
         public UnityServiceContainer(IUnityContainer container = null, InjectionMember[] injectionMembers = null)
         {
