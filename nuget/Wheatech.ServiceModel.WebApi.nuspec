@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Wheatech.ServiceModel.Mvc</id>
+    <id>Wheatech.ServiceModel.WebApi</id>
     <version>1.0.0</version>
     <authors>edwardmeng</authors>
     <owners>edwardmeng</owners>

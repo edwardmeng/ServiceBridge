@@ -4,6 +4,7 @@
 
 namespace Wheatech.ServiceModel
 {
+    [ActivationPriority(ActivationPriority.Low)]
     internal class ServiceModelActivator
     {
         public ServiceModelActivator(IActivatingEnvironment environment)

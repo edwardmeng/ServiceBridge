@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Wheatech.ServiceModel.Mvc</id>
+    <id>Wheatech.ServiceModel.Web</id>
     <version>1.0.0</version>
     <authors>edwardmeng</authors>
     <owners>edwardmeng</owners>
@@ -13,9 +13,11 @@
     </description>
     <tags>IoC DependencyInjection Web ASP.NET WebForm WebPage UserControl Interception AOP</tags>
     <dependencies>
-      <dependency id="Wheatech.Activation" version="[1.0,2.0)" />
       <dependency id="Wheatech.ServiceModel" version="[1.0,2.0)" />
     </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.Web" targetFramework="net461"/>
+    </frameworkAssemblies>
   </metadata>
   <files>
     <file src="lib\**\*.dll" target="lib" />

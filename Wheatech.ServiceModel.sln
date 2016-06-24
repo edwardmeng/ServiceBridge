@@ -13,13 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Inter
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Unity.Interception", "src\Wheatech.ServiceModel.Unity.Interception\Wheatech.ServiceModel.Unity.Interception.csproj", "{60972548-F189-49D7-9C31-976307A3E03D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{0E23DD74-733E-4539-AEEB-527D73F0CA28}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{0E23DD74-733E-4539-AEEB-527D73F0CA28}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autofac", "Autofac", "{CE31D387-7B66-430B-AC4B-1A3A74A451C9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unity", "Unity", "{C498B61F-0134-4FF9-88F7-F2B6CB123A96}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integration", "Integration", "{FEAADEE8-46F3-4353-9F80-EE2F736D1784}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integrations", "integrations", "{FEAADEE8-46F3-4353-9F80-EE2F736D1784}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Autofac.Interception", "src\Wheatech.ServiceModel.Autofac.Interception\Wheatech.ServiceModel.Autofac.Interception.csproj", "{2984C4C5-F10E-4062-B574-9F274CF3C4DA}"
 EndProject
@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Winds
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Windsor.Interception", "src\Wheatech.ServiceModel.Windsor.Interception\Wheatech.ServiceModel.Windsor.Interception.csproj", "{B233CD92-2D28-4304-BE77-337F508E574B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{830309B2-BF70-4BC5-8CA1-5EB40F60A76B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{830309B2-BF70-4BC5-8CA1-5EB40F60A76B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Wcf", "src\Wheatech.ServiceModel.Wcf\Wheatech.ServiceModel.Wcf.csproj", "{3191F441-18B9-496E-8867-DB5F34511BA5}"
 EndProject
@@ -71,6 +71,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{54F52CBD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{862445B9-EAE5-49F7-A35C-8017D9710230}"
 	ProjectSection(SolutionItems) = preProject
+		LICENSE = LICENSE
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
@@ -85,6 +86,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.WebApi", "src\Wheatech.ServiceModel.WebApi\Wheatech.ServiceModel.WebApi.csproj", "{58646E1C-FEFA-4960-BFC5-07023B4488E7}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Wheatech.ServiceModel.DynamicInjection", "src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.shproj", "{760E5E67-104D-4348-8ABD-EE574B26550D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Samples.WebForm", "samples\Wheatech.ServiceModel.Samples.WebForm\Wheatech.ServiceModel.Samples.WebForm.csproj", "{4CD59E23-88CC-445A-B16B-7DCC75A70212}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Samples.Mvc", "samples\Wheatech.ServiceModel.Samples.Mvc\Wheatech.ServiceModel.Samples.Mvc.csproj", "{D1AA8CDC-B85C-413E-BA5B-5B96C8418B00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Sample.Components", "samples\Wheatech.ServiceModel.Sample.Components\Wheatech.ServiceModel.Sample.Components.csproj", "{0780261A-7447-436E-B484-0D36113696D5}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -174,6 +183,18 @@ Global
 		{58646E1C-FEFA-4960-BFC5-07023B4488E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58646E1C-FEFA-4960-BFC5-07023B4488E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58646E1C-FEFA-4960-BFC5-07023B4488E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4CD59E23-88CC-445A-B16B-7DCC75A70212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4CD59E23-88CC-445A-B16B-7DCC75A70212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4CD59E23-88CC-445A-B16B-7DCC75A70212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4CD59E23-88CC-445A-B16B-7DCC75A70212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1AA8CDC-B85C-413E-BA5B-5B96C8418B00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1AA8CDC-B85C-413E-BA5B-5B96C8418B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1AA8CDC-B85C-413E-BA5B-5B96C8418B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1AA8CDC-B85C-413E-BA5B-5B96C8418B00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0780261A-7447-436E-B484-0D36113696D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0780261A-7447-436E-B484-0D36113696D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0780261A-7447-436E-B484-0D36113696D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0780261A-7447-436E-B484-0D36113696D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -204,5 +225,8 @@ Global
 		{CF485131-27B9-4709-BB73-C79002B780CB} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
 		{58646E1C-FEFA-4960-BFC5-07023B4488E7} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
 		{760E5E67-104D-4348-8ABD-EE574B26550D} = {FEAADEE8-46F3-4353-9F80-EE2F736D1784}
+		{4CD59E23-88CC-445A-B16B-7DCC75A70212} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
+		{D1AA8CDC-B85C-413E-BA5B-5B96C8418B00} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
+		{0780261A-7447-436E-B484-0D36113696D5} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
 	EndGlobalSection
 EndGlobal
