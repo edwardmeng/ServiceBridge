@@ -12,9 +12,9 @@
     </description>
     <copyright>Copyright 2016</copyright>
     <dependencies>
-      <dependency id="Wheatech.ServiceModel" version="(,2.0)" />
-      <dependency id="Wheatech.ServiceModel.Interception" version="(,2.0)" />
-      <dependency id="Wheatech.ServiceModel.Unity" version="(,2.0)" />
+      <dependency id="Wheatech.ServiceModel" version="[1.0,2.0)" />
+      <dependency id="Wheatech.ServiceModel.Interception" version="[1.0,2.0)" />
+      <dependency id="Wheatech.ServiceModel.Unity" version="[1.0,2.0)" />
       <dependency id="Unity" version="[4.0.0,)" />
       <dependency id="Unity.Interception" version="[4.0.0,)" />
     </dependencies>

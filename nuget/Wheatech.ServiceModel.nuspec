@@ -12,7 +12,7 @@
     </description>
     <copyright>Copyright 2016</copyright>
     <dependencies>
-      <dependency id="Wheatech.Hosting" version="(,2.0)" />
+      <dependency id="Wheatech.Activation" version="[1.0,2.0)" />
     </dependencies>
   </metadata>
   <files>

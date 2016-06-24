@@ -2,13 +2,15 @@
 using System.Linq;
 using System.Reflection;
 using System.Web.Http.Controllers;
-using Wheatech.Hosting;
+using Wheatech.Activation;
+
+[assembly: AssemblyActivator(typeof(Wheatech.ServiceModel.WebApi.ServiceModelActivator))]
 
 namespace Wheatech.ServiceModel.WebApi
 {
-    internal class ServiceModelStartup
+    internal class ServiceModelActivator
     {
-        public void Configure(IHostingEnvironment environment, IServiceContainer container)
+        public void Configure(IActivatingEnvironment environment, IServiceContainer container)
         {
             foreach (var assembly in environment.GetAssemblies())
             {

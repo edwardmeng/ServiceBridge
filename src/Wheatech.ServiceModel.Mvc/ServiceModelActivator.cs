@@ -2,15 +2,15 @@
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-using Wheatech.Hosting;
+using Wheatech.Activation;
 
-[assembly: AssemblyStartup(typeof(Wheatech.ServiceModel.Mvc.ServiceModelStartup))]
+[assembly: AssemblyActivator(typeof(Wheatech.ServiceModel.Mvc.ServiceModelActivator))]
 
 namespace Wheatech.ServiceModel.Mvc
 {
-    internal class ServiceModelStartup
+    internal class ServiceModelActivator
     {
-        public void Configure(IHostingEnvironment environment, IServiceContainer container)
+        public void Configure(IActivatingEnvironment environment, IServiceContainer container)
         {
             // We have to register the controllers at the application configuration stage.
             // Since there are some IoC implementations cannot register types after resolve instances.

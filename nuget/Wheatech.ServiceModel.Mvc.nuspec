@@ -12,8 +12,8 @@
     </description>
     <copyright>Copyright 2016</copyright>
     <dependencies>
-      <dependency id="Wheatech.Hosting" version="(,2.0)" />
-      <dependency id="Wheatech.ServiceModel" version="(,2.0)" />
+      <dependency id="Wheatech.Activation" version="[1.0,2.0)" />
+      <dependency id="Wheatech.ServiceModel" version="[1.0,2.0)" />
       <dependency id="Microsoft.AspNet.Mvc" version="[5.0.0,6.0.0)" />
     </dependencies>
   </metadata>

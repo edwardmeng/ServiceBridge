@@ -44,8 +44,8 @@
     <Reference Include="System.ServiceModel.Activation" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web" />
-    <Reference Include="Wheatech.Hosting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dfa3bda2996d7b44, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Wheatech.Hosting.1.0.0-rc2\lib\net461\Wheatech.Hosting.dll</HintPath>
+    <Reference Include="Wheatech.Activation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dfa3bda2996d7b44, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Wheatech.Activation.1.0.0-rc2\lib\net461\Wheatech.Activation.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -61,7 +61,7 @@
     <Compile Include="Server\ContainerServiceHost.cs" />
     <Compile Include="Server\ContainerServiceHostFactory.cs" />
     <Compile Include="Server\ServiceContainerBehaviorElement.cs" />
-    <Compile Include="ServiceModelStartup.cs" />
+    <Compile Include="ServiceModelActivator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\tools\wheatech.snk">

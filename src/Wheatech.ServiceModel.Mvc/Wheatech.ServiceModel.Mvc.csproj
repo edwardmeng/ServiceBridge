@@ -68,15 +68,15 @@
       <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Wheatech.Hosting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dfa3bda2996d7b44, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Wheatech.Hosting.1.0.0-rc2\lib\net461\Wheatech.Hosting.dll</HintPath>
+    <Reference Include="Wheatech.Activation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dfa3bda2996d7b44, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Wheatech.Activation.1.0.0-rc2\lib\net461\Wheatech.Activation.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceModelDependencyResolver.cs" />
-    <Compile Include="ServiceModelStartup.cs" />
+    <Compile Include="ServiceModelActivator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">

@@ -12,9 +12,9 @@
     </description>
     <copyright>Copyright 2016</copyright>
     <dependencies>
-      <dependency id="Wheatech.ServiceModel" version="(,2.0)" />
-      <dependency id="Wheatech.ServiceModel.Interception" version="(,2.0)" />
-      <dependency id="Wheatech.ServiceModel.Ninject" version="(,2.0)" />
+      <dependency id="Wheatech.ServiceModel" version="[1.0,2.0)" />
+      <dependency id="Wheatech.ServiceModel.Interception" version="[1.0,2.0)" />
+      <dependency id="Wheatech.ServiceModel.Ninject" version="[1.0,2.0)" />
       <dependency id="Ninject" version="[3.2.0,)" />
       <dependency id="Ninject.Extensions.Interception" version="[3.2.0,)" />
     </dependencies>

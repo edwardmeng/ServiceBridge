@@ -12,8 +12,8 @@
     </description>
     <copyright>Copyright 2016</copyright>
     <dependencies>
-      <dependency id="Wheatech.Hosting" version="(,2.0)" />
-      <dependency id="Wheatech.ServiceModel" version="(,2.0)" />
+      <dependency id="Wheatech.Activation" version="[1.0,2.0)" />
+      <dependency id="Wheatech.ServiceModel" version="[1.0,2.0)" />
       <dependency id="Castle.Core" version="[3.3.0,)" />
       <dependency id="Castle.Windsor" version="[3.3.0,)" />
     </dependencies>

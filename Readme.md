@@ -20,6 +20,7 @@ Features
 * Windows Communication Foundation(WCF) Integration
 * ASP.NET WebForms Integration
 * ASP.NET MVC Integration
+* ASP.NET WebApi Integration
 
 Integrations
 ------------------------

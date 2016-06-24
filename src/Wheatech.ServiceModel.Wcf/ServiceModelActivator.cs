@@ -5,15 +5,15 @@ using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Configuration;
-using Wheatech.Hosting;
+using Wheatech.Activation;
 
-[assembly: AssemblyStartup(typeof(Wheatech.ServiceModel.Wcf.ServiceModelStartup))]
+[assembly: AssemblyActivator(typeof(Wheatech.ServiceModel.Wcf.ServiceModelActivator))]
 
 namespace Wheatech.ServiceModel.Wcf
 {
-    internal class ServiceModelStartup
+    internal class ServiceModelActivator
     {
-        public void Configure(IHostingEnvironment environment, IServiceContainer container)
+        public void Configure(IActivatingEnvironment environment, IServiceContainer container)
         {
             // We have to register the services at the application configuration stage.
             // Since there are some IoC implementations cannot register types after resolve instances.
