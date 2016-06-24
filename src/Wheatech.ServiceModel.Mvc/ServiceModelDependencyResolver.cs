@@ -5,7 +5,7 @@ using System.Web.Mvc;
 namespace Wheatech.ServiceModel.Mvc
 {
     /// <summary>
-    /// Dependency resolver implementation for ServiceModel.
+    /// ASP.NET MVC dependency resolver implementation for ServiceModel.
     /// </summary>
     public class ServiceModelDependencyResolver : IDependencyResolver
     {
