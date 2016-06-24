@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Castle.Core;
@@ -32,6 +33,8 @@ namespace Wheatech.ServiceModel.Windsor
         }
 
         private IWindsorContainer _container;
+        private readonly ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>> _registrations =
+            new ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>>();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="WindsorServiceContainer" /> class for a container.
@@ -68,6 +71,31 @@ namespace Wheatech.ServiceModel.Windsor
                     _container = null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Get an instance of the given named <paramref name="serviceType"/>.
+        /// </summary>
+        /// <param name="serviceType">Type of object requested.</param>
+        /// <param name="serviceName">Name the object was registered with.</param>
+        /// <exception cref="ActivationException">If there are errors resolving the service instance.</exception>
+        /// <returns>The requested service instance. If the requested type/name has not been registerd, returns null.</returns>
+        public override object GetInstance(Type serviceType, string serviceName)
+        {
+            if (_container == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            ConcurrentDictionary<ServiceName, ServiceRegistration> registrations;
+            if (!serviceType.IsInterface && !serviceType.IsAbstract && !IsRegistered(serviceType,serviceName) &&
+                !(_registrations.TryGetValue(serviceType, out registrations) && registrations.ContainsKey(new ServiceName(serviceName))))
+            {
+                DoRegister(serviceType, serviceType, serviceName, ServiceLifetime.Transient);
+                _registrations
+                    .GetOrAdd(serviceType, key => new ConcurrentDictionary<ServiceName, ServiceRegistration>())
+                    .GetOrAdd(new ServiceName(serviceName), name => new ServiceRegistration(serviceType, serviceType, serviceName));
+            }
+            return base.GetInstance(serviceType, serviceName);
         }
 
         /// <summary>

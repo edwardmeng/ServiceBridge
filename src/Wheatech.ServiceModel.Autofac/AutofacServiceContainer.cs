@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading;
 using Autofac;
@@ -16,6 +17,9 @@ namespace Wheatech.ServiceModel.Autofac
         private ContainerBuilder _builder;
         private IContainer _container;
         private readonly object _lockobj = new object();
+
+        private readonly ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>> _registrations =
+            new ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacServiceContainer" /> class.
@@ -64,6 +68,41 @@ namespace Wheatech.ServiceModel.Autofac
         }
 
         /// <summary>
+        /// Get an instance of the given named <paramref name="serviceType"/>.
+        /// </summary>
+        /// <param name="serviceType">Type of object requested.</param>
+        /// <param name="serviceName">Name the object was registered with.</param>
+        /// <exception cref="ActivationException">If there are errors resolving the service instance.</exception>
+        /// <returns>The requested service instance. If the requested type/name has not been registerd, returns null.</returns>
+        public override object GetInstance(Type serviceType, string serviceName)
+        {
+            if (_builder == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            ConcurrentDictionary<ServiceName, ServiceRegistration> registrations;
+            if (!serviceType.IsInterface && !serviceType.IsAbstract && !IsRegistered(serviceType, serviceName) &&
+                !(_registrations.TryGetValue(serviceType, out registrations) && registrations.ContainsKey(new ServiceName(serviceName))))
+            {
+                if (_container == null)
+                {
+                    DoRegister(serviceType, serviceType, serviceName, ServiceLifetime.Transient);
+                }
+                else
+                {
+                    var builder = new ContainerBuilder();
+                    Register(builder, serviceType, serviceType, serviceName, ServiceLifetime.Transient);
+                    builder.Update(_container);
+                }
+                _registrations
+                    .GetOrAdd(serviceType, key => new ConcurrentDictionary<ServiceName, ServiceRegistration>())
+                    .GetOrAdd(new ServiceName(serviceName), name => new ServiceRegistration(serviceType, serviceType, serviceName));
+            }
+
+            return base.GetInstance(serviceType, serviceName);
+        }
+
+        /// <summary>
         /// Resolves the requested service instance.
         /// </summary>
         /// <param name="serviceType">Type of instance requested.</param>
@@ -103,9 +142,14 @@ namespace Wheatech.ServiceModel.Autofac
             {
                 throw new ObjectDisposedException("container");
             }
+            Register(_builder, serviceType, implementationType, serviceName, lifetime);
+        }
+
+        private void Register(ContainerBuilder builder, Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
+        {
             var registration = serviceName == null
-                ? _builder.RegisterType(implementationType).As(serviceType)
-                : _builder.RegisterType(implementationType).Named(serviceName, serviceType);
+                ? builder.RegisterType(implementationType).As(serviceType)
+                : builder.RegisterType(implementationType).Named(serviceName, serviceType);
             registration
                 .FindConstructorsWith(type =>
                 {

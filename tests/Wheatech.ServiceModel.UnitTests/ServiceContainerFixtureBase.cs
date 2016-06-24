@@ -44,9 +44,18 @@ namespace Wheatech.ServiceModel.UnitTests
         }
 
         [Fact]
-        public void UnregisteredShouldBeNull()
+        public void UnregisteredInterfaceShouldBeNull()
         {
             Assert.Null(ServiceContainer.GetInstance<IDictionary>());
+        }
+
+        [Fact]
+        public void UnregisteredObjectShouldNotBeNull()
+        {
+            Assert.True(ServiceContainer.IsRegistered<ILogger>());
+            Assert.NotNull(ServiceContainer.GetInstance<UnregisteredInjectionObject>());
+            Assert.False(ServiceContainer.IsRegistered<UnregisteredInjectionObject>());
+            Assert.NotNull(ServiceContainer.GetInstance<UnregisteredInjectionObject>());
         }
 
         [Fact]

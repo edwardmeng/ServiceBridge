@@ -25,7 +25,7 @@ namespace Wheatech.ServiceModel
 
         #region ServiceName
 
-        private struct ServiceName
+        protected struct ServiceName
         {
             public ServiceName(string name)
             {
@@ -261,6 +261,27 @@ namespace Wheatech.ServiceModel
         }
 
         /// <summary>
+        /// Add new typ mapping registration .
+        /// </summary>
+        /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
+        /// <param name="implementationType"><see cref="Type"/> that will actually be returned.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        protected virtual void AddRegistration(Type serviceType, Type implementationType, string serviceName)
+        {
+            if (_registrations == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
+            _registrations
+               .GetOrAdd(serviceType, key => new ConcurrentDictionary<ServiceName, ServiceRegistration>())
+               .GetOrAdd(new ServiceName(serviceName), name => new ServiceRegistration(serviceType, implementationType, serviceName));
+        }
+
+        /// <summary>
         /// Registers a type mapping with the container. 
         /// </summary>
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
@@ -281,9 +302,7 @@ namespace Wheatech.ServiceModel
             try
             {
                 DoRegister(serviceType, implementationType, serviceName, lifetime);
-                _registrations
-                    .GetOrAdd(serviceType, key => new ConcurrentDictionary<ServiceName, ServiceRegistration>())
-                    .GetOrAdd(new ServiceName(serviceName), name => new ServiceRegistration(serviceType, implementationType, serviceName));
+                AddRegistration(serviceType, implementationType, serviceName);
                 return this;
             }
             catch (Exception ex)

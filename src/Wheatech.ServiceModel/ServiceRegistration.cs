@@ -7,7 +7,13 @@ namespace Wheatech.ServiceModel
     /// </summary>
     public class ServiceRegistration
     {
-        internal ServiceRegistration(Type serviceType, Type implementType, string serviceName)
+        /// <summary>
+        /// Initialize new instance of <see cref="ServiceRegistration"/>.
+        /// </summary>
+        /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
+        /// <param name="implementType"><see cref="Type"/> that will actually be returned.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        public ServiceRegistration(Type serviceType, Type implementType, string serviceName)
         {
             ServiceType = serviceType;
             ImplementType = implementType;
