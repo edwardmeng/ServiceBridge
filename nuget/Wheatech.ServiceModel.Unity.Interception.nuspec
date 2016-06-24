@@ -6,11 +6,12 @@
     <authors>edwardmeng</authors>
     <owners>edwardmeng</owners>
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/edwardmeng/wheatech.ServiceModel</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>
       Wheatech.ServiceModel.Interception implementation for Unity container.
     </description>
-    <copyright>Copyright 2016</copyright>
+    <tags>IoC DependencyInjection Unity Interception AOP</tags>
     <dependencies>
       <dependency id="Wheatech.ServiceModel" version="[1.0,2.0)" />
       <dependency id="Wheatech.ServiceModel.Interception" version="[1.0,2.0)" />

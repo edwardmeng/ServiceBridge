@@ -6,11 +6,12 @@
     <authors>edwardmeng</authors>
     <owners>edwardmeng</owners>
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/edwardmeng/wheatech.ServiceModel</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>
       This library contains shared classes for service interception to provides an abstraction over IoC containers.
     </description>
-    <copyright>Copyright 2016</copyright>
+    <tags>IoC DependencyInjection Interception AOP</tags>
     <dependencies>
       <dependency id="Wheatech.ServiceModel" version="[1.0,2.0)" />
     </dependencies>

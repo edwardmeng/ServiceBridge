@@ -6,11 +6,12 @@
     <authors>edwardmeng</authors>
     <owners>edwardmeng</owners>
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/edwardmeng/wheatech.ServiceModel</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>
       The Wheatech.ServiceModel library contains shared classes for service registration and service resolution to provides an abstraction over IoC containers.
     </description>
-    <copyright>Copyright 2016</copyright>
+    <tags>IoC DependencyInjection</tags>
     <dependencies>
       <dependency id="Wheatech.Activation" version="[1.0,2.0)" />
     </dependencies>

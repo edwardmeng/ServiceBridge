@@ -10,7 +10,8 @@
     <description>
       Wheatech.ServiceModel.Interception implementation for Autofac IoC.
     </description>
-    <copyright>Copyright 2016</copyright>
+    <projectUrl>https://github.com/edwardmeng/wheatech.ServiceModel</projectUrl>
+    <tags>IoC DependencyInjection Autofac Interception</tags>
     <dependencies>
       <dependency id="Wheatech.ServiceModel" version="[1.0,2.0)" />
       <dependency id="Wheatech.ServiceModel.Interception" version="[1.0,2.0)" />
