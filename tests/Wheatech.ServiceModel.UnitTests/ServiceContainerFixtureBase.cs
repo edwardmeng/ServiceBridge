@@ -22,6 +22,12 @@ namespace Wheatech.ServiceModel.UnitTests
         }
 
         [Fact]
+        public void ResolveSeviceContainer()
+        {
+            Assert.Equal(ServiceContainer.Current, ServiceContainer.GetInstance<IServiceContainer>());
+        }
+
+        [Fact]
         public void GetInstance()
         {
             var instance = ServiceContainer.GetInstance<ILogger>();
@@ -34,12 +40,13 @@ namespace Wheatech.ServiceModel.UnitTests
             Assert.True(ServiceContainer.IsRegistered<ILogger>());
             Assert.True(ServiceContainer.IsRegistered<ILogger>("Simple"));
             Assert.True(ServiceContainer.IsRegistered(typeof(ILogger), "Advanced"));
+            Assert.False(ServiceContainer.IsRegistered<IDictionary>());
         }
 
         [Fact]
-        public void AskingForInvalidComponentShouldRaiseActivationException()
+        public void UnregisteredShouldBeNull()
         {
-            Assert.Throws<ActivationException>(() => ServiceContainer.GetInstance<IDictionary>());
+            Assert.Null(ServiceContainer.GetInstance<IDictionary>());
         }
 
         [Fact]

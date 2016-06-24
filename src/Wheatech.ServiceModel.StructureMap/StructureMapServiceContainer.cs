@@ -41,6 +41,10 @@ namespace Wheatech.ServiceModel.StructureMap
         public StructureMapServiceContainer(IContainer container = null)
         {
             _container = container ?? new Container();
+            _container.Configure(configure =>
+            {
+                configure.For<IServiceContainer>().Add(this);
+            });
         }
 
         /// <summary>

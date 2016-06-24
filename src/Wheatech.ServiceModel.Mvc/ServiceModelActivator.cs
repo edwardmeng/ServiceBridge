@@ -36,8 +36,6 @@ namespace Wheatech.ServiceModel.Mvc
                     }
                 }
             }
-            container.Register<IControllerFactory, DefaultControllerFactory>();
-            container.Register<IControllerActivator, DefaultControllerActivator>();
             DependencyResolver.SetResolver(new ServiceModelDependencyResolver());
         }
     }

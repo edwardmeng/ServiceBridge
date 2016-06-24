@@ -13,7 +13,7 @@ namespace Wheatech.ServiceModel.Wcf
 {
     internal class ServiceModelActivator
     {
-        public void Configure(IActivatingEnvironment environment, IServiceContainer container)
+        public void Configuration(IActivatingEnvironment environment, IServiceContainer container)
         {
             // We have to register the services at the application configuration stage.
             // Since there are some IoC implementations cannot register types after resolve instances.

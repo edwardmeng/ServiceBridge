@@ -58,7 +58,7 @@ namespace Wheatech.ServiceModel
         /// <param name="serviceType">Type of object requested.</param>
         /// <param name="serviceName">Name the object was registered with.</param>
         /// <exception cref="ActivationException">If there are errors resolving the service instance.</exception>
-        /// <returns>The requested service instance.</returns>
+        /// <returns>The requested service instance. If the requested type/name has not been registerd, returns null.</returns>
         public static object GetInstance(Type serviceType, string serviceName = null)
         {
             return Current.GetInstance(serviceType, serviceName);
@@ -70,7 +70,7 @@ namespace Wheatech.ServiceModel
         /// <typeparam name="TService">Type of object requested.</typeparam>
         /// <param name="serviceName">Name the object was registered with.</param>
         /// <exception cref="ActivationException">If there are errors resolving the service instance.</exception>
-        /// <returns>The requested service instance.</returns>
+        /// <returns>The requested service instance. If the requested type/name has not been registerd, returns default value.</returns>
         public static TService GetInstance<TService>(string serviceName = null)
         {
             return Current.GetInstance<TService>(serviceName);

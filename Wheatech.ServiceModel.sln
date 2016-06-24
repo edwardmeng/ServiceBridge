@@ -95,6 +95,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Sampl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Sample.Components", "samples\Wheatech.ServiceModel.Sample.Components\Wheatech.ServiceModel.Sample.Components.csproj", "{0780261A-7447-436E-B484-0D36113696D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Samples.WebApi", "samples\Wheatech.ServiceModel.Samples.WebApi\Wheatech.ServiceModel.Samples.WebApi.csproj", "{FA3DA168-5F77-4366-A49F-B1C3430D98FF}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.projitems*{760e5e67-104d-4348-8abd-ee574b26550d}*SharedItemsImports = 13
@@ -195,6 +197,10 @@ Global
 		{0780261A-7447-436E-B484-0D36113696D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0780261A-7447-436E-B484-0D36113696D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0780261A-7447-436E-B484-0D36113696D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA3DA168-5F77-4366-A49F-B1C3430D98FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA3DA168-5F77-4366-A49F-B1C3430D98FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA3DA168-5F77-4366-A49F-B1C3430D98FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA3DA168-5F77-4366-A49F-B1C3430D98FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -228,5 +234,6 @@ Global
 		{4CD59E23-88CC-445A-B16B-7DCC75A70212} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
 		{D1AA8CDC-B85C-413E-BA5B-5B96C8418B00} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
 		{0780261A-7447-436E-B484-0D36113696D5} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
+		{FA3DA168-5F77-4366-A49F-B1C3430D98FF} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
 	EndGlobalSection
 EndGlobal

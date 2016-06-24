@@ -19,11 +19,11 @@ namespace Wheatech.ServiceModel
         /// <param name="container">Container to resolve through.</param>
         /// <param name="serviceName">Name the object was registered with.</param>
         /// <exception cref="ActivationException">If there are errors resolving the service instance.</exception>
-        /// <returns>The requested service instance.</returns>
+        /// <returns>The requested service instance. If the requested type/name has not been registerd, returns default value.</returns>
         public static TService GetInstance<TService>(this IServiceContainer container, string serviceName = null)
         {
             if (container == null) throw new ArgumentNullException(nameof(container));
-            return (TService)container.GetInstance(typeof(TService), serviceName);
+            return (TService) (container.GetInstance(typeof(TService), serviceName) ?? default(TService));
         }
 
         /// <summary>

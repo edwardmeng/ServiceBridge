@@ -7,7 +7,7 @@ namespace Wheatech.ServiceModel.Mvc
     /// <summary>
     /// ASP.NET MVC dependency resolver implementation for ServiceModel.
     /// </summary>
-    public class ServiceModelDependencyResolver : IDependencyResolver
+    internal class ServiceModelDependencyResolver : IDependencyResolver
     {
         /// <summary>
         /// Gets the service of the specified type.

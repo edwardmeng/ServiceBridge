@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Web.Mvc;
+using System.Web.Http;
 using System.Web.Routing;
 using Wheatech.Activation;
 using Wheatech.ServiceModel.Sample.Components;
 
-namespace Wheatech.ServiceModel.Samples.Mvc
+namespace Wheatech.ServiceModel.Samples.WebApi
 {
     public class Global : System.Web.HttpApplication
     {
@@ -18,14 +18,7 @@ namespace Wheatech.ServiceModel.Samples.Mvc
 
         private void RegisterRoutes(RouteCollection routes)
         {
-            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-            routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
-                namespaces: new[] { "Wisdom.Platform.Controllers" }
-                );
+            routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}", new { id = RouteParameter.Optional });
         }
 
         protected void Session_Start(object sender, EventArgs e)

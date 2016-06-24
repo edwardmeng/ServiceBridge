@@ -29,7 +29,7 @@ namespace Wheatech.ServiceModel
         /// <param name="serviceType">Type of object requested.</param>
         /// <param name="serviceName">Name the object was registered with.</param>
         /// <exception cref="ActivationException">If there are errors resolving the service instance.</exception>
-        /// <returns>The requested service instance.</returns>
+        /// <returns>The requested service instance. If the requested type/name has not been registerd, returns null.</returns>
         object GetInstance(Type serviceType, string serviceName = null);
 
         /// <summary>

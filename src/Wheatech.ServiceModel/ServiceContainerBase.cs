@@ -116,12 +116,22 @@ namespace Wheatech.ServiceModel
         /// <param name="serviceType">Type of object requested.</param>
         /// <param name="serviceName">Name the object was registered with.</param>
         /// <exception cref="ActivationException">If there are errors resolving the service instance.</exception>
-        /// <returns>The requested service instance.</returns>
+        /// <returns>The requested service instance. If the requested type/name has not been registerd, returns null.</returns>
         public virtual object GetInstance(Type serviceType, string serviceName)
         {
             if (serviceType == null)
             {
                 throw new ArgumentNullException(nameof(serviceType));
+            }
+            // If the requesting service type is interface or abstract class, and has not been registered in the container,
+            // returns null instead of resolve instance from the integrated implementations, which maybe throws exception.
+            // For integrating with ASP.NET MVC, the unregistered interface should be returns null, such as IControllerActivator, IControllerFactory etc.
+            ConcurrentDictionary<ServiceName, ServiceRegistration> registrations;
+            if ((serviceType.IsInterface || serviceType.IsAbstract) && (
+                !_registrations.TryGetValue(serviceType, out registrations) || 
+                !registrations.ContainsKey(new ServiceName(serviceName))))
+            {
+                return null;
             }
             try
             {
