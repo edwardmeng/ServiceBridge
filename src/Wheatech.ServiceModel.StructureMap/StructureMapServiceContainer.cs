@@ -4,6 +4,7 @@ using System.Linq;
 using StructureMap;
 using StructureMap.Building.Interception;
 using StructureMap.Pipeline;
+using Wheatech.ServiceModel.DynamicInjection;
 
 namespace Wheatech.ServiceModel.StructureMap
 {
@@ -85,7 +86,7 @@ namespace Wheatech.ServiceModel.StructureMap
             {
                 throw new ObjectDisposedException("container");
             }
-            DynamicInjectionBuilder.GetOrCreateForInject(instance.GetType())(_container, instance);
+            DynamicInjectionBuilder.GetOrCreate(instance.GetType(), true, true)(this, instance);
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace Wheatech.ServiceModel.StructureMap
                         throw new ArgumentOutOfRangeException();
                 }
                 // Enable the method injection
-                instance.AddInterceptor(new ActivatorInterceptor<object>((context, x) => DynamicInjectionBuilder.GetOrCreateForRegister(implementationType)(context, x)));
+                instance.AddInterceptor(new ActivatorInterceptor<object>((context, x) => DynamicInjectionBuilder.GetOrCreate(implementationType, false, true)(this, x)));
                 // Enable the constructor injection
                 registry.Policies.ConstructorSelector<InjectionConstructorSelector>();
                 // Enable the property injection

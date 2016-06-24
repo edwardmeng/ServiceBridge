@@ -4,6 +4,7 @@ using System.Threading;
 using Autofac;
 using Autofac.Core;
 using Autofac.Core.Activators.Reflection;
+using Wheatech.ServiceModel.DynamicInjection;
 
 namespace Wheatech.ServiceModel.Autofac
 {
@@ -86,7 +87,7 @@ namespace Wheatech.ServiceModel.Autofac
             {
                 throw new ObjectDisposedException("container");
             }
-            DynamicInjectionBuilder.Build(instance.GetType())(EnsureContainer(), instance);
+            DynamicInjectionBuilder.GetOrCreate(instance.GetType(), true, true)(this, instance);
         }
 
         /// <summary>
@@ -105,7 +106,6 @@ namespace Wheatech.ServiceModel.Autofac
             var registration = serviceName == null
                 ? _builder.RegisterType(implementationType).As(serviceType)
                 : _builder.RegisterType(implementationType).Named(serviceName, serviceType);
-            var injectionExpression = DynamicInjectionBuilder.Build(implementationType);
             registration
                 .FindConstructorsWith(type =>
                 {
@@ -113,7 +113,7 @@ namespace Wheatech.ServiceModel.Autofac
                     return constructors.Length > 0 ? constructors : type.GetConstructors();
                 })
                 .UsingConstructor(new MostParametersConstructorSelector())
-                .OnActivated(args => injectionExpression(_container, args.Instance));
+                .OnActivated(args => DynamicInjectionBuilder.GetOrCreate(implementationType, true, true)(this, args.Instance));
             OnRegistering(new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, registration));
             switch (lifetime)
             {

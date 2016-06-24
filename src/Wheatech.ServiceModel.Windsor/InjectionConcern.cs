@@ -1,23 +1,23 @@
 ﻿using System;
 using Castle.Core;
-using Castle.MicroKernel;
+using Wheatech.ServiceModel.DynamicInjection;
 
 namespace Wheatech.ServiceModel.Windsor
 {
     internal class InjectionConcern: ICommissionConcern
     {
-        private readonly IKernel _kernel;
-        private readonly Action<IKernel, object> _injectionExpression;
+        private readonly IServiceContainer _container;
+        private readonly Action<IServiceContainer, object> _injectionExpression;
 
-        public InjectionConcern(IKernel kernel, Type implementType)
+        public InjectionConcern(IServiceContainer container, Type implementType)
         {
-            _kernel = kernel;
+            _container = container;
             _injectionExpression = DynamicInjectionBuilder.GetOrCreate(implementType, false, true);
         }
 
         public void Apply(ComponentModel model, object component)
         {
-            _injectionExpression(_kernel, component);
+            _injectionExpression(_container, component);
         }
     }
 }

@@ -8,10 +8,12 @@ namespace Wheatech.ServiceModel.Windsor
     internal class InjectionComponentDescriptor : IComponentModelDescriptor, IMetaComponentModelDescriptor
     {
         private readonly Type _implementType;
+        private readonly IServiceContainer _container;
 
-        public InjectionComponentDescriptor(Type implementType)
+        public InjectionComponentDescriptor(IServiceContainer container, Type implementType)
         {
             _implementType = implementType;
+            _container = container;
         }
 
         public void BuildComponentModel(IKernel kernel, ComponentModel model)
@@ -20,7 +22,7 @@ namespace Wheatech.ServiceModel.Windsor
 
         public void ConfigureComponentModel(IKernel kernel, ComponentModel model)
         {
-            model.Lifecycle.AddFirst(new InjectionConcern(kernel, _implementType));
+            model.Lifecycle.AddFirst(new InjectionConcern(_container, _implementType));
         }
     }
 }

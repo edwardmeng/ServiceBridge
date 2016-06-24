@@ -8,6 +8,7 @@ using Castle.MicroKernel.ModelBuilder.Inspectors;
 using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using Castle.Windsor.Installer;
+using Wheatech.ServiceModel.DynamicInjection;
 
 namespace Wheatech.ServiceModel.Windsor
 {
@@ -119,7 +120,7 @@ namespace Wheatech.ServiceModel.Windsor
             {
                 throw new ObjectDisposedException("container");
             }
-            DynamicInjectionBuilder.GetOrCreate(instance.GetType(), true, true)(_container.Kernel, instance);
+            DynamicInjectionBuilder.GetOrCreate(instance.GetType(), true, true)(this, instance);
         }
 
         /// <summary>
@@ -139,7 +140,7 @@ namespace Wheatech.ServiceModel.Windsor
                 .ImplementedBy(implementationType)
                 .Named(GetServiceName(serviceType, serviceName))
                 // Enable method injection.
-                .AddDescriptor(new InjectionComponentDescriptor(implementationType))
+                .AddDescriptor(new InjectionComponentDescriptor(this, implementationType))
                 // Enable property injection
                 .PropertiesIgnore(property => !InjectionAttribute.Matches(property));
             OnRegistering(new WindsorServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, registration));
