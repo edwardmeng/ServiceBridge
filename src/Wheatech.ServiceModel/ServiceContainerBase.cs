@@ -25,25 +25,48 @@ namespace Wheatech.ServiceModel
 
         #region ServiceName
 
+        /// <summary>
+        /// The struct to wrap the service name which can be null value.
+        /// </summary>
         protected struct ServiceName
         {
+            /// <summary>
+            /// Initialize new instance of <see cref="ServiceName"/>.
+            /// </summary>
+            /// <param name="name">The wrapped service name.</param>
             public ServiceName(string name)
             {
                 Name = name;
             }
 
+            /// <summary>
+            /// Gets the wrapped service name.
+            /// </summary>
             public string Name { get; }
 
+            /// <summary>
+            /// Returns a string representation of the value of this instance.
+            /// </summary>
+            /// <returns>The value of the wrapped service name.</returns>
             public override string ToString()
             {
                 return Name;
             }
 
+            /// <summary>
+            /// Returns the hash code for this instance.
+            /// </summary>
+            /// <returns>The hash code for this instance.</returns>
             public override int GetHashCode()
             {
                 return Name?.GetHashCode() ?? 0;
             }
 
+            /// <summary>
+            /// Returns a value that indicates whether this instance is equal to a specified object.
+            /// </summary>
+            /// <param name="obj">The object to compare with this instance.</param>
+            /// <returns><c>true</c> if <paramref name="obj"/> is a <see cref="ServiceName"/> that has the same value as this instance; otherwise, <c>false</c>.</returns>
             public override bool Equals(object obj)
             {
                 if (ReferenceEquals(obj, null)) return false;

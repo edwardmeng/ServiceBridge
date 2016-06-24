@@ -86,14 +86,17 @@ namespace Wheatech.ServiceModel.Autofac
             {
                 if (_container == null)
                 {
+                    // Dynamically register the requesting type to the ContainerBuilder that have not been built to IContainer.
                     DoRegister(serviceType, serviceType, serviceName, ServiceLifetime.Transient);
                 }
                 else
                 {
+                    // Dynamically register the requesting type to the container by using new ContainerBuilder.
                     var builder = new ContainerBuilder();
                     Register(builder, serviceType, serviceType, serviceName, ServiceLifetime.Transient);
                     builder.Update(_container);
                 }
+                // Add the dynamic registration to avoid the second time dynamic register.
                 _registrations
                     .GetOrAdd(serviceType, key => new ConcurrentDictionary<ServiceName, ServiceRegistration>())
                     .GetOrAdd(new ServiceName(serviceName), name => new ServiceRegistration(serviceType, serviceType, serviceName));

@@ -90,9 +90,11 @@ namespace Wheatech.ServiceModel.Windsor
             if (!serviceType.IsInterface && !serviceType.IsAbstract && !IsRegistered(serviceType,serviceName) &&
                 !(_registrations.TryGetValue(serviceType, out registrations) && registrations.ContainsKey(new ServiceName(serviceName))))
             {
+                // Dynamically register the requesting type to the IWindsorContainer.
                 DoRegister(serviceType, serviceType, serviceName, ServiceLifetime.Transient);
+                // Add the dynamic registration to avoid the second time dynamic register.
                 _registrations
-                    .GetOrAdd(serviceType, key => new ConcurrentDictionary<ServiceName, ServiceRegistration>())
+                            .GetOrAdd(serviceType, key => new ConcurrentDictionary<ServiceName, ServiceRegistration>())
                     .GetOrAdd(new ServiceName(serviceName), name => new ServiceRegistration(serviceType, serviceType, serviceName));
             }
             return base.GetInstance(serviceType, serviceName);
