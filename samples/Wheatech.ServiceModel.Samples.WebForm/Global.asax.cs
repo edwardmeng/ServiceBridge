@@ -10,7 +10,7 @@ namespace Wheatech.ServiceModel.Samples.WebForm
         protected void Application_Start(object sender, EventArgs e)
         {
             ApplicationActivator.UseEnvironment(EnvironmentName.Development).Startup();
-            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "Wheatech");
+            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "ServiceModel");
         }
 
         protected void Session_Start(object sender, EventArgs e)

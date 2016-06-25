@@ -13,7 +13,7 @@ namespace Wheatech.ServiceModel.Samples.WebApi
         {
             ApplicationActivator.UseEnvironment(EnvironmentName.Development).Startup();
             RegisterRoutes(RouteTable.Routes);
-            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "Wheatech");
+            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "ServiceModel");
         }
 
         private void RegisterRoutes(RouteCollection routes)
