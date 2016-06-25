@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -18,8 +17,8 @@ namespace Wheatech.ServiceModel
 
         private List<IServiceContainerExtension> _extensions = new List<IServiceContainerExtension>();
 
-        private ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>> _registrations =
-            new ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>>();
+        private IDictionary<Type, IDictionary<ServiceName, ServiceRegistration>> _registrations =
+            new Dictionary<Type, IDictionary<ServiceName, ServiceRegistration>>();
 
         #endregion
 
@@ -139,7 +138,12 @@ namespace Wheatech.ServiceModel
         /// <param name="serviceType">Type of object requested.</param>
         /// <param name="serviceName">Name the object was registered with.</param>
         /// <exception cref="ActivationException">If there are errors resolving the service instance.</exception>
-        /// <returns>The requested service instance. If the requested type/name has not been registerd, returns null.</returns>
+        /// <returns>
+        /// The requested service instance. 
+        /// If the requested type/name has not been registerd, 
+        /// returns null for interface or abstract class, 
+        /// returns new instance for the other types.
+        /// </returns>
         public virtual object GetInstance(Type serviceType, string serviceName)
         {
             if (serviceType == null)
@@ -149,10 +153,7 @@ namespace Wheatech.ServiceModel
             // If the requesting service type is interface or abstract class, and has not been registered in the container,
             // returns null instead of resolve instance from the integrated implementations, which maybe throws exception.
             // For integrating with ASP.NET MVC, the unregistered interface should be returns null, such as IControllerActivator, IControllerFactory etc.
-            ConcurrentDictionary<ServiceName, ServiceRegistration> registrations;
-            if ((serviceType.IsInterface || serviceType.IsAbstract) && (
-                !_registrations.TryGetValue(serviceType, out registrations) || 
-                !registrations.ContainsKey(new ServiceName(serviceName))))
+            if ((serviceType.IsInterface || serviceType.IsAbstract) && !IsRegistered(serviceType,serviceName))
             {
                 return null;
             }
@@ -260,8 +261,11 @@ namespace Wheatech.ServiceModel
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
-            ConcurrentDictionary<ServiceName, ServiceRegistration> registrations;
-            return _registrations.TryGetValue(serviceType, out registrations) && registrations.ContainsKey(new ServiceName(serviceName));
+            lock (_registrations)
+            {
+                IDictionary<ServiceName, ServiceRegistration> registrations;
+                return _registrations.TryGetValue(serviceType, out registrations) && registrations.ContainsKey(new ServiceName(serviceName));
+            }
         }
 
         /// <summary>
@@ -279,7 +283,7 @@ namespace Wheatech.ServiceModel
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
-            ConcurrentDictionary<ServiceName, ServiceRegistration> registrations;
+            IDictionary<ServiceName, ServiceRegistration> registrations;
             return _registrations.TryGetValue(serviceType, out registrations) ? registrations.Values : Enumerable.Empty<ServiceRegistration>();
         }
 
@@ -299,9 +303,22 @@ namespace Wheatech.ServiceModel
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
-            _registrations
-               .GetOrAdd(serviceType, key => new ConcurrentDictionary<ServiceName, ServiceRegistration>())
-               .GetOrAdd(new ServiceName(serviceName), name => new ServiceRegistration(serviceType, implementationType, serviceName));
+            if (!IsRegistered(serviceType, serviceName))
+            {
+                lock (_registrations)
+                {
+                    if (!IsRegistered(serviceType, serviceName))
+                    {
+                        IDictionary<ServiceName, ServiceRegistration> registrations;
+                        if (!_registrations.TryGetValue(serviceType, out registrations))
+                        {
+                            registrations = new Dictionary<ServiceName, ServiceRegistration>();
+                            _registrations.Add(serviceType, registrations);
+                        }
+                        registrations.Add(new ServiceName(serviceName), new ServiceRegistration(serviceType, implementationType, serviceName));
+                    }
+                }
+            }
         }
 
         /// <summary>

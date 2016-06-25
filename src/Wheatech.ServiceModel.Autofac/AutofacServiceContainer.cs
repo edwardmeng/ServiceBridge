@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Autofac;
@@ -18,8 +19,8 @@ namespace Wheatech.ServiceModel.Autofac
         private IContainer _container;
         private readonly object _lockobj = new object();
 
-        private readonly ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>> _registrations =
-            new ConcurrentDictionary<Type, ConcurrentDictionary<ServiceName, ServiceRegistration>>();
+        private readonly IDictionary<Type, IDictionary<ServiceName, ServiceRegistration>> _registrations =
+            new Dictionary<Type, IDictionary<ServiceName, ServiceRegistration>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacServiceContainer" /> class.
@@ -67,6 +68,26 @@ namespace Wheatech.ServiceModel.Autofac
             return _container;
         }
 
+        private bool IsDynamicRegisterd(Type serviceType, string serviceName)
+        {
+            lock (_registrations)
+            {
+                IDictionary<ServiceName, ServiceRegistration> registrations;
+                return _registrations.TryGetValue(serviceType, out registrations) && registrations.ContainsKey(new ServiceName(serviceName));
+            }
+        }
+
+        private void AddDynamicRegistration(Type serviceType, string serviceName)
+        {
+            IDictionary<ServiceName, ServiceRegistration> registrations;
+            if (!_registrations.TryGetValue(serviceType, out registrations))
+            {
+                registrations = new Dictionary<ServiceName, ServiceRegistration>();
+                _registrations.Add(serviceType, registrations);
+            }
+            registrations.Add(new ServiceName(serviceName), new ServiceRegistration(serviceType, serviceType, serviceName));
+        }
+
         /// <summary>
         /// Get an instance of the given named <paramref name="serviceType"/>.
         /// </summary>
@@ -80,26 +101,28 @@ namespace Wheatech.ServiceModel.Autofac
             {
                 throw new ObjectDisposedException("container");
             }
-            ConcurrentDictionary<ServiceName, ServiceRegistration> registrations;
-            if (!serviceType.IsInterface && !serviceType.IsAbstract && !IsRegistered(serviceType, serviceName) &&
-                !(_registrations.TryGetValue(serviceType, out registrations) && registrations.ContainsKey(new ServiceName(serviceName))))
+            if (!serviceType.IsInterface && !serviceType.IsAbstract && !IsRegistered(serviceType, serviceName) && !IsDynamicRegisterd(serviceType,serviceName))
             {
-                if (_container == null)
+                lock (_registrations)
                 {
-                    // Dynamically register the requesting type to the ContainerBuilder that have not been built to IContainer.
-                    DoRegister(serviceType, serviceType, serviceName, ServiceLifetime.Transient);
+                    if (!IsRegistered(serviceType, serviceName) && !IsDynamicRegisterd(serviceType, serviceName))
+                    {
+                        if (_container == null)
+                        {
+                            // Dynamically register the requesting type to the ContainerBuilder that have not been built to IContainer.
+                            DoRegister(serviceType, serviceType, serviceName, ServiceLifetime.Transient);
+                        }
+                        else
+                        {
+                            // Dynamically register the requesting type to the container by using new ContainerBuilder.
+                            var builder = new ContainerBuilder();
+                            Register(builder, serviceType, serviceType, serviceName, ServiceLifetime.Transient);
+                            builder.Update(_container);
+                        }
+                        // Add the dynamic registration to avoid the second time dynamic register.
+                        AddDynamicRegistration(serviceType, serviceName);
+                    }
                 }
-                else
-                {
-                    // Dynamically register the requesting type to the container by using new ContainerBuilder.
-                    var builder = new ContainerBuilder();
-                    Register(builder, serviceType, serviceType, serviceName, ServiceLifetime.Transient);
-                    builder.Update(_container);
-                }
-                // Add the dynamic registration to avoid the second time dynamic register.
-                _registrations
-                    .GetOrAdd(serviceType, key => new ConcurrentDictionary<ServiceName, ServiceRegistration>())
-                    .GetOrAdd(new ServiceName(serviceName), name => new ServiceRegistration(serviceType, serviceType, serviceName));
             }
 
             return base.GetInstance(serviceType, serviceName);

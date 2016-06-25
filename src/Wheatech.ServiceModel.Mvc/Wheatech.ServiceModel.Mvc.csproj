@@ -70,7 +70,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Wheatech.Activation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dfa3bda2996d7b44, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Wheatech.Activation.1.0.0-rc4\lib\net461\Wheatech.Activation.dll</HintPath>
+      <HintPath>..\..\packages\Wheatech.Activation.1.0.0-rc5\lib\net461\Wheatech.Activation.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
