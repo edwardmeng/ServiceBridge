@@ -4,6 +4,7 @@ using System.Globalization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using Wheatech.ServiceModel.Wcf.Properties;
 
 namespace Wheatech.ServiceModel.Wcf
 {
@@ -59,13 +60,10 @@ namespace Wheatech.ServiceModel.Wcf
         /// </param>
         public object GetInstance(InstanceContext instanceContext, Message message)
         {
-            var instance = ServiceContainer.GetInstance(ContractType, Address);
+            var instance = ServiceContainer.GetInstance(ContractType, ServiceUtils.GetServiceName(ServiceType));
             if (instance == null)
             {
-                const String messageFormat = "No unity configuration was found for service type '{0}'";
-                var failureMessage = string.Format(CultureInfo.InvariantCulture, messageFormat, ServiceType.FullName);
-
-                throw new ConfigurationErrorsException(failureMessage);
+                throw new ConfigurationErrorsException(string.Format(CultureInfo.InvariantCulture, Strings.InstanceProvider_NoService, ServiceType.FullName));
             }
 
             return instance;

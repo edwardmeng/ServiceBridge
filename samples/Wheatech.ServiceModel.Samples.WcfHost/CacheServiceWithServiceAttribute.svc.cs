@@ -17,7 +17,7 @@ namespace Wheatech.ServiceModel.Samples.WcfHost
             return (string)Repository.GetVale(key);
         }
 
-        public void SetVale(string key, object value)
+        public void SetVale(string key, string value)
         {
             Repository.SetVale(key, value);
         }

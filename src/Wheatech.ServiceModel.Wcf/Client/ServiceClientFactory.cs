@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+using Wheatech.ServiceModel.Wcf.Properties;
 
 namespace Wheatech.ServiceModel.Wcf
 {
@@ -19,9 +21,7 @@ namespace Wheatech.ServiceModel.Wcf
 
         static ServiceClientFactory()
         {
-            _assemblyBuilder =
-                AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("ILEmit_ServiceClients"),
-                                                              AssemblyBuilderAccess.Run);
+            _assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("ILEmit_ServiceClients"), AssemblyBuilderAccess.Run);
         }
 
         /// <summary>
@@ -198,15 +198,9 @@ namespace Wheatech.ServiceModel.Wcf
 
         private static Type GetServiceType(Type contractType)
         {
-            if (!contractType.IsInterface)
-            {
-                throw new InvalidOperationException(string.Format("The service contract type {0} must be an interface.",
-                                                                  contractType.FullName));
-            }
             if (contractType.IsGenericTypeDefinition)
             {
-                throw new InvalidOperationException(
-                    string.Format("The generic definition type {0} cannot be instantiated.", contractType.FullName));
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Strings.Contract_Cannot_GenericType, contractType.FullName));
             }
             return _serviceTypes.GetOrAdd(contractType, CreateServiceType);
         }
@@ -214,9 +208,7 @@ namespace Wheatech.ServiceModel.Wcf
         private static Type CreateServiceType(Type contractType)
         {
             string typeName = "DynamicModule.ns.Wrapped_" + contractType.Name + "_" + Guid.NewGuid().ToString("N");
-            TypeBuilder builder = GetModuleBuilder()
-                .DefineType(typeName, TypeAttributes.Public, typeof(ClientBase<>).MakeGenericType(contractType),
-                            new[] { contractType });
+            var builder = GetModuleBuilder().DefineType(typeName, TypeAttributes.Public, typeof(ClientBase<>).MakeGenericType(contractType), new[] { contractType });
             GenerateConstructors(builder, contractType);
             GenerateMethods(builder, contractType);
             return builder.CreateType();

@@ -11,6 +11,6 @@ namespace Wheatech.ServiceModel.Samples.WcfContracts
         string GetVale(string key);
 
         [OperationContract]
-        void SetVale(string key, object value);
+        void SetVale(string key, string value);
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.ServiceModel;
+using Wheatech.ServiceModel.Wcf.Properties;
 
 namespace Wheatech.ServiceModel.Wcf
 {
@@ -17,9 +19,7 @@ namespace Wheatech.ServiceModel.Wcf
 
         static ClientServiceFactory()
         {
-            _assemblyBuilder =
-                AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("ILEmit_ClientServices"),
-                                                              AssemblyBuilderAccess.Run);
+            _assemblyBuilder = AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("ILEmit_ClientServices"), AssemblyBuilderAccess.Run);
         }
 
         /// <summary>
@@ -35,30 +35,26 @@ namespace Wheatech.ServiceModel.Wcf
 
         internal static Type GetServiceType(Type contractType, string configurationName)
         {
-            if (!contractType.IsInterface)
-            {
-                throw new InvalidOperationException(string.Format("The service contract type {0} must be an interface.",
-                                                                  contractType.FullName));
-            }
             if (contractType.IsGenericTypeDefinition)
             {
-                throw new InvalidOperationException(
-                    string.Format("The generic definition type {0} cannot be instantiated.", contractType.FullName));
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Strings.Contract_Cannot_GenericType, contractType.FullName));
             }
 
             if (!contractType.IsDefined(typeof(ServiceContractAttribute), true))
             {
-                throw new InvalidOperationException(
-                    string.Format("The type {0} is not service contract.", contractType.FullName));
+                throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, Strings.Contract_Invalid, contractType.FullName));
+            }
+            if (string.IsNullOrEmpty(configurationName))
+            {
+                configurationName = "*";
             }
             return _serviceTypes.GetOrAdd(new ClientServiceKey(contractType, configurationName), key => CreateServiceType(key.ContractType, key.ConfigurationName));
         }
 
         private static Type CreateServiceType(Type contractType, string configurationName)
         {
-            string typeName = "DynamicModule.ns.Wrapped_" + contractType.Name + "_" + Guid.NewGuid().ToString("N");
-            TypeBuilder builder = GetModuleBuilder()
-                .DefineType(typeName, TypeAttributes.Public, null, new[] { contractType });
+            var typeName = "DynamicModule.ns.Wrapped_" + contractType.Name + "_" + Guid.NewGuid().ToString("N");
+            var builder = GetModuleBuilder().DefineType(typeName, TypeAttributes.Public, null, new[] { contractType });
             GenerateConstructor(builder);
             GenerateMethods(builder, contractType, configurationName);
             return builder.CreateType();
@@ -67,9 +63,7 @@ namespace Wheatech.ServiceModel.Wcf
         private static void GenerateConstructor(TypeBuilder builder)
         {
             // Define the constructor
-            var constructorBuilder =
-                builder.DefineConstructor(MethodAttributes.Public | MethodAttributes.RTSpecialName,
-                                          CallingConventions.Standard, Type.EmptyTypes);
+            var constructorBuilder = builder.DefineConstructor(MethodAttributes.Public | MethodAttributes.RTSpecialName, CallingConventions.Standard, Type.EmptyTypes);
             var il = constructorBuilder.GetILGenerator();
             il.Emit(OpCodes.Ldarg_0);
             il.Call(typeof(object).GetConstructor(Type.EmptyTypes));
@@ -159,8 +153,7 @@ namespace Wheatech.ServiceModel.Wcf
                 il.Emit(OpCodes.Ret);
             }
 
-            Type[] inheritedInterfaces = contractType.GetInterfaces();
-            foreach (Type inheritedInterface in inheritedInterfaces)
+            foreach (var inheritedInterface in contractType.GetInterfaces())
             {
                 GenerateMethods(builder, inheritedInterface, configurationName);
             }
