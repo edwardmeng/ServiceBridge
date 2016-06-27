@@ -21,31 +21,10 @@ namespace Wheatech.ServiceModel.Wcf
             return serviceName;
         }
 
-        /// <summary>
-        /// Determine the lifetime for the specified service implementation according to the ServiceBehaviorAttribute markup.
-        /// </summary>
-        /// <param name="serviceType">The type of service implementation.</param>
-        /// <returns>The lifetime of the specified service implementation.</returns>
-        public static ServiceLifetime GetServiceLifetime(Type serviceType)
+        internal static bool IsValidService(Type serviceType)
         {
-            var attribute = serviceType.GetCustomAttribute<ServiceBehaviorAttribute>();
-            var lifetime = ServiceLifetime.PerThread;
-            if (attribute != null)
-            {
-                switch (attribute.InstanceContextMode)
-                {
-                    case InstanceContextMode.PerCall:
-                        lifetime = ServiceLifetime.Transient;
-                        break;
-                    case InstanceContextMode.Single:
-                        lifetime = ServiceLifetime.Singleton;
-                        break;
-                    case InstanceContextMode.PerSession:
-                        lifetime = ServiceLifetime.PerThread;
-                        break;
-                }
-            }
-            return lifetime;
+            return !serviceType.IsInterface && !serviceType.IsAbstract && !serviceType.IsGenericTypeDefinition && serviceType.IsClass &&
+                   serviceType.IsPublic && serviceType.Assembly != typeof(ServiceContractAttribute).Assembly;
         }
     }
 }

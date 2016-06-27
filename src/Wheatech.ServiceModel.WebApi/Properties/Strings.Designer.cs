@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Wheatech.ServiceModel.Wcf.Properties {
+namespace Wheatech.ServiceModel.WebApi.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Wheatech.ServiceModel.Wcf.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Wheatech.ServiceModel.Wcf.Properties.Strings", typeof(Strings).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Wheatech.ServiceModel.WebApi.Properties.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,38 +61,11 @@ namespace Wheatech.ServiceModel.Wcf.Properties {
         }
         
         /// <summary>
-        ///   查找类似 The service contract  {0} cannot be generic definition type. 的本地化字符串。
+        ///   查找类似 The type {0} is not a valid ASP.NET WebApi controller. 的本地化字符串。
         /// </summary>
-        internal static string Contract_Cannot_GenericType {
+        internal static string Invalid_ControllerType {
             get {
-                return ResourceManager.GetString("Contract_Cannot_GenericType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 The type {0} is not service contract. Please ensure it has been marked with ServiceContractAttribute. 的本地化字符串。
-        /// </summary>
-        internal static string Contract_Invalid {
-            get {
-                return ResourceManager.GetString("Contract_Invalid", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Cannot find service implementation for the contract type {0}. 的本地化字符串。
-        /// </summary>
-        internal static string InstanceProvider_NoService {
-            get {
-                return ResourceManager.GetString("InstanceProvider_NoService", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 The type {0} is not a valid wcf service implementation. 的本地化字符串。
-        /// </summary>
-        internal static string Invalid_Servce_Implementation {
-            get {
-                return ResourceManager.GetString("Invalid_Servce_Implementation", resourceCulture);
+                return ResourceManager.GetString("Invalid_ControllerType", resourceCulture);
             }
         }
     }

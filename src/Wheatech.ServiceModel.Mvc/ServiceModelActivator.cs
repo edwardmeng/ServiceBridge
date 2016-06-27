@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Wheatech.Activation;
 
 [assembly: AssemblyActivator(typeof(Wheatech.ServiceModel.Mvc.ServiceModelActivator))]
@@ -10,6 +7,11 @@ namespace Wheatech.ServiceModel.Mvc
 {
     internal class ServiceModelActivator
     {
+        static ServiceModelActivator()
+        {
+            DependencyResolver.SetResolver(new ServiceModelDependencyResolver());
+        }
+
         public void Configuration(IActivatingEnvironment environment, IServiceContainer container)
         {
             // We have to register the controllers at the application configuration stage.
@@ -18,25 +20,9 @@ namespace Wheatech.ServiceModel.Mvc
             {
                 if (!assembly.IsDynamic)
                 {
-                    IEnumerable<TypeInfo> types;
-                    try
-                    {
-                        types = assembly.DefinedTypes;
-                    }
-                    catch (ReflectionTypeLoadException ex)
-                    {
-                        types = ex.Types.TakeWhile(type => type != null).Select(type => type.GetTypeInfo());
-                    }
-                    foreach (var type in types)
-                    {
-                        if (!type.IsInterface && !type.IsAbstract && type.IsClass && type != typeof(Controller) && typeof(Controller).IsAssignableFrom(type))
-                        {
-                            container.Register(type, null, ServiceLifetime.PerRequest);
-                        }
-                    }
+                    container.RegisterMvcControllers(assembly);
                 }
             }
-            DependencyResolver.SetResolver(new ServiceModelDependencyResolver());
         }
     }
 }

@@ -46,7 +46,6 @@ namespace Wheatech.ServiceModel.Wcf
         /// <returns></returns>
         private static int CommaIndexInTypeName(string typeName)
         {
-
             // Look for the last comma
             int commaIndex = typeName.LastIndexOf(',');
 
@@ -77,39 +76,13 @@ namespace Wheatech.ServiceModel.Wcf
             return index > 0 ? Type.GetType(typeName, false, false) : types.FirstOrDefault(type => type.FullName == typeName);
         }
 
-        private IEnumerable<Type> GetServiceContracts(Type serviceType)
-        {
-            foreach (var contractType in serviceType.GetInterfaces())
-            {
-                if (contractType.IsDefined(typeof(ServiceContractAttribute)))
-                {
-                    yield return contractType;
-                }
-            }
-            var contractClass = serviceType;
-            while (contractClass != null && contractClass != typeof(object))
-            {
-                if (contractClass.IsDefined(typeof(ServiceContractAttribute)))
-                {
-                    yield return contractClass;
-                }
-                contractClass = contractClass.BaseType;
-            }
-        }
-
         private void ConfigureServices(IServiceContainer container, TypeInfo[] types)
         {
             foreach (var serviceType in types)
             {
-                if (!serviceType.IsInterface && !serviceType.IsAbstract && !serviceType.IsGenericTypeDefinition && serviceType.IsClass &&
-                    serviceType.IsPublic && serviceType.Assembly != typeof(ServiceContractAttribute).Assembly)
+                if (ServiceUtils.IsValidService(serviceType))
                 {
-                    var serviceName = ServiceUtils.GetServiceName(serviceType);
-                    var lifetime = ServiceUtils.GetServiceLifetime(serviceType);
-                    foreach (var contractType in GetServiceContracts(serviceType))
-                    {
-                        container.Register(contractType, serviceType, serviceName, lifetime);
-                    }
+                    container.RegisterWcfServiceInternal(serviceType);
                 }
             }
         }

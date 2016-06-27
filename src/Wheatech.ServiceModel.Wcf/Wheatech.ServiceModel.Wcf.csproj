@@ -61,6 +61,7 @@
     <Compile Include="Server\ContainerServiceHost.cs" />
     <Compile Include="Server\ContainerServiceHostFactory.cs" />
     <Compile Include="Server\ServiceContainerBehaviorElement.cs" />
+    <Compile Include="ServiceContainerExtensions.cs" />
     <Compile Include="ServiceModelActivator.cs" />
     <Compile Include="ServiceUtils.cs" />
     <Compile Include="Properties\Strings.Designer.cs">

@@ -117,16 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Contract_Cannot_GenericType" xml:space="preserve">
-    <value>The service contract  {0} cannot be generic definition type.</value>
-  </data>
-  <data name="Contract_Invalid" xml:space="preserve">
-    <value>The type {0} is not service contract. Please ensure it has been marked with ServiceContractAttribute.</value>
-  </data>
-  <data name="InstanceProvider_NoService" xml:space="preserve">
-    <value>Cannot find service implementation for the contract type {0}.</value>
-  </data>
-  <data name="Invalid_Servce_Implementation" xml:space="preserve">
-    <value>The type {0} is not a valid wcf service implementation.</value>
+  <data name="Invalid_ControllerType" xml:space="preserve">
+    <value>The type {0} is not a valid ASP.NET mvc controller.</value>
   </data>
 </root>

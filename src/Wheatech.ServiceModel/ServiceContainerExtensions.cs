@@ -67,7 +67,7 @@ namespace Wheatech.ServiceModel
         }
 
         /// <summary>
-        /// Register a type mapping with the container. 
+        /// Register a type mapping with the <paramref name="container"/>. 
         /// </summary>
         /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
         /// <typeparam name="TImplementation"><see cref="Type"/> that will actually be returned.</typeparam>
@@ -83,7 +83,7 @@ namespace Wheatech.ServiceModel
         }
 
         /// <summary>
-        /// Register a type mapping with the container. 
+        /// Register a type mapping with the <paramref name="container"/>. 
         /// </summary>
         /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
         /// <typeparam name="TImplementation"><see cref="Type"/> that will actually be returned.</typeparam>
@@ -99,7 +99,7 @@ namespace Wheatech.ServiceModel
         }
 
         /// <summary>
-        /// Register a type mapping with the container. 
+        /// Register a type mapping with the <paramref name="container"/>. 
         /// </summary>
         /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
         /// <typeparam name="TImplementation"><see cref="Type"/> that will actually be returned.</typeparam>
@@ -116,7 +116,7 @@ namespace Wheatech.ServiceModel
         }
 
         /// <summary>
-        /// Register a given type with the container. 
+        /// Register a given type with the <paramref name="container"/>. 
         /// </summary>
         /// <typeparam name="T">The type to be registered.</typeparam>
         /// <param name="container">Container to register with.</param>
@@ -130,7 +130,7 @@ namespace Wheatech.ServiceModel
         }
 
         /// <summary>
-        /// Register a given type with the container. 
+        /// Register a given type with the <paramref name="container"/>. 
         /// </summary>
         /// <typeparam name="T">The type to be registered.</typeparam>
         /// <param name="container">Container to register with.</param>
@@ -144,7 +144,7 @@ namespace Wheatech.ServiceModel
         }
 
         /// <summary>
-        /// Register a given type with the container. 
+        /// Register a given type with the <paramref name="container"/>. 
         /// </summary>
         /// <typeparam name="T">The type to be registered.</typeparam>
         /// <param name="container">Container to register with.</param>
@@ -159,7 +159,7 @@ namespace Wheatech.ServiceModel
         }
 
         /// <summary>
-        /// Check if a particular type/name pair has been registered with the container. 
+        /// Check if a particular type/name pair has been registered with the <paramref name="container"/>. 
         /// </summary>
         /// <typeparam name="T">Type to check registration for.</typeparam>
         /// <param name="container">Container to register with.</param>
