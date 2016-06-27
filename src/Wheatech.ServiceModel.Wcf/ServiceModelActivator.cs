@@ -18,21 +18,24 @@ namespace Wheatech.ServiceModel.Wcf
             // We have to register the services at the application configuration stage.
             // Since there are some IoC implementations cannot register types after resolve instances.
             var types = new List<TypeInfo>();
-            foreach (Assembly assembly in environment.GetAssemblies())
+            foreach (var assembly in environment.GetAssemblies())
             {
-                IEnumerable<TypeInfo> assemblyTypes;
-                try
+                if (!assembly.IsDynamic)
                 {
-                    assemblyTypes = assembly.DefinedTypes;
+                    IEnumerable<TypeInfo> assemblyTypes;
+                    try
+                    {
+                        assemblyTypes = assembly.DefinedTypes;
+                    }
+                    catch (ReflectionTypeLoadException ex)
+                    {
+                        assemblyTypes = ex.Types.TakeWhile(type => type != null).Select(type => type.GetTypeInfo());
+                    }
+                    types.AddRange(assemblyTypes);
                 }
-                catch (ReflectionTypeLoadException ex)
-                {
-                    assemblyTypes = ex.Types.TakeWhile(type => type != null).Select(type => type.GetTypeInfo());
-                }
-                types.AddRange(assemblyTypes);
             }
-            ConfigureServices(container, (ServicesSection)ConfigurationManager.GetSection("system.serviceModel/services"), types.ToArray());
-            ConfigureClients(container, (ClientSection)ConfigurationManager.GetSection("system.serviceModel/client"), types.ToArray());
+            ConfigureServices(container, types.ToArray());
+            ConfigureClients(container, types.ToArray());
         }
 
         /// <summary>
@@ -74,78 +77,84 @@ namespace Wheatech.ServiceModel.Wcf
             return index > 0 ? Type.GetType(typeName, false, false) : types.FirstOrDefault(type => type.FullName == typeName);
         }
 
-        private void ConfigureServices(IServiceContainer container, ServicesSection section, TypeInfo[] types)
+        private string GetServiceName(Type serviceType)
         {
-            var contractTypes = new Dictionary<string, Type>();
-            var serviceTypes = new Dictionary<string, Type>();
-            foreach (var type in types)
+            string serviceName = null;
+            var behaviorAttribute = serviceType.GetCustomAttribute<ServiceBehaviorAttribute>();
+            if (behaviorAttribute != null)
             {
-                var contractAttribute = type.GetCustomAttribute<ServiceContractAttribute>(false);
-                if (contractAttribute != null)
+                serviceName = string.IsNullOrEmpty(behaviorAttribute.ConfigurationName) ? behaviorAttribute.Name : behaviorAttribute.ConfigurationName;
+            }
+            if (string.IsNullOrEmpty(serviceName))
+            {
+                serviceName = serviceType.FullName;
+            }
+            return serviceName;
+        }
+
+        private ServiceLifetime GetServiceLifetime(Type serviceType)
+        {
+            var attribute = serviceType.GetCustomAttribute<ServiceBehaviorAttribute>();
+            var lifetime = ServiceLifetime.PerThread;
+            if (attribute != null)
+            {
+                switch (attribute.InstanceContextMode)
                 {
-                    contractTypes.Add(contractAttribute.Name, type);
-                }
-                var behaviorAttribute = type.GetCustomAttribute<ServiceBehaviorAttribute>(false);
-                if (behaviorAttribute != null)
-                {
-                    serviceTypes.Add(behaviorAttribute.Name, type);
+                    case InstanceContextMode.PerCall:
+                        lifetime = ServiceLifetime.Transient;
+                        break;
+                    case InstanceContextMode.Single:
+                        lifetime = ServiceLifetime.Singleton;
+                        break;
+                    case InstanceContextMode.PerSession:
+                        lifetime = ServiceLifetime.PerThread;
+                        break;
                 }
             }
-            for (int i = 0; i < section.Services.Count; i++)
+            return lifetime;
+        }
+
+        private void ConfigureServices(IServiceContainer container, TypeInfo[] types)
+        {
+            foreach (var serviceType in types)
             {
-                var element = section.Services[i];
-                Type serviceType;
-                if (!serviceTypes.TryGetValue(element.Name, out serviceType))
+                if (!serviceType.IsInterface && !serviceType.IsAbstract && !serviceType.IsGenericTypeDefinition && serviceType.IsClass)
                 {
-                    serviceType = GetTypeFromName(element.Name, types);
-                }
-                if (serviceType != null)
-                {
-                    var attribute = serviceType.GetCustomAttribute<ServiceBehaviorAttribute>();
-                    var lifetime = ServiceLifetime.PerThread;
-                    if (attribute != null)
+                    var serviceName = GetServiceName(serviceType);
+                    var lifetime = GetServiceLifetime(serviceType);
+                    foreach (var contractType in serviceType.GetInterfaces())
                     {
-                        switch (attribute.InstanceContextMode)
+                        if (contractType.IsDefined(typeof(ServiceContractAttribute)))
                         {
-                            case InstanceContextMode.PerCall:
-                                lifetime = ServiceLifetime.Transient;
-                                break;
-                            case InstanceContextMode.Single:
-                                lifetime = ServiceLifetime.Singleton;
-                                break;
-                            case InstanceContextMode.PerSession:
-                                lifetime = ServiceLifetime.PerThread;
-                                break;
+                            container.Register(contractType, serviceType, serviceName, lifetime);
                         }
                     }
-                    for (int j = 0; j < element.Endpoints.Count; j++)
+                    var contractClass = serviceType;
+                    while (contractClass != null && contractClass != typeof(object))
                     {
-                        var endpoint = element.Endpoints[j];
-                        Type contractType;
-                        if (!contractTypes.TryGetValue(endpoint.Contract, out contractType))
+                        if (contractClass.IsDefined(typeof(ServiceContractAttribute)))
                         {
-                            contractType = GetTypeFromName(endpoint.Contract, types);
+                            container.Register(contractClass, serviceType, serviceName, lifetime);
                         }
-                        if (contractType != null)
-                        {
-                            container.Register(contractType, serviceType, endpoint.Address?.ToString(), lifetime);
-                        }
+                        contractClass = contractClass.BaseType.GetTypeInfo();
                     }
                 }
             }
         }
 
-        private void ConfigureClients(IServiceContainer container, ClientSection section, TypeInfo[] types)
+        private void ConfigureClients(IServiceContainer container, TypeInfo[] types)
         {
+            var section = (ClientSection) ConfigurationManager.GetSection("system.serviceModel/client");
             var contractTypes = new Dictionary<string, Type>();
-            foreach (var type in types)
+            foreach (var contractType in types)
             {
-                var contractAttribute = type.GetCustomAttribute<ServiceContractAttribute>(false);
+                var contractAttribute = contractType.GetCustomAttribute<ServiceContractAttribute>(false);
                 if (contractAttribute != null)
                 {
-                    contractTypes.Add(contractAttribute.Name, type);
+                    contractTypes.Add(contractAttribute.ConfigurationName, contractType);
                 }
             }
+            var contractEndPoints = new Dictionary<Type,List<string>>();
             for (int i = 0; i < section.Endpoints.Count; i++)
             {
                 var endpoint = section.Endpoints[i];
@@ -156,7 +165,34 @@ namespace Wheatech.ServiceModel.Wcf
                 }
                 if (contractType != null)
                 {
-                    container.Register(contractType, ClientServiceFactory.GetServiceType(contractType), endpoint.Name);
+                    List<string> endPoints;
+                    if (!contractEndPoints.TryGetValue(contractType,out endPoints))
+                    {
+                        endPoints = new List<string>();
+                        contractEndPoints.Add(contractType, endPoints);
+                    }
+                    endPoints.Add(endpoint.Name);
+                }
+            }
+            foreach (var contractEndPoint in contractEndPoints)
+            {
+                if (contractEndPoint.Value.Count == 1)
+                {
+                    var endpointConfigurationName = contractEndPoint.Value[0];
+                    var serviceType = ClientServiceFactory.GetServiceType(contractEndPoint.Key, endpointConfigurationName);
+                    container.Register(contractEndPoint.Key, serviceType, string.IsNullOrEmpty(endpointConfigurationName) ?null: endpointConfigurationName);
+                    if (!string.IsNullOrEmpty(endpointConfigurationName))
+                    {
+                        container.Register(contractEndPoint.Key, serviceType);
+                    }
+                }
+                else
+                {
+                    foreach (var endpointConfigurationName in contractEndPoint.Value)
+                    {
+                        var serviceType = ClientServiceFactory.GetServiceType(contractEndPoint.Key, endpointConfigurationName);
+                        container.Register(contractEndPoint.Key, serviceType, string.IsNullOrEmpty(endpointConfigurationName) ? null : endpointConfigurationName);
+                    }
                 }
             }
         }

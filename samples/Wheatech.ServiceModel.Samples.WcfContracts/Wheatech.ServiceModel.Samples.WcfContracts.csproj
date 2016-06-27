@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3191F441-18B9-496E-8867-DB5F34511BA5}</ProjectGuid>
+    <ProjectGuid>{C49F9D95-C1D9-454E-A10A-B9EE82973452}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wheatech.ServiceModel.Wcf</RootNamespace>
-    <AssemblyName>Wheatech.ServiceModel.Wcf</AssemblyName>
+    <RootNamespace>Wheatech.ServiceModel.Samples.WcfContracts</RootNamespace>
+    <AssemblyName>Wheatech.ServiceModel.Samples.WcfContracts</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -28,51 +28,23 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Wheatech.ServiceModel.Wcf.XML</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>..\..\tools\wheatech.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ServiceModel.Activation" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Web" />
-    <Reference Include="Wheatech.Activation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dfa3bda2996d7b44, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Wheatech.Activation.1.0.0\lib\net461\Wheatech.Activation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client\ClientBase.cs" />
-    <Compile Include="Client\ClientServiceFactory.cs" />
-    <Compile Include="Client\ClientServiceKey.cs" />
-    <Compile Include="Server\ContainerInstanceProvider.cs" />
-    <Compile Include="Server\ContainerServiceAttribute.cs" />
-    <Compile Include="Client\InnerClient.cs" />
+    <Compile Include="ICacheServiceWithBehavior.cs" />
+    <Compile Include="ICacheServiceWithContractAttribute.cs" />
+    <Compile Include="ICacheServiceWithFactory.cs" />
+    <Compile Include="ICacheServiceWithServiceAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Client\ServiceClientFactory.cs" />
-    <Compile Include="Server\ContainerServiceHost.cs" />
-    <Compile Include="Server\ContainerServiceHostFactory.cs" />
-    <Compile Include="Server\ServiceContainerBehaviorElement.cs" />
-    <Compile Include="ServiceModelActivator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\tools\wheatech.snk">
-      <Link>Properties\wheatech.snk</Link>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
-      <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
-      <Name>Wheatech.ServiceModel</Name>
+    <ProjectReference Include="..\..\src\Wheatech.ServiceModel.Wcf\Wheatech.ServiceModel.Wcf.csproj">
+      <Project>{3191f441-18b9-496e-8867-db5f34511ba5}</Project>
+      <Name>Wheatech.ServiceModel.Wcf</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

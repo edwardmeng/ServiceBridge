@@ -15,7 +15,7 @@ namespace Wheatech.ServiceModel.Wcf
         /// <returns>
         /// The behavior extension.
         /// </returns>
-        protected override object CreateBehavior() => new ContainerServiceBehavior();
+        protected override object CreateBehavior() => new ContainerServiceAttribute();
 
         /// <summary>
         /// Gets the type of behavior.
@@ -23,6 +23,6 @@ namespace Wheatech.ServiceModel.Wcf
         /// <returns>
         /// A <see cref="T:System.Type"/>.
         /// </returns>
-        public override Type BehaviorType => typeof(ContainerServiceBehavior);
+        public override Type BehaviorType => typeof(ContainerServiceAttribute);
     }
 }

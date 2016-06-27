@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Wheatech.ServiceModel.Wcf
 {
@@ -23,7 +20,7 @@ namespace Wheatech.ServiceModel.Wcf
         static ServiceClientFactory()
         {
             _assemblyBuilder =
-                AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("Wheatech_ILEmit_ServiceClients"),
+                AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("ILEmit_ServiceClients"),
                                                               AssemblyBuilderAccess.Run);
         }
 

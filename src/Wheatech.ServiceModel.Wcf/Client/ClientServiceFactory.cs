@@ -13,12 +13,12 @@ namespace Wheatech.ServiceModel.Wcf
     public static class ClientServiceFactory
     {
         private static readonly AssemblyBuilder _assemblyBuilder;
-        private static readonly ConcurrentDictionary<Type, Type> _serviceTypes = new ConcurrentDictionary<Type, Type>();
+        private static readonly ConcurrentDictionary<ClientServiceKey, Type> _serviceTypes = new ConcurrentDictionary<ClientServiceKey, Type>();
 
         static ClientServiceFactory()
         {
             _assemblyBuilder =
-                AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("WheatSoft_ILEmit_ClientServices"),
+                AppDomain.CurrentDomain.DefineDynamicAssembly(new AssemblyName("ILEmit_ClientServices"),
                                                               AssemblyBuilderAccess.Run);
         }
 
@@ -26,14 +26,14 @@ namespace Wheatech.ServiceModel.Wcf
         /// Create a new client service instance of the <typeparamref name="TContract"/> using the default target endpoint from the application configuration file. 
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">Either there is no default endpoint information in the configuration file, more than one endpoint in the file, or no configuration file.</exception>
-        public static TContract GetService<TContract>()
+        public static TContract GetService<TContract>(string configurationName)
         {
-            var serviceType = GetServiceType(typeof(TContract));
+            var serviceType = GetServiceType(typeof(TContract), configurationName);
             if (serviceType == null) return default(TContract);
             return (TContract)Activator.CreateInstance(serviceType);
         }
 
-        internal static Type GetServiceType(Type contractType)
+        internal static Type GetServiceType(Type contractType, string configurationName)
         {
             if (!contractType.IsInterface)
             {
@@ -46,21 +46,21 @@ namespace Wheatech.ServiceModel.Wcf
                     string.Format("The generic definition type {0} cannot be instantiated.", contractType.FullName));
             }
 
-            if (contractType.GetCustomAttributes(typeof(ServiceContractAttribute), true).Length == 0)
+            if (!contractType.IsDefined(typeof(ServiceContractAttribute), true))
             {
                 throw new InvalidOperationException(
                     string.Format("The type {0} is not service contract.", contractType.FullName));
             }
-            return _serviceTypes.GetOrAdd(contractType, CreateServiceType);
+            return _serviceTypes.GetOrAdd(new ClientServiceKey(contractType, configurationName), key => CreateServiceType(key.ContractType, key.ConfigurationName));
         }
 
-        private static Type CreateServiceType(Type contractType)
+        private static Type CreateServiceType(Type contractType, string configurationName)
         {
             string typeName = "DynamicModule.ns.Wrapped_" + contractType.Name + "_" + Guid.NewGuid().ToString("N");
             TypeBuilder builder = GetModuleBuilder()
                 .DefineType(typeName, TypeAttributes.Public, null, new[] { contractType });
             GenerateConstructor(builder);
-            GenerateMethods(builder, contractType);
+            GenerateMethods(builder, contractType, configurationName);
             return builder.CreateType();
         }
 
@@ -76,7 +76,7 @@ namespace Wheatech.ServiceModel.Wcf
             il.Emit(OpCodes.Ret);
         }
 
-        private static void GenerateMethods(TypeBuilder builder, Type contractType)
+        private static void GenerateMethods(TypeBuilder builder, Type contractType, string configurationName)
         {
             foreach (var method in contractType.GetMethods())
             {
@@ -108,8 +108,9 @@ namespace Wheatech.ServiceModel.Wcf
 
                 // var client = ServiceClientFactory.GetService<TContract>();
                 il.BeginExceptionBlock();
+                il.Emit(OpCodes.Ldstr, configurationName);
                 il.Call(typeof(ServiceClientFactory).GetMethod("GetService", BindingFlags.Public | BindingFlags.Static,
-                                                                null, Type.EmptyTypes, null).MakeGenericMethod(contractType));
+                                                                null, new[] { typeof(string) }, null).MakeGenericMethod(contractType));
                 il.Emit(OpCodes.Stloc, clientLocal);
 
                 il.Emit(OpCodes.Ldloc, clientLocal);
@@ -128,7 +129,7 @@ namespace Wheatech.ServiceModel.Wcf
                             il.Emit(OpCodes.Ldarg_3);
                             break;
                         default:
-                            il.Emit(OpCodes.Ldarg, i+1);
+                            il.Emit(OpCodes.Ldarg, i + 1);
                             break;
                     }
                 }
@@ -161,7 +162,7 @@ namespace Wheatech.ServiceModel.Wcf
             Type[] inheritedInterfaces = contractType.GetInterfaces();
             foreach (Type inheritedInterface in inheritedInterfaces)
             {
-                GenerateMethods(builder, inheritedInterface);
+                GenerateMethods(builder, inheritedInterface, configurationName);
             }
         }
 

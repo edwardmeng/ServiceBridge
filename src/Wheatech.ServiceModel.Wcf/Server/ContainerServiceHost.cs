@@ -24,9 +24,9 @@ namespace Wheatech.ServiceModel.Wcf
         /// </summary>
         protected override void OnOpening()
         {
-            if (Description.Behaviors.Find<ContainerServiceBehavior>() == null)
+            if (Description.Behaviors.Find<ContainerServiceAttribute>() == null)
             {
-                Description.Behaviors.Add(new ContainerServiceBehavior());
+                Description.Behaviors.Add(new ContainerServiceAttribute());
             }
 
             base.OnOpening();
