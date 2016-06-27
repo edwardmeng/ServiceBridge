@@ -54,12 +54,17 @@ set local
 set _PackageName=%1
 set libtmp=%cd%\lib
 set packagestmp="%cd%\packages"
+set output=%cd%\..\output
 if not exist %libtmp% mkdir %libtmp%
 if not exist %packagestmp% mkdir %packagestmp%
 if not exist %libtmp%\net461 mkdir %libtmp%\net461
+if not exist %output%\%config% mkdir %output%\%config%
 
-copy ..\src\%_PackageName%\bin\%config%\%_PackageName%.dll %libtmp%\net461 /Y
-copy ..\src\%_PackageName%\bin\%config%\%_PackageName%.xml %libtmp%\net461 /Y
+copy ..\src\%_PackageName%\bin\%config%\%_PackageName%.dll %libtmp%\net461\ /Y
+copy ..\src\%_PackageName%\bin\%config%\%_PackageName%.xml %libtmp%\net461\ /Y
+copy ..\src\%_PackageName%\bin\%config%\%_PackageName%.dll %output%\%config%\%_PackageName%.dll /Y
+copy ..\src\%_PackageName%\bin\%config%\%_PackageName%.xml %output%\%config%\%_PackageName%.xml /Y
+
 call :ExecuteCmd ..\tools\nuget.exe pack "%cd%\%_PackageName%.nuspec" -OutputDirectory %packagestmp% %version%
 rmdir %libtmp% /S /Q
 exit /b %ERRORLEVEL%
