@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Wheatech.ServiceModel
+namespace ServiceBridge
 {
     /// <summary>
     /// This attribute is used to mark properties or constructor for injection.

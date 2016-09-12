@@ -73,9 +73,9 @@
       <Project>{daa97815-4118-48f3-972f-eb339a0cb1ed}</Project>
       <Name>Wheatech.ServiceModel.StructureMap</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
+    <ProjectReference Include="..\ServiceBridge\ServiceBridge.csproj">
       <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
-      <Name>Wheatech.ServiceModel</Name>
+      <Name>ServiceBridge</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems" Label="Shared" />

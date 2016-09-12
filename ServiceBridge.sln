@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel", "src\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj", "{3EB8741F-D5DB-47EB-A76E-2CD1CE0B3961}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge", "src\ServiceBridge\ServiceBridge.csproj", "{3EB8741F-D5DB-47EB-A76E-2CD1CE0B3961}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Unity", "src\Wheatech.ServiceModel.Unity\Wheatech.ServiceModel.Unity.csproj", "{C0BF61E5-73F6-40C8-97E1-F257A60CAB1A}"
 EndProject
@@ -105,13 +105,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Sampl
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.projitems*{1afd596c-6d58-4b6b-ad84-27375e41fecd}*SharedItemsImports = 4
+		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{2984c4c5-f10e-4062-b574-9f274cf3c4da}*SharedItemsImports = 4
+		src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.projitems*{37e0d2f9-83ee-4c13-8c72-da8494613552}*SharedItemsImports = 4
 		src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.projitems*{760e5e67-104d-4348-8abd-ee574b26550d}*SharedItemsImports = 13
-		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{b233cd92-2d28-4304-be77-337f508e574b}*SharedItemsImports = 4
 		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{793af29f-1186-45b7-92eb-8605ebce3cfe}*SharedItemsImports = 4
 		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{ac0a52e0-11fc-46c1-ae5d-83aded57d4fe}*SharedItemsImports = 13
-		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{2984c4c5-f10e-4062-b574-9f274cf3c4da}*SharedItemsImports = 4
-		src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.projitems*{1afd596c-6d58-4b6b-ad84-27375e41fecd}*SharedItemsImports = 4
-		src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.projitems*{37e0d2f9-83ee-4c13-8c72-da8494613552}*SharedItemsImports = 4
+		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{b233cd92-2d28-4304-be77-337f508e574b}*SharedItemsImports = 4
 		src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.projitems*{daa97815-4118-48f3-972f-eb339a0cb1ed}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

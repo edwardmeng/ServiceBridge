@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Wheatech.ServiceModel
+namespace ServiceBridge
 {
     /// <summary>
     /// Extension class that adds a set of convenience overloads to the <see cref="IServiceContainer"/> interface. 

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Wheatech.ServiceModel
+namespace ServiceBridge
 {
     /// <summary>
     /// Event argument class for the <see cref="IServiceContainer.Registering"/> event. 

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace Wheatech.ServiceModel
+namespace ServiceBridge
 {
     internal static class ReflectionHelper
     {

@@ -74,9 +74,9 @@
     <Compile Include="UnityServiceRegisterEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
+    <ProjectReference Include="..\ServiceBridge\ServiceBridge.csproj">
       <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
-      <Name>Wheatech.ServiceModel</Name>
+      <Name>ServiceBridge</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Wheatech.ServiceModel
+namespace ServiceBridge
 {
     /// <summary>
     /// The ServiceRegistration is used to represent the registration of the service.

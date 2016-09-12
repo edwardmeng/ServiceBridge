@@ -1,4 +1,4 @@
-﻿namespace Wheatech.ServiceModel
+﻿namespace ServiceBridge
 {
     /// <summary>
     /// Interface for all <see cref="IServiceContainer"/> extension objects. 

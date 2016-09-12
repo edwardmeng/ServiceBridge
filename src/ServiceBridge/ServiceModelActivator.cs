@@ -1,8 +1,8 @@
 ﻿using Wheatech.Activation;
 
-[assembly:AssemblyActivator(typeof(Wheatech.ServiceModel.ServiceModelActivator))]
+[assembly:AssemblyActivator(typeof(ServiceBridge.ServiceModelActivator))]
 
-namespace Wheatech.ServiceModel
+namespace ServiceBridge
 {
     [ActivationPriority(ActivationPriority.Low)]
     internal class ServiceModelActivator

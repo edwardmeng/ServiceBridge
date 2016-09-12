@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Wheatech.ServiceModel.Properties;
+using ServiceBridge.Properties;
 
-namespace Wheatech.ServiceModel
+namespace ServiceBridge
 {
     /// <summary>
     /// This class provides the ambient container for this application. If your

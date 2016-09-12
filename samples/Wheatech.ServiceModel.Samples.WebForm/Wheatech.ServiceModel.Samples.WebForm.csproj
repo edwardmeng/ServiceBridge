@@ -100,9 +100,9 @@
       <Project>{cf485131-27b9-4709-bb73-c79002b780cb}</Project>
       <Name>Wheatech.ServiceModel.Web</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
+    <ProjectReference Include="..\..\src\ServiceBridge\ServiceBridge.csproj">
       <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
-      <Name>Wheatech.ServiceModel</Name>
+      <Name>ServiceBridge</Name>
     </ProjectReference>
     <ProjectReference Include="..\Wheatech.ServiceModel.Sample.Components\Wheatech.ServiceModel.Sample.Components.csproj">
       <Project>{0780261a-7447-436e-b484-0d36113696d5}</Project>

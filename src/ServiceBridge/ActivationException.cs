@@ -1,28 +1,29 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Wheatech.ServiceModel
+namespace ServiceBridge
 {
     /// <summary>
-    /// The standard exception thrown when a <see cref="IServiceContainer"/> has an error in injecting an existing object.
+    /// The standard exception thrown when a <see cref="IServiceContainer"/> has an error in resolving an object.
     /// </summary>
-    public class InjectionException : Exception
+    [Serializable]
+    public class ActivationException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InjectionException" /> class.
+        /// Initializes a new instance of the <see cref="ActivationException" /> class.
         /// </summary>
-        public InjectionException() { }
+        public ActivationException() { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InjectionException" /> class with a specified error message.
+        /// Initializes a new instance of the <see cref="ActivationException" /> class with a specified error message.
         /// </summary>
         /// <param name="message">
         /// The message that describes the error. 
         ///  </param>
-        public InjectionException(string message) : base(message) { }
+        public ActivationException(string message) : base(message) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InjectionException" /> class with a specified error message and a reference to the inner exception that is the cause of this exception.
+        /// Initializes a new instance of the <see cref="ActivationException" /> class with a specified error message and a reference to the inner exception that is the cause of this exception.
         /// </summary>
         /// <param name="message">
         /// The error message that explains the reason for the exception. 
@@ -30,10 +31,10 @@ namespace Wheatech.ServiceModel
         /// <param name="innerException">
         /// The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified. 
         /// </param>
-        public InjectionException(string message, Exception innerException) : base(message, innerException) { }
+        public ActivationException(string message, Exception innerException) : base(message, innerException) { }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InjectionException" /> class with serialized data.
+        /// Initializes a new instance of the <see cref="ActivationException" /> class with serialized data.
         /// </summary>
         /// <param name="info">
         /// The <see cref="T:System.Runtime.Serialization.SerializationInfo" /> that holds the serialized object data about the exception being thrown. 
@@ -47,6 +48,6 @@ namespace Wheatech.ServiceModel
         /// <exception cref="T:System.Runtime.Serialization.SerializationException">
         /// The class name is null or <see cref="P:System.Exception.HResult" /> is zero (0). 
         /// </exception>
-        protected InjectionException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+        protected ActivationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
     }
 }

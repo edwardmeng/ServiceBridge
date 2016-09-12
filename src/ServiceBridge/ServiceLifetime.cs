@@ -1,4 +1,4 @@
-﻿namespace Wheatech.ServiceModel
+﻿namespace ServiceBridge
 {
     /// <summary>
     /// Enumeration used to mark the instance's lifetime.

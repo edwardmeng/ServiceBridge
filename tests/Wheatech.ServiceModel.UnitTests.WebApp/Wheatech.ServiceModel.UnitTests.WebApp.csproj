@@ -252,9 +252,9 @@
       <Project>{37e0d2f9-83ee-4c13-8c72-da8494613552}</Project>
       <Name>Wheatech.ServiceModel.Windsor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
+    <ProjectReference Include="..\..\src\ServiceBridge\ServiceBridge.csproj">
       <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
-      <Name>Wheatech.ServiceModel</Name>
+      <Name>ServiceBridge</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

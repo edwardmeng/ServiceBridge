@@ -89,9 +89,9 @@
       <Project>{c0bf61e5-73f6-40c8-97e1-f257a60cab1a}</Project>
       <Name>Wheatech.ServiceModel.Unity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
+    <ProjectReference Include="..\ServiceBridge\ServiceBridge.csproj">
       <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
-      <Name>Wheatech.ServiceModel</Name>
+      <Name>ServiceBridge</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -63,9 +63,9 @@
       <Project>{38426ec5-1a50-4da2-b459-5389b120a569}</Project>
       <Name>Wheatech.ServiceModel.Interception</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Wheatech.ServiceModel\Wheatech.ServiceModel.csproj">
+    <ProjectReference Include="..\..\src\ServiceBridge\ServiceBridge.csproj">
       <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
-      <Name>Wheatech.ServiceModel</Name>
+      <Name>ServiceBridge</Name>
     </ProjectReference>
     <ProjectReference Include="..\Wheatech.ServiceModel.Samples.WcfContracts\Wheatech.ServiceModel.Samples.WcfContracts.csproj">
       <Project>{c49f9d95-c1d9-454e-a10a-b9ee82973452}</Project>

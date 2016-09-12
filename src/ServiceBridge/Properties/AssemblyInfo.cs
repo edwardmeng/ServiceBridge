@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Wheatech.ServiceModel")]
+[assembly: AssemblyTitle("ServiceBridge")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Wheatech.ServiceModel")]
+[assembly: AssemblyProduct("ServiceBridge")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -35,4 +35,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly:InternalsVisibleTo("Wheatech.ServiceModel.Interception, PublicKey=002400000480000094000000060200000024000052534131000400000100010031bdd7a73f79f16930fee602243f26cae893d8e0899e0bb17d6bb2fd596178271768c9f05d3b7d895dc669951cba00f151310024054c90d4760d890e4c11bd2c62b0dbe4f6baa35a0c2c77a9dd46de564877e6460cac71934cfd3bc4f952e546f6e2f62c987afa2363da0f9a61ab6f6d478e3fc19d01d92f8a9cbe16da3f66a5")]
+[assembly:InternalsVisibleTo("ServiceBridge.Interception, PublicKey=002400000480000094000000060200000024000052534131000400000100010031bdd7a73f79f16930fee602243f26cae893d8e0899e0bb17d6bb2fd596178271768c9f05d3b7d895dc669951cba00f151310024054c90d4760d890e4c11bd2c62b0dbe4f6baa35a0c2c77a9dd46de564877e6460cac71934cfd3bc4f952e546f6e2f62c987afa2363da0f9a61ab6f6d478e3fc19d01d92f8a9cbe16da3f66a5")]

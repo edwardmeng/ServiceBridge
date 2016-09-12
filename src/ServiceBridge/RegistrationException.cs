@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace Wheatech.ServiceModel
+namespace ServiceBridge
 {
     /// <summary>
     /// The standard exception thrown when a <see cref="IServiceContainer"/> has an error in registering a type mapping.

@@ -7,9 +7,9 @@
     <ProjectGuid>{3EB8741F-D5DB-47EB-A76E-2CD1CE0B3961}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Wheatech.ServiceModel</RootNamespace>
-    <AssemblyName>Wheatech.ServiceModel</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>ServiceBridge</RootNamespace>
+    <AssemblyName>ServiceBridge</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,7 +30,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Wheatech.ServiceModel.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\ServiceBridge.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -40,10 +42,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Wheatech.Activation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dfa3bda2996d7b44, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Wheatech.Activation.1.0.0\lib\net461\Wheatech.Activation.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivationException.cs" />
@@ -63,7 +61,6 @@
     <Compile Include="IServiceContainerExtension.cs" />
     <Compile Include="ServiceContainerExtensions.cs" />
     <Compile Include="ServiceLifetime.cs" />
-    <Compile Include="ServiceModelActivator.cs" />
     <Compile Include="ServiceRegisterEventArgs.cs" />
     <Compile Include="ServiceRegistration.cs" />
   </ItemGroup>
