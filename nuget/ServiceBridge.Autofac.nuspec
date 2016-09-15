@@ -1,23 +1,27 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Wheatech.ServiceModel</id>
+    <id>ServiceBridge.Autofac</id>
     <version>1.0.0</version>
     <authors>edwardmeng</authors>
     <owners>edwardmeng</owners>
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
-    <projectUrl>https://github.com/edwardmeng/wheatech.ServiceModel</projectUrl>
+    <projectUrl>https://github.com/edwardmeng/ServiceBridge</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>
-      The Wheatech.ServiceModel library contains shared classes for service registration and service resolution to provides an abstraction over IoC containers.
+      ServiceBridge implementation for Autofac IoC.
     </description>
-    <tags>IoC DependencyInjection</tags>
+    <tags>IoC DependencyInjection Autofac</tags>
     <dependencies>
-      <dependency id="Wheatech.Activation" version="[1.0,2.0)" />
+      <group targetFramework=".NETFramework4.5" >
+        <dependency id="ServiceBridge" version="[1.0,2.0)" />
+        <dependency id="Autofac" version="[3.5.0,)" />
+      </group>
     </dependencies>
   </metadata>
   <files>
     <file src="lib\**\*.dll" target="lib" />
     <file src="lib\**\*.xml" target="lib" />
+    <file src="..\LICENSE" />
   </files>
 </package>

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>ServiceBridge.ServiceModel</id>
+    <version>1.0.0</version>
+    <authors>edwardmeng</authors>
+    <owners>edwardmeng</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>https://github.com/edwardmeng/ServiceBridge</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>
+      This library provides extension to integration ServiceBridge with WCF services.
+    </description>
+    <tags>IoC DependencyInjection WCF Interception AOP</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.0" >
+        <dependency id="ServiceBridge" version="[1.0,2.0)" />
+      </group>
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.ServiceModel" targetFramework="net40"/>
+    </frameworkAssemblies>
+  </metadata>
+  <files>
+    <file src="lib\**\*.dll" target="lib" />
+    <file src="lib\**\*.xml" target="lib" />
+    <file src="..\LICENSE" />
+  </files>
+</package>

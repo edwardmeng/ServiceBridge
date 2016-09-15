@@ -1,26 +1,29 @@
 <?xml version="1.0"?>
 <package>
   <metadata>
-    <id>Wheatech.ServiceModel.Web</id>
+    <id>ServiceBridge.Web</id>
     <version>1.0.0</version>
     <authors>edwardmeng</authors>
     <owners>edwardmeng</owners>
     <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
-    <projectUrl>https://github.com/edwardmeng/wheatech.ServiceModel</projectUrl>
+    <projectUrl>https://github.com/edwardmeng/ServiceBridge</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>
-      This library integrates Wheatech.ServiceModel with ASP.NET web pages and user controls.
+      This library integrates ServiceBridge with ASP.NET web pages and user controls.
     </description>
-    <tags>IoC DependencyInjection Web ASP.NET WebForm WebPage UserControl Interception AOP</tags>
+    <tags>IoC DependencyInjection Web ASP.NET WebForm UserControl Interception AOP</tags>
     <dependencies>
-      <dependency id="Wheatech.ServiceModel" version="[1.0,2.0)" />
+      <group targetFramework=".NETFramework4.0" >
+        <dependency id="ServiceBridge" version="[1.0,2.0)" />
+      </group>
     </dependencies>
     <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System.Web" targetFramework="net461"/>
+      <frameworkAssembly assemblyName="System.Web" targetFramework="net45"/>
     </frameworkAssemblies>
   </metadata>
   <files>
     <file src="lib\**\*.dll" target="lib" />
     <file src="lib\**\*.xml" target="lib" />
+    <file src="..\LICENSE" />
   </files>
 </package>
