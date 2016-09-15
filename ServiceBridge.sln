@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge", "src\ServiceBridge\ServiceBridge.csproj", "{3EB8741F-D5DB-47EB-A76E-2CD1CE0B3961}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge", "src\core\ServiceBridge\ServiceBridge.csproj", "{3EB8741F-D5DB-47EB-A76E-2CD1CE0B3961}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Unity", "src\Wheatech.ServiceModel.Unity\Wheatech.ServiceModel.Unity.csproj", "{C0BF61E5-73F6-40C8-97E1-F257A60CAB1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Unity", "src\Unity\ServiceBridge.Unity\ServiceBridge.Unity.csproj", "{C0BF61E5-73F6-40C8-97E1-F257A60CAB1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Autofac", "src\Wheatech.ServiceModel.Autofac\Wheatech.ServiceModel.Autofac.csproj", "{1AFD596C-6D58-4B6B-AD84-27375E41FECD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Autofac", "src\Autofac\ServiceBridge.Autofac\ServiceBridge.Autofac.csproj", "{1AFD596C-6D58-4B6B-AD84-27375E41FECD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Interception", "src\Wheatech.ServiceModel.Interception\Wheatech.ServiceModel.Interception.csproj", "{38426EC5-1A50-4DA2-B459-5389B120A569}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Interception", "src\core\ServiceBridge.Interception\ServiceBridge.Interception.csproj", "{38426EC5-1A50-4DA2-B459-5389B120A569}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Unity.Interception", "src\Wheatech.ServiceModel.Unity.Interception\Wheatech.ServiceModel.Unity.Interception.csproj", "{60972548-F189-49D7-9C31-976307A3E03D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Unity.Interception", "src\Unity\ServiceBridge.Unity.Interception\ServiceBridge.Unity.Interception.csproj", "{60972548-F189-49D7-9C31-976307A3E03D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{0E23DD74-733E-4539-AEEB-527D73F0CA28}"
 EndProject
@@ -19,33 +19,31 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Autofac", "Autofac", "{CE31
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Unity", "Unity", "{C498B61F-0134-4FF9-88F7-F2B6CB123A96}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integrations", "integrations", "{FEAADEE8-46F3-4353-9F80-EE2F736D1784}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Autofac.Interception", "src\Autofac\ServiceBridge.Autofac.Interception\ServiceBridge.Autofac.Interception.csproj", "{2984C4C5-F10E-4062-B574-9F274CF3C4DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Autofac.Interception", "src\Wheatech.ServiceModel.Autofac.Interception\Wheatech.ServiceModel.Autofac.Interception.csproj", "{2984C4C5-F10E-4062-B574-9F274CF3C4DA}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Wheatech.ServiceModel.DynamicProxy", "src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.shproj", "{AC0A52E0-11FC-46C1-AE5D-83ADED57D4FE}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ServiceBridge.DynamicProxy", "src\Share\ServiceBridge.DynamicProxy\ServiceBridge.DynamicProxy.shproj", "{AC0A52E0-11FC-46C1-AE5D-83ADED57D4FE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windsor", "Windsor", "{F342CEBE-A653-4633-B8A0-C14064926113}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Windsor", "src\Wheatech.ServiceModel.Windsor\Wheatech.ServiceModel.Windsor.csproj", "{37E0D2F9-83EE-4C13-8C72-DA8494613552}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Windsor", "src\Windsor\ServiceBridge.Windsor\ServiceBridge.Windsor.csproj", "{37E0D2F9-83EE-4C13-8C72-DA8494613552}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Windsor.Interception", "src\Wheatech.ServiceModel.Windsor.Interception\Wheatech.ServiceModel.Windsor.Interception.csproj", "{B233CD92-2D28-4304-BE77-337F508E574B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Windsor.Interception", "src\Windsor\ServiceBridge.Windsor.Interception\ServiceBridge.Windsor.Interception.csproj", "{B233CD92-2D28-4304-BE77-337F508E574B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{830309B2-BF70-4BC5-8CA1-5EB40F60A76B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Wcf", "src\Wheatech.ServiceModel.Wcf\Wheatech.ServiceModel.Wcf.csproj", "{3191F441-18B9-496E-8867-DB5F34511BA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.ServiceModel", "src\WCF\ServiceBridge.ServiceModel\ServiceBridge.ServiceModel.csproj", "{3191F441-18B9-496E-8867-DB5F34511BA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Ninject", "src\Wheatech.ServiceModel.Ninject\Wheatech.ServiceModel.Ninject.csproj", "{CCF5528E-E26B-408A-933F-D2E9E1927A98}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Ninject", "src\Ninject\ServiceBridge.Ninject\ServiceBridge.Ninject.csproj", "{CCF5528E-E26B-408A-933F-D2E9E1927A98}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ninject", "Ninject", "{AB1FEDB3-EB92-48F2-983E-78A34163735E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Ninject.Interception", "src\Wheatech.ServiceModel.Ninject.Interception\Wheatech.ServiceModel.Ninject.Interception.csproj", "{B8765A35-B885-465B-9A6B-F4C2AABA6BEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Ninject.Interception", "src\Ninject\ServiceBridge.Ninject.Interception\ServiceBridge.Ninject.Interception.csproj", "{B8765A35-B885-465B-9A6B-F4C2AABA6BEA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "StructureMap", "StructureMap", "{59126E2C-9CA2-450D-96D6-3FA0DAC5D0C0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.StructureMap", "src\Wheatech.ServiceModel.StructureMap\Wheatech.ServiceModel.StructureMap.csproj", "{DAA97815-4118-48F3-972F-EB339A0CB1ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.StructureMap", "src\StructureMap\ServiceBridge.StructureMap\ServiceBridge.StructureMap.csproj", "{DAA97815-4118-48F3-972F-EB339A0CB1ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.StructureMap.Interception", "src\Wheatech.ServiceModel.StructureMap.Interception\Wheatech.ServiceModel.StructureMap.Interception.csproj", "{793AF29F-1186-45B7-92EB-8605EBCE3CFE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.StructureMap.Interception", "src\StructureMap\ServiceBridge.StructureMap.Interception\ServiceBridge.StructureMap.Interception.csproj", "{793AF29F-1186-45B7-92EB-8605EBCE3CFE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{54F52CBD-F2B4-4AC1-BB9E-FC0893DCB12F}"
 	ProjectSection(SolutionItems) = preProject
@@ -75,44 +73,74 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.UnitTests.WebApp", "tests\Wheatech.ServiceModel.UnitTests.WebApp\Wheatech.ServiceModel.UnitTests.WebApp.csproj", "{50ED909D-AA87-4D7A-ABC8-3941530FEF6E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.UnitTests.WebApp", "tests\ServiceBridge.UnitTests.WebApp\ServiceBridge.UnitTests.WebApp.csproj", "{50ED909D-AA87-4D7A-ABC8-3941530FEF6E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.UnitTests", "tests\Wheatech.ServiceModel.UnitTests\Wheatech.ServiceModel.UnitTests.csproj", "{3536F35E-643C-40D0-9F0C-52E75E7D351B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.UnitTests", "tests\ServiceBridge.UnitTests\ServiceBridge.UnitTests.csproj", "{3536F35E-643C-40D0-9F0C-52E75E7D351B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Mvc", "src\Wheatech.ServiceModel.Mvc\Wheatech.ServiceModel.Mvc.csproj", "{33CE1BDE-446D-4152-AB59-C40B18CD3919}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Mvc", "src\Mvc\ServiceBridge.Mvc\ServiceBridge.Mvc.csproj", "{33CE1BDE-446D-4152-AB59-C40B18CD3919}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Web", "src\Wheatech.ServiceModel.Web\Wheatech.ServiceModel.Web.csproj", "{CF485131-27B9-4709-BB73-C79002B780CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Web", "src\Web\ServiceBridge.Web\ServiceBridge.Web.csproj", "{CF485131-27B9-4709-BB73-C79002B780CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.WebApi", "src\Wheatech.ServiceModel.WebApi\Wheatech.ServiceModel.WebApi.csproj", "{58646E1C-FEFA-4960-BFC5-07023B4488E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.WebApi", "src\WebApi\ServiceBridge.WebApi\ServiceBridge.WebApi.csproj", "{58646E1C-FEFA-4960-BFC5-07023B4488E7}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Wheatech.ServiceModel.DynamicInjection", "src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.shproj", "{760E5E67-104D-4348-8ABD-EE574B26550D}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ServiceBridge.DynamicInjection", "src\Share\ServiceBridge.DynamicInjection\ServiceBridge.DynamicInjection.shproj", "{760E5E67-104D-4348-8ABD-EE574B26550D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Samples.WebForm", "samples\Wheatech.ServiceModel.Samples.WebForm\Wheatech.ServiceModel.Samples.WebForm.csproj", "{4CD59E23-88CC-445A-B16B-7DCC75A70212}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Samples.WebForm", "samples\ServiceBridge.Samples.WebForm\ServiceBridge.Samples.WebForm.csproj", "{4CD59E23-88CC-445A-B16B-7DCC75A70212}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Samples.Mvc", "samples\Wheatech.ServiceModel.Samples.Mvc\Wheatech.ServiceModel.Samples.Mvc.csproj", "{D1AA8CDC-B85C-413E-BA5B-5B96C8418B00}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Samples.Mvc", "samples\ServiceBridge.Samples.Mvc\ServiceBridge.Samples.Mvc.csproj", "{D1AA8CDC-B85C-413E-BA5B-5B96C8418B00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Sample.Components", "samples\Wheatech.ServiceModel.Sample.Components\Wheatech.ServiceModel.Sample.Components.csproj", "{0780261A-7447-436E-B484-0D36113696D5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Sample.Components", "samples\ServiceBridge.Sample.Components\ServiceBridge.Sample.Components.csproj", "{0780261A-7447-436E-B484-0D36113696D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Samples.WebApi", "samples\Wheatech.ServiceModel.Samples.WebApi\Wheatech.ServiceModel.Samples.WebApi.csproj", "{FA3DA168-5F77-4366-A49F-B1C3430D98FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Samples.WebApi", "samples\ServiceBridge.Samples.WebApi\ServiceBridge.Samples.WebApi.csproj", "{FA3DA168-5F77-4366-A49F-B1C3430D98FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Samples.WcfHost", "samples\Wheatech.ServiceModel.Samples.WcfHost\Wheatech.ServiceModel.Samples.WcfHost.csproj", "{63F0A06B-CC68-4407-AC4A-5539D14758E0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Samples.WcfHost", "samples\ServiceBridge.Samples.WcfHost\ServiceBridge.Samples.WcfHost.csproj", "{63F0A06B-CC68-4407-AC4A-5539D14758E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Samples.WcfContracts", "samples\Wheatech.ServiceModel.Samples.WcfContracts\Wheatech.ServiceModel.Samples.WcfContracts.csproj", "{C49F9D95-C1D9-454E-A10A-B9EE82973452}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Samples.WcfContracts", "samples\ServiceBridge.Samples.WcfContracts\ServiceBridge.Samples.WcfContracts.csproj", "{C49F9D95-C1D9-454E-A10A-B9EE82973452}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheatech.ServiceModel.Samples.WcfClient", "samples\Wheatech.ServiceModel.Samples.WcfClient\Wheatech.ServiceModel.Samples.WcfClient.csproj", "{C118905E-3641-4D85-9084-A10A45351C09}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Samples.WcfClient", "samples\ServiceBridge.Samples.WcfClient\ServiceBridge.Samples.WcfClient.csproj", "{C118905E-3641-4D85-9084-A10A45351C09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Autofac.Activation", "src\Autofac\ServiceBridge.Autofac.Activation\ServiceBridge.Autofac.Activation.csproj", "{13546467-0A48-430D-8E96-0F56D1001F6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Ninject.Activation", "src\Ninject\ServiceBridge.Ninject.Activation\ServiceBridge.Ninject.Activation.csproj", "{A99B1DA1-FBF8-4BA6-8C17-88D53AA033BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Unity.Activation", "src\Unity\ServiceBridge.Unity.Activation\ServiceBridge.Unity.Activation.csproj", "{EC9BD218-F49B-4C44-BBC5-EB009DC31CA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.StructureMap.Activation", "src\StructureMap\ServiceBridge.StructureMap.Activation\ServiceBridge.StructureMap.Activation.csproj", "{72730EE4-75BD-4825-9AC0-AB44C284B6B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Windsor.Activation", "src\Windsor\ServiceBridge.Windsor.Activation\ServiceBridge.Windsor.Activation.csproj", "{C643F9CC-5B63-45B2-B42C-747ED4BA6D17}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "integrations", "integrations", "{D5D57C7A-8A24-46BB-8D3B-94B7867CA9D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "implementations", "implementations", "{8EEF2EB8-515E-4CE0-92E9-0CDC0941804B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Mvc", "Mvc", "{F3A22849-4FC3-46F5-A1C5-D4AD7BFFEAFB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Mvc.Activation", "src\Mvc\ServiceBridge.Mvc.Activation\ServiceBridge.Mvc.Activation.csproj", "{580786D7-8264-4B2A-A120-770E5E0B1ECE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApi", "WebApi", "{BAD61B4B-85CA-408A-9129-D31399201108}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.WebApi.Activation", "src\WebApi\ServiceBridge.WebApi.Activation\ServiceBridge.WebApi.Activation.csproj", "{709A79E4-5133-4C93-9E46-70215F710812}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{4FEE158D-F094-4197-8906-A426BBDC5739}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WCF", "WCF", "{6E836887-D90C-452A-A72F-CF7CADECC9B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.ServiceModel.Activation", "src\WCF\ServiceBridge.ServiceModel.Activation\ServiceBridge.ServiceModel.Activation.csproj", "{6C79638C-2A79-4642-80AB-D5D9F395CA50}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Share", "Share", "{073A2374-DAE0-4664-A077-26FAC30DE5AE}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.projitems*{1afd596c-6d58-4b6b-ad84-27375e41fecd}*SharedItemsImports = 4
-		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{2984c4c5-f10e-4062-b574-9f274cf3c4da}*SharedItemsImports = 4
-		src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.projitems*{37e0d2f9-83ee-4c13-8c72-da8494613552}*SharedItemsImports = 4
-		src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.projitems*{760e5e67-104d-4348-8abd-ee574b26550d}*SharedItemsImports = 13
-		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{793af29f-1186-45b7-92eb-8605ebce3cfe}*SharedItemsImports = 4
-		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{ac0a52e0-11fc-46c1-ae5d-83aded57d4fe}*SharedItemsImports = 13
-		src\Wheatech.ServiceModel.DynamicProxy\Wheatech.ServiceModel.DynamicProxy.projitems*{b233cd92-2d28-4304-be77-337f508e574b}*SharedItemsImports = 4
-		src\Wheatech.ServiceModel.DynamicInjection\Wheatech.ServiceModel.DynamicInjection.projitems*{daa97815-4118-48f3-972f-eb339a0cb1ed}*SharedItemsImports = 4
+		src\Share\ServiceBridge.DynamicInjection\ServiceBridge.DynamicInjection.projitems*{1afd596c-6d58-4b6b-ad84-27375e41fecd}*SharedItemsImports = 4
+		src\Share\ServiceBridge.DynamicProxy\ServiceBridge.DynamicProxy.projitems*{2984c4c5-f10e-4062-b574-9f274cf3c4da}*SharedItemsImports = 4
+		src\Share\ServiceBridge.DynamicInjection\ServiceBridge.DynamicInjection.projitems*{37e0d2f9-83ee-4c13-8c72-da8494613552}*SharedItemsImports = 4
+		src\Share\ServiceBridge.DynamicInjection\ServiceBridge.DynamicInjection.projitems*{760e5e67-104d-4348-8abd-ee574b26550d}*SharedItemsImports = 13
+		src\Share\ServiceBridge.DynamicProxy\ServiceBridge.DynamicProxy.projitems*{793af29f-1186-45b7-92eb-8605ebce3cfe}*SharedItemsImports = 4
+		src\Share\ServiceBridge.DynamicProxy\ServiceBridge.DynamicProxy.projitems*{ac0a52e0-11fc-46c1-ae5d-83aded57d4fe}*SharedItemsImports = 13
+		src\Share\ServiceBridge.DynamicProxy\ServiceBridge.DynamicProxy.projitems*{b233cd92-2d28-4304-be77-337f508e574b}*SharedItemsImports = 4
+		src\Share\ServiceBridge.DynamicInjection\ServiceBridge.DynamicInjection.projitems*{daa97815-4118-48f3-972f-eb339a0cb1ed}*SharedItemsImports = 4
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,6 +247,38 @@ Global
 		{C118905E-3641-4D85-9084-A10A45351C09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C118905E-3641-4D85-9084-A10A45351C09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C118905E-3641-4D85-9084-A10A45351C09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13546467-0A48-430D-8E96-0F56D1001F6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13546467-0A48-430D-8E96-0F56D1001F6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13546467-0A48-430D-8E96-0F56D1001F6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13546467-0A48-430D-8E96-0F56D1001F6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A99B1DA1-FBF8-4BA6-8C17-88D53AA033BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A99B1DA1-FBF8-4BA6-8C17-88D53AA033BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A99B1DA1-FBF8-4BA6-8C17-88D53AA033BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A99B1DA1-FBF8-4BA6-8C17-88D53AA033BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC9BD218-F49B-4C44-BBC5-EB009DC31CA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC9BD218-F49B-4C44-BBC5-EB009DC31CA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC9BD218-F49B-4C44-BBC5-EB009DC31CA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC9BD218-F49B-4C44-BBC5-EB009DC31CA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72730EE4-75BD-4825-9AC0-AB44C284B6B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72730EE4-75BD-4825-9AC0-AB44C284B6B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72730EE4-75BD-4825-9AC0-AB44C284B6B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72730EE4-75BD-4825-9AC0-AB44C284B6B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C643F9CC-5B63-45B2-B42C-747ED4BA6D17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C643F9CC-5B63-45B2-B42C-747ED4BA6D17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C643F9CC-5B63-45B2-B42C-747ED4BA6D17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C643F9CC-5B63-45B2-B42C-747ED4BA6D17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{580786D7-8264-4B2A-A120-770E5E0B1ECE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{580786D7-8264-4B2A-A120-770E5E0B1ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{580786D7-8264-4B2A-A120-770E5E0B1ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{580786D7-8264-4B2A-A120-770E5E0B1ECE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{709A79E4-5133-4C93-9E46-70215F710812}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{709A79E4-5133-4C93-9E46-70215F710812}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{709A79E4-5133-4C93-9E46-70215F710812}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{709A79E4-5133-4C93-9E46-70215F710812}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C79638C-2A79-4642-80AB-D5D9F395CA50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C79638C-2A79-4642-80AB-D5D9F395CA50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C79638C-2A79-4642-80AB-D5D9F395CA50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C79638C-2A79-4642-80AB-D5D9F395CA50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -229,26 +289,26 @@ Global
 		{1AFD596C-6D58-4B6B-AD84-27375E41FECD} = {CE31D387-7B66-430B-AC4B-1A3A74A451C9}
 		{38426EC5-1A50-4DA2-B459-5389B120A569} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
 		{60972548-F189-49D7-9C31-976307A3E03D} = {C498B61F-0134-4FF9-88F7-F2B6CB123A96}
-		{CE31D387-7B66-430B-AC4B-1A3A74A451C9} = {FEAADEE8-46F3-4353-9F80-EE2F736D1784}
-		{C498B61F-0134-4FF9-88F7-F2B6CB123A96} = {FEAADEE8-46F3-4353-9F80-EE2F736D1784}
+		{CE31D387-7B66-430B-AC4B-1A3A74A451C9} = {8EEF2EB8-515E-4CE0-92E9-0CDC0941804B}
+		{C498B61F-0134-4FF9-88F7-F2B6CB123A96} = {8EEF2EB8-515E-4CE0-92E9-0CDC0941804B}
 		{2984C4C5-F10E-4062-B574-9F274CF3C4DA} = {CE31D387-7B66-430B-AC4B-1A3A74A451C9}
-		{AC0A52E0-11FC-46C1-AE5D-83ADED57D4FE} = {FEAADEE8-46F3-4353-9F80-EE2F736D1784}
-		{F342CEBE-A653-4633-B8A0-C14064926113} = {FEAADEE8-46F3-4353-9F80-EE2F736D1784}
+		{AC0A52E0-11FC-46C1-AE5D-83ADED57D4FE} = {073A2374-DAE0-4664-A077-26FAC30DE5AE}
+		{F342CEBE-A653-4633-B8A0-C14064926113} = {8EEF2EB8-515E-4CE0-92E9-0CDC0941804B}
 		{37E0D2F9-83EE-4C13-8C72-DA8494613552} = {F342CEBE-A653-4633-B8A0-C14064926113}
 		{B233CD92-2D28-4304-BE77-337F508E574B} = {F342CEBE-A653-4633-B8A0-C14064926113}
-		{3191F441-18B9-496E-8867-DB5F34511BA5} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
+		{3191F441-18B9-496E-8867-DB5F34511BA5} = {6E836887-D90C-452A-A72F-CF7CADECC9B6}
 		{CCF5528E-E26B-408A-933F-D2E9E1927A98} = {AB1FEDB3-EB92-48F2-983E-78A34163735E}
-		{AB1FEDB3-EB92-48F2-983E-78A34163735E} = {FEAADEE8-46F3-4353-9F80-EE2F736D1784}
+		{AB1FEDB3-EB92-48F2-983E-78A34163735E} = {8EEF2EB8-515E-4CE0-92E9-0CDC0941804B}
 		{B8765A35-B885-465B-9A6B-F4C2AABA6BEA} = {AB1FEDB3-EB92-48F2-983E-78A34163735E}
-		{59126E2C-9CA2-450D-96D6-3FA0DAC5D0C0} = {FEAADEE8-46F3-4353-9F80-EE2F736D1784}
+		{59126E2C-9CA2-450D-96D6-3FA0DAC5D0C0} = {8EEF2EB8-515E-4CE0-92E9-0CDC0941804B}
 		{DAA97815-4118-48F3-972F-EB339A0CB1ED} = {59126E2C-9CA2-450D-96D6-3FA0DAC5D0C0}
 		{793AF29F-1186-45B7-92EB-8605EBCE3CFE} = {59126E2C-9CA2-450D-96D6-3FA0DAC5D0C0}
 		{50ED909D-AA87-4D7A-ABC8-3941530FEF6E} = {830309B2-BF70-4BC5-8CA1-5EB40F60A76B}
 		{3536F35E-643C-40D0-9F0C-52E75E7D351B} = {830309B2-BF70-4BC5-8CA1-5EB40F60A76B}
-		{33CE1BDE-446D-4152-AB59-C40B18CD3919} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
-		{CF485131-27B9-4709-BB73-C79002B780CB} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
-		{58646E1C-FEFA-4960-BFC5-07023B4488E7} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
-		{760E5E67-104D-4348-8ABD-EE574B26550D} = {FEAADEE8-46F3-4353-9F80-EE2F736D1784}
+		{33CE1BDE-446D-4152-AB59-C40B18CD3919} = {F3A22849-4FC3-46F5-A1C5-D4AD7BFFEAFB}
+		{CF485131-27B9-4709-BB73-C79002B780CB} = {4FEE158D-F094-4197-8906-A426BBDC5739}
+		{58646E1C-FEFA-4960-BFC5-07023B4488E7} = {BAD61B4B-85CA-408A-9129-D31399201108}
+		{760E5E67-104D-4348-8ABD-EE574B26550D} = {073A2374-DAE0-4664-A077-26FAC30DE5AE}
 		{4CD59E23-88CC-445A-B16B-7DCC75A70212} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
 		{D1AA8CDC-B85C-413E-BA5B-5B96C8418B00} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
 		{0780261A-7447-436E-B484-0D36113696D5} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
@@ -256,5 +316,18 @@ Global
 		{63F0A06B-CC68-4407-AC4A-5539D14758E0} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
 		{C49F9D95-C1D9-454E-A10A-B9EE82973452} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
 		{C118905E-3641-4D85-9084-A10A45351C09} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
+		{13546467-0A48-430D-8E96-0F56D1001F6F} = {CE31D387-7B66-430B-AC4B-1A3A74A451C9}
+		{A99B1DA1-FBF8-4BA6-8C17-88D53AA033BF} = {AB1FEDB3-EB92-48F2-983E-78A34163735E}
+		{EC9BD218-F49B-4C44-BBC5-EB009DC31CA9} = {C498B61F-0134-4FF9-88F7-F2B6CB123A96}
+		{72730EE4-75BD-4825-9AC0-AB44C284B6B7} = {59126E2C-9CA2-450D-96D6-3FA0DAC5D0C0}
+		{C643F9CC-5B63-45B2-B42C-747ED4BA6D17} = {F342CEBE-A653-4633-B8A0-C14064926113}
+		{F3A22849-4FC3-46F5-A1C5-D4AD7BFFEAFB} = {D5D57C7A-8A24-46BB-8D3B-94B7867CA9D9}
+		{580786D7-8264-4B2A-A120-770E5E0B1ECE} = {F3A22849-4FC3-46F5-A1C5-D4AD7BFFEAFB}
+		{BAD61B4B-85CA-408A-9129-D31399201108} = {D5D57C7A-8A24-46BB-8D3B-94B7867CA9D9}
+		{709A79E4-5133-4C93-9E46-70215F710812} = {BAD61B4B-85CA-408A-9129-D31399201108}
+		{4FEE158D-F094-4197-8906-A426BBDC5739} = {D5D57C7A-8A24-46BB-8D3B-94B7867CA9D9}
+		{6E836887-D90C-452A-A72F-CF7CADECC9B6} = {D5D57C7A-8A24-46BB-8D3B-94B7867CA9D9}
+		{6C79638C-2A79-4642-80AB-D5D9F395CA50} = {6E836887-D90C-452A-A72F-CF7CADECC9B6}
+		{073A2374-DAE0-4664-A077-26FAC30DE5AE} = {8EEF2EB8-515E-4CE0-92E9-0CDC0941804B}
 	EndGlobalSection
 EndGlobal

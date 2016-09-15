@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>ac0a52e0-11fc-46c1-ae5d-83aded57d4fe</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>ServiceBridge.DynamicProxy</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)InterceptMethodInvocation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InterceptMethodParameter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)InterceptMethodReturn.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceInterceptor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServiceInterceptorSelector.cs" />
+  </ItemGroup>
+</Project>

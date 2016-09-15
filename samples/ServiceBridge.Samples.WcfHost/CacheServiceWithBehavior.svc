@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="ServiceBridge.Samples.WcfHost.CacheServiceWithBehavior" CodeBehind="CacheServiceWithBehavior.svc.cs" %>

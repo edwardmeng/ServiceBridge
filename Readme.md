@@ -1,9 +1,9 @@
-Wheatech.ServiceModel
+ServiceBridge
 =====================
 
 Introduction
 -----------
-The Wheatech.ServiceModel library contains a shared interface for service registration and service resolution which application and framework can reference. 
+The ServiceBridge library contains a shared interface for service registration and service resolution which application and framework can reference. 
 The library provides an abstraction over IoC containers. Using the library allows an application to indirectly access the capabilities without relying on hard references. 
 
 Features

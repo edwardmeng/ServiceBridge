@@ -1,0 +1,7 @@
+﻿using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: AssemblyTitle("ServiceBridge")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly:InternalsVisibleTo("ServiceBridge.Interception, PublicKey=0024000004800000940000000602000000240000525341310004000001000100f92220eb193cb04ea788580ac1949a37adac6abb72a84cc1b611f8ab05fcfc5e436df5109209d42d421d998271b65b013a08243345398067cdd40fb95ca017bb334241299b3b305dbe4fc6368517661e352ffa5790e4584a2fc71afd727aecf2e0cba2202a8e9a2b2bd370b1b74637c9e0d2544ba8d011db55d1aff46ff5b8ba")]

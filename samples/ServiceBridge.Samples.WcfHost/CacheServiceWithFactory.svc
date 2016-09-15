@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Factory="ServiceBridge.Wcf.ContainerServiceHostFactory" Service="ServiceBridge.Samples.WcfHost.CacheServiceWithFactory" CodeBehind="CacheServiceWithFactory.svc.cs" %>

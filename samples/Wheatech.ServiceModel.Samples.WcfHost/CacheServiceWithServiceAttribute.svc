@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="Wheatech.ServiceModel.Samples.WcfHost.CacheServiceWithServiceAttribute" CodeBehind="CacheServiceWithServiceAttribute.svc.cs" %>
