@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Reflection;
 using Autofac;
 using Autofac.Core;
 using Autofac.Core.Activators.Reflection;
@@ -55,7 +55,6 @@ namespace ServiceBridge.Autofac
             }
             if (_container == null)
             {
-                Thread.MemoryBarrier();
                 lock (_lockobj)
                 {
                     if (_container == null)
@@ -100,7 +99,16 @@ namespace ServiceBridge.Autofac
             {
                 throw new ObjectDisposedException("container");
             }
-            if (!serviceType.IsInterface && !serviceType.IsAbstract && !IsRegistered(serviceType, serviceName) && !IsDynamicRegisterd(serviceType,serviceName))
+#if NetCore
+            var typeInfo = serviceType.GetTypeInfo();
+            if (typeInfo.IsInterface || typeInfo.IsAbstract)
+#else
+            if (serviceType.IsInterface || serviceType.IsAbstract)
+#endif
+            {
+                return base.GetInstance(serviceType, serviceName);
+            }
+            if (!IsRegistered(serviceType, serviceName) && !IsDynamicRegisterd(serviceType, serviceName))
             {
                 lock (_registrations)
                 {
@@ -179,11 +187,17 @@ namespace ServiceBridge.Autofac
                 .FindConstructorsWith(type =>
                 {
                     var constructors = InjectionAttribute.GetConstructors(type).ToArray();
-                    return constructors.Length > 0 ? constructors : type.GetConstructors();
+                    if (constructors.Length > 0) return constructors;
+#if NetCore
+                    return type.GetTypeInfo().DeclaredConstructors.Where(ctor=>!ctor.IsStatic&&ctor.IsPublic).ToArray();
+#else
+                    return type.GetConstructors();
+#endif
                 })
                 .UsingConstructor(new MostParametersConstructorSelector())
                 .OnActivated(args => DynamicInjectionBuilder.GetOrCreate(implementationType, true, true)(this, args.Instance));
             OnRegistering(new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, registration));
+            //registration.RegistrationData.Lifetime
             switch (lifetime)
             {
                 case ServiceLifetime.Singleton:
@@ -195,10 +209,6 @@ namespace ServiceBridge.Autofac
                 case ServiceLifetime.PerThread:
                     registration.RegistrationData.Sharing = InstanceSharing.Shared;
                     registration.RegistrationData.Lifetime = new PerThreadScopeLifetime();
-                    break;
-                case ServiceLifetime.PerRequest:
-                    registration.RegistrationData.Sharing = InstanceSharing.Shared;
-                    registration.RegistrationData.Lifetime = new PerRequestScopeLifetime();
                     break;
             }
         }

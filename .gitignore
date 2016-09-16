@@ -5,3 +5,4 @@ packages
 *.log
 *.user
 output
+*.lock.json

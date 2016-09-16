@@ -1,0 +1,24 @@
+﻿{
+  "version": "1.0.0-*",
+
+    "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "ServiceBridge": { "target": "project" },
+        "Autofac": "4.1.0" 
+    },
+
+  "frameworks": {
+    "netstandard1.1": {
+        "imports": "dnxcore50",
+        "buildOptions": {
+            "compile": {
+                "include": [ "../../GlobalAssemblyInfo.cs", "../../src/Autofac/ServiceBridge.Autofac/**/*.cs", "../../src/Share/ServiceBridge.DynamicInjection/**/*.cs" ]
+            },
+            "define": [ "NetCore" ],
+            "keyFile": "../../ServiceBridge.snk",
+            "xmlDoc": true,
+            "outputName": "ServiceBridge.Autofac"
+        }
+    }
+  }
+}

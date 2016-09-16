@@ -13,7 +13,11 @@ namespace ServiceBridge.DynamicInjection
 
         static DynamicInjectionBuilder()
         {
+#if NetCore
+            _resolveDependencyMethod = typeof(IServiceContainer).GetTypeInfo().GetDeclaredMethod("GetInstance");
+#else
             _resolveDependencyMethod = typeof(IServiceContainer).GetMethod("GetInstance", BindingFlags.Instance | BindingFlags.Public, null, new[] { typeof(Type), typeof(string) }, null);
+#endif
             _cache = new ConcurrentDictionary<DynamicInjectionKey, Action<IServiceContainer, object>>();
         }
 

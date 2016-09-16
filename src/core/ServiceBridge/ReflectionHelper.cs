@@ -25,7 +25,22 @@ namespace ServiceBridge
             Type[] indexerTypes;
 
             GetPropertyTypes(method, isGetter, out propertyType, out indexerTypes);
-
+#if NetCore
+            return containingType.GetTypeInfo().DeclaredProperties.SingleOrDefault(p =>
+            {
+                if (p.Name != propertyName || p.PropertyType != propertyType) return false;
+                var parameters = p.GetIndexParameters();
+                if (parameters.Length != indexerTypes.Length) return false;
+                for (int i = 0; i < indexerTypes.Length; i++)
+                {
+                    if (parameters[i].ParameterType != indexerTypes[i])
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            });
+#else
             return containingType.GetProperty(
                 propertyName,
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly,
@@ -33,6 +48,7 @@ namespace ServiceBridge
                 propertyType,
                 indexerTypes,
                 null);
+#endif
         }
 
         private static void GetPropertyTypes(MethodInfo method, bool isGetter, out Type propertyType, out Type[] indexerTypes)
@@ -43,7 +59,7 @@ namespace ServiceBridge
                 propertyType = method.ReturnType;
                 indexerTypes =
                     parameters.Length == 0
-                        ? Type.EmptyTypes
+                        ? new Type[0]
                         : parameters.Select(pi => pi.ParameterType).ToArray();
             }
             else
@@ -51,7 +67,7 @@ namespace ServiceBridge
                 propertyType = parameters[parameters.Length - 1].ParameterType;
                 indexerTypes =
                     parameters.Length == 1
-                        ? Type.EmptyTypes
+                        ? new Type[0]
                         : parameters.Take(parameters.Length - 1).Select(pi => pi.ParameterType).ToArray();
             }
         }

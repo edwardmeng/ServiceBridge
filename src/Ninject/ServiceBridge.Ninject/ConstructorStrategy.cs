@@ -4,6 +4,7 @@ using Ninject.Injection;
 using Ninject.Planning;
 using Ninject.Planning.Strategies;
 using Ninject.Selection;
+using System.Reflection;
 
 namespace ServiceBridge.Ninject
 {

@@ -37,7 +37,11 @@ namespace ServiceBridge.Interception
 
             if (member.DeclaringType != null)
             {
-                attributes.AddRange(GetCustomAttributes(member.DeclaringType, typeof(InterceptorAttribute), inherits).OfType<InterceptorAttribute>());
+#if NetCore
+                attributes.AddRange(GetCustomAttributes<InterceptorAttribute>(member.DeclaringType.GetTypeInfo(), inherits));
+#else
+                attributes.AddRange(GetCustomAttributes<InterceptorAttribute>(member.DeclaringType, inherits));
+#endif
 
                 var methodInfo = member as MethodInfo;
                 if (methodInfo != null)
@@ -45,12 +49,22 @@ namespace ServiceBridge.Interception
                     var prop = ReflectionHelper.GetPropertyFromMethod(methodInfo);
                     if (prop != null)
                     {
-                        attributes.AddRange(GetCustomAttributes(prop, typeof(InterceptorAttribute), inherits).OfType<InterceptorAttribute>());
+                        attributes.AddRange(GetCustomAttributes<InterceptorAttribute>(prop, inherits));
                     }
                 }
             }
-            attributes.AddRange(GetCustomAttributes(member, typeof(InterceptorAttribute), inherits).OfType<InterceptorAttribute>());
+            attributes.AddRange(GetCustomAttributes<InterceptorAttribute>(member, inherits));
             return attributes.ToArray();
+        }
+
+        private static IEnumerable<T> GetCustomAttributes<T>(MemberInfo member, bool inherits)
+            where T:Attribute
+        {
+#if NetCore
+            return member.GetCustomAttributes<T>(inherits);
+#else
+            return GetCustomAttributes(member.DeclaringType, typeof(T), inherits).OfType<T>();
+#endif
         }
     }
 }

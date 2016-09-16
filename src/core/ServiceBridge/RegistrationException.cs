@@ -1,12 +1,16 @@
 ﻿using System;
+#if !NetCore
 using System.Runtime.Serialization;
+#endif
 
 namespace ServiceBridge
 {
     /// <summary>
     /// The standard exception thrown when a <see cref="IServiceContainer"/> has an error in registering a type mapping.
     /// </summary>
+#if !NetCore
     [Serializable]
+#endif
     public class RegistrationException : Exception
     {
         /// <summary>
@@ -33,6 +37,7 @@ namespace ServiceBridge
         /// </param>
         public RegistrationException(string message, Exception innerException) : base(message, innerException) { }
 
+#if !NetCore
         /// <summary>
         /// Initializes a new instance of the <see cref="RegistrationException" /> class with serialized data.
         /// </summary>
@@ -49,5 +54,6 @@ namespace ServiceBridge
         /// The class name is null or <see cref="P:System.Exception.HResult" /> is zero (0). 
         /// </exception>
         protected RegistrationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#endif
     }
 }

@@ -70,6 +70,20 @@ namespace ServiceBridge.Interception
         public void InitializePipeline(Type implementType, IServiceContainer container)
         {
             var methodMappings = new Dictionary<MethodInfo, MethodInfo>();
+#if NetCore
+            foreach (var itf in implementType.GetTypeInfo().ImplementedInterfaces)
+            {
+                var mapping = implementType.GetTypeInfo().GetRuntimeInterfaceMap(itf);
+                for (int i = 0; i < mapping.InterfaceMethods.Length; ++i)
+                {
+                    if (!methodMappings.ContainsKey(mapping.TargetMethods[i]))
+                    {
+                        methodMappings[mapping.TargetMethods[i]] = mapping.InterfaceMethods[i];
+                        InitializePipeline(mapping.InterfaceMethods[i], mapping.TargetMethods[i], container);
+                    }
+                }
+            }
+#else
             foreach (Type itf in implementType.GetInterfaces())
             {
                 var mapping = implementType.GetInterfaceMap(itf);
@@ -82,6 +96,7 @@ namespace ServiceBridge.Interception
                     }
                 }
             }
+#endif
         }
 
         private IEnumerable<InterceptorAttribute> GetInterceptorAttributes(MethodInfo interfaceMethod, MethodInfo implementMethod)
@@ -106,14 +121,18 @@ namespace ServiceBridge.Interception
             {
                 return _pipelines[key];
             }
-
-            if (method.GetBaseDefinition() == method)
+#if NetCore
+            var baseMethod = method.GetRuntimeBaseDefinition();
+#else
+            var baseMethod = method.GetBaseDefinition();
+#endif
+            if (Equals(baseMethod, method))
             {
                 _pipelines[key] = new InterceptorPipeline(interceptors);
                 return _pipelines[key];
             }
 
-            var basePipeline = CreatePipeline(method.GetBaseDefinition(), interceptors);
+            var basePipeline = CreatePipeline(baseMethod, interceptors);
             _pipelines[key] = basePipeline;
             return basePipeline;
         }

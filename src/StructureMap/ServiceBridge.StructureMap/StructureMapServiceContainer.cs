@@ -126,11 +126,6 @@ namespace ServiceBridge.StructureMap
                     case ServiceLifetime.PerThread:
                         instance.LifecycleIs<ThreadLocalStorageLifecycle>();
                         break;
-                    case ServiceLifetime.PerRequest:
-                        instance.LifecycleIs<PerRequestLifecycle>();
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
                 }
                 // Enable the method injection
                 instance.AddInterceptor(new ActivatorInterceptor<object>((context, x) => DynamicInjectionBuilder.GetOrCreate(implementationType, false, true)(this, x)));

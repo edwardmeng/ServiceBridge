@@ -1,12 +1,16 @@
 ﻿using System;
+#if !NetCore
 using System.Runtime.Serialization;
+#endif
 
 namespace ServiceBridge
 {
     /// <summary>
     /// The standard exception thrown when a <see cref="IServiceContainer"/> has an error in resolving an object.
     /// </summary>
+#if !NetCore
     [Serializable]
+#endif
     public class ActivationException : Exception
     {
         /// <summary>
@@ -33,6 +37,7 @@ namespace ServiceBridge
         /// </param>
         public ActivationException(string message, Exception innerException) : base(message, innerException) { }
 
+#if !NetCore
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivationException" /> class with serialized data.
         /// </summary>
@@ -49,5 +54,6 @@ namespace ServiceBridge
         /// The class name is null or <see cref="P:System.Exception.HResult" /> is zero (0). 
         /// </exception>
         protected ActivationException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#endif
     }
 }

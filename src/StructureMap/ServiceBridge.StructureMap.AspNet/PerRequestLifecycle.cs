@@ -1,9 +1,13 @@
 ﻿using System;
-using System.Web;
 using StructureMap;
 using StructureMap.Pipeline;
+#if NetCore
+using ServiceBridge.AspNetCore;
+#else
+using System.Web;
+#endif
 
-namespace ServiceBridge.StructureMap
+namespace ServiceBridge.StructureMap.AspNet
 {
     internal class PerRequestLifecycle:LifecycleBase
     {
@@ -22,6 +26,22 @@ namespace ServiceBridge.StructureMap
 
         public override IObjectCache FindCache(ILifecycleContext context)
         {
+#if NetCore
+            if (ServiceBridgeMiddleware.CurrentContext == null) return null;
+            if (!ServiceBridgeMiddleware.CurrentContext.Items.ContainsKey(typeof(PerRequestLifecycle)))
+            {
+                lock (ServiceBridgeMiddleware.CurrentContext)
+                {
+                    if (!ServiceBridgeMiddleware.CurrentContext.Items.ContainsKey(typeof(PerRequestLifecycle)))
+                    {
+                        var cache = new PerRequestLifecycleObjectCache();
+                        ServiceBridgeMiddleware.CurrentContext.Items[typeof(PerRequestLifecycle)] = cache;
+                        return cache;
+                    }
+                }
+            }
+            return (IObjectCache)ServiceBridgeMiddleware.CurrentContext.Items[typeof(PerRequestLifecycle)];
+#else
             if (HttpContext.Current == null) return null;
             if (!HttpContext.Current.Items.Contains(typeof(PerRequestLifecycle)))
             {
@@ -37,6 +57,7 @@ namespace ServiceBridge.StructureMap
                 }
             }
             return (IObjectCache)HttpContext.Current.Items[typeof(PerRequestLifecycle)];
+#endif
         }
     }
 }

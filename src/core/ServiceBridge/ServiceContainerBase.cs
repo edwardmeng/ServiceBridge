@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using ServiceBridge.Properties;
 
 namespace ServiceBridge
@@ -152,10 +153,11 @@ namespace ServiceBridge
             // If the requesting service type is interface or abstract class, and has not been registered in the container,
             // returns null instead of resolve instance from the integrated implementations, which maybe throws exception.
             // For integrating with ASP.NET MVC, the unregistered interface should be returns null, such as IControllerActivator, IControllerFactory etc.
-            if ((serviceType.IsInterface || serviceType.IsAbstract) && !IsRegistered(serviceType,serviceName))
-            {
-                return null;
-            }
+#if NetCore
+            if ((serviceType.GetTypeInfo().IsInterface || serviceType.GetTypeInfo().IsAbstract) && !IsRegistered(serviceType, serviceName)) return null;
+#else
+            if ((serviceType.IsInterface || serviceType.IsAbstract) && !IsRegistered(serviceType,serviceName)) return null;
+#endif
             try
             {
                 return DoGetInstance(serviceType, serviceName);
@@ -417,7 +419,11 @@ namespace ServiceBridge
             {
                 throw new ArgumentNullException(nameof(extensionType));
             }
+#if NetCore
+            return _extensions.FirstOrDefault(ext => extensionType.GetTypeInfo().IsAssignableFrom(ext.GetType().GetTypeInfo()));
+#else
             return _extensions.FirstOrDefault(extensionType.IsInstanceOfType);
+#endif
         }
 
         #endregion

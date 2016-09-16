@@ -187,6 +187,21 @@ namespace ServiceBridge
         {
             if (container == null) throw new ArgumentNullException(nameof(container));
             if (assemblies == null) throw new ArgumentNullException(nameof(assemblies));
+#if NetCore
+            return container.Register(assemblies.SelectMany(assembly =>
+            {
+                IEnumerable<TypeInfo> definedTypes;
+                try
+                {
+                    definedTypes = assembly.DefinedTypes;
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+                    definedTypes = ex.Types.TakeWhile(type => type != null).Select(type => type.GetTypeInfo());
+                }
+                return definedTypes.Where(x => x.IsClass & !x.IsAbstract && !x.IsValueType && x.IsVisible).Select(type => type.AsType());
+            }), getFromTypes, getName, overwriteExistingMappings);
+#else
             return container.Register(assemblies.SelectMany(assembly =>
             {
                 IEnumerable<Type> definedTypes;
@@ -200,6 +215,7 @@ namespace ServiceBridge
                 }
                 return definedTypes.Where(x => x.IsClass & !x.IsAbstract && !x.IsValueType && x.IsVisible);
             }), getFromTypes, getName, overwriteExistingMappings);
+#endif
         }
 
         /// <summary>
@@ -269,13 +285,13 @@ namespace ServiceBridge
             return true;
         }
 
-        private static IEnumerable<Type> FilterMatchingGenericInterfaces(Type type)
+#if NetCore
+        private static IEnumerable<Type> FilterMatchingGenericInterfaces(TypeInfo type)
         {
-            var parameters = type.IsGenericTypeDefinition || type.IsGenericType ? type.GetGenericArguments() : Type.EmptyTypes;
-
-            foreach (var @interface in type.GetInterfaces())
+            var parameters = type.GenericTypeArguments;
+            foreach (var @interface in type.ImplementedInterfaces)
             {
-                var interfaceType = @interface;
+                var interfaceType = @interface.GetTypeInfo();
 
                 if (!(interfaceType.IsGenericType && interfaceType.ContainsGenericParameters))
                 {
@@ -283,7 +299,7 @@ namespace ServiceBridge
                     continue;
                 }
 
-                if (GenericParametersMatch(parameters, interfaceType.IsGenericTypeDefinition || interfaceType.IsGenericType ? interfaceType.GetGenericArguments() : Type.EmptyTypes))
+                if (GenericParametersMatch(parameters, interfaceType.GenericTypeArguments))
                 {
                     yield return interfaceType.GetGenericTypeDefinition();
                 }
@@ -292,8 +308,33 @@ namespace ServiceBridge
 
         private static IEnumerable<Type> GetImplementedInterfacesToMap(Type type)
         {
-            return !type.IsGenericType && !type.IsGenericTypeDefinition ? type.GetInterfaces() : FilterMatchingGenericInterfaces(type);
+            var typeInfo = type.GetTypeInfo();
+            return !typeInfo.IsGenericType || typeInfo.IsGenericTypeDefinition ? typeInfo.ImplementedInterfaces : FilterMatchingGenericInterfaces(typeInfo);
         }
+#else
+        private static IEnumerable<Type> FilterMatchingGenericInterfaces(Type type)
+        {
+            var parameters = !type.IsGenericTypeDefinition && type.IsGenericType ? type.GetGenericArguments() : Type.EmptyTypes;
+            foreach (var @interface in type.GetInterfaces())
+            {
+                if (!(@interface.IsGenericType && @interface.ContainsGenericParameters))
+                {
+                    // skip non generic interfaces, or interfaces without generic parameters
+                    continue;
+                }
+
+                if (GenericParametersMatch(parameters, !@interface.IsGenericTypeDefinition && @interface.IsGenericType ? @interface.GetGenericArguments() : Type.EmptyTypes))
+                {
+                    yield return @interface.GetGenericTypeDefinition();
+                }
+            }
+        }
+
+        private static IEnumerable<Type> GetImplementedInterfacesToMap(Type type)
+        {
+            return !type.IsGenericType || type.IsGenericTypeDefinition ? type.GetInterfaces() : FilterMatchingGenericInterfaces(type);
+        }
+#endif
 
         #endregion
 

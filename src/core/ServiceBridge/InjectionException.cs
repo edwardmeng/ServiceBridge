@@ -1,11 +1,16 @@
 ﻿using System;
+#if !NetCore
 using System.Runtime.Serialization;
+#endif
 
 namespace ServiceBridge
 {
     /// <summary>
     /// The standard exception thrown when a <see cref="IServiceContainer"/> has an error in injecting an existing object.
     /// </summary>
+#if !NetCore
+    [Serializable]
+#endif
     public class InjectionException : Exception
     {
         /// <summary>
@@ -32,6 +37,7 @@ namespace ServiceBridge
         /// </param>
         public InjectionException(string message, Exception innerException) : base(message, innerException) { }
 
+#if !NetCore
         /// <summary>
         /// Initializes a new instance of the <see cref="InjectionException" /> class with serialized data.
         /// </summary>
@@ -48,5 +54,6 @@ namespace ServiceBridge
         /// The class name is null or <see cref="P:System.Exception.HResult" /> is zero (0). 
         /// </exception>
         protected InjectionException(SerializationInfo info, StreamingContext context) : base(info, context) { }
+#endif
     }
 }

@@ -1,0 +1,28 @@
+{
+  "version": "1.0.0-*",
+
+    "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "System.Collections.Specialized": "4.0.1",
+        "ServiceBridge": { "target": "project" }
+    },
+
+  "frameworks": {
+    "netstandard1.3": {
+        "imports": "dnxcore50",
+        "buildOptions": {
+            "compile": {
+                "include": [ "../../GlobalAssemblyInfo.cs", "../../src/core/ServiceBridge.Interception/**/*.cs" ],
+                "exclude": [ "../../src/core/ServiceBridge.Interception/TransactionScopeAttribute.cs" ]
+            },
+            "embed": {
+                "include": [ "../../src/core/ServiceBridge.Interception/**/*.resx" ]
+            },
+            "define": [ "NetCore" ],
+            "keyFile": "../../ServiceBridge.snk",
+            "xmlDoc": true,
+            "outputName": "ServiceBridge.Interception"
+        }
+    }
+  }
+}

@@ -8,8 +8,12 @@ namespace ServiceBridge.Interception
     /// </summary>
     internal class InterceptorPipelineKey
     {
+#if NetCore
+        private readonly MethodBase _method;
+#else
         private readonly Module _module;
         private readonly int _metadataToken;
+#endif
 
         /// <summary>
         /// Creates a new <see cref="InterceptorPipelineKey"/> for the supplied method.
@@ -22,15 +26,24 @@ namespace ServiceBridge.Interception
             {
                 throw new ArgumentNullException(nameof(methodBase));
             }
-
+#if NetCore
+            return new InterceptorPipelineKey(methodBase);
+#else
             return new InterceptorPipelineKey(methodBase.DeclaringType?.Module, methodBase.MetadataToken);
+#endif
         }
-
+#if NetCore
+        private InterceptorPipelineKey(MethodBase methodBase)
+        {
+            _method = methodBase;
+        }
+#else
         private InterceptorPipelineKey(Module module, int metadataToken)
         {
             _module = module;
             _metadataToken = metadataToken;
         }
+#endif
 
         /// <summary>
         /// Compare two <see cref="InterceptorPipelineKey"/> instances.
@@ -50,7 +63,11 @@ namespace ServiceBridge.Interception
         /// <returns>A hash code.</returns>
         public override int GetHashCode()
         {
+#if NetCore
+            return _method.GetHashCode();
+#else
             return (_module?.GetHashCode() ?? 0) ^ _metadataToken;
+#endif
         }
 
         /// <summary>
@@ -63,8 +80,12 @@ namespace ServiceBridge.Interception
         {
             if (ReferenceEquals(left, right)) return true;
             if (ReferenceEquals(left, null) || ReferenceEquals(right, null)) return false;
-            return left._module == right._module &&
+#if NetCore
+            return Equals(left._method, right._method);
+#else
+            return Equals(left._module, right._module) &&
                    left._metadataToken == right._metadataToken;
+#endif
         }
 
         /// <summary>

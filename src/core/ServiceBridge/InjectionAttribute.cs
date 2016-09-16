@@ -43,9 +43,15 @@ namespace ServiceBridge
         /// </value>
         public static IEnumerable<ConstructorInfo> GetConstructors(Type type)
         {
+#if NetCore
+            return type.GetTypeInfo().DeclaredConstructors
+                .Where(c => !c.IsStatic && c.IsDefined(typeof(InjectionAttribute), false))
+                .OrderBy(constructor => constructor.GetParameters().Length);
+#else
             return type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                 .Where(c => c.IsDefined(typeof(InjectionAttribute), false))
                 .OrderBy(constructor => constructor.GetParameters().Length);
+#endif
         }
 
         /// <summary>
@@ -65,7 +71,11 @@ namespace ServiceBridge
         /// <returns><c>true</c> if the specified property can be injected; otherwise, <c>false</c>.</returns>
         public static bool Matches(PropertyInfo property)
         {
+#if NetCore
+            var method = property.SetMethod ?? property.GetMethod;
+#else
             var method = property.GetSetMethod(true) ?? property.GetGetMethod(true);
+#endif
             return property.CanWrite && !method.IsStatic && property.GetIndexParameters().Length == 0 && property.IsDefined(typeof(InjectionAttribute), false);
         }
 
@@ -84,6 +94,19 @@ namespace ServiceBridge
             if (type == null || type == typeof(object))
                 return Enumerable.Empty<PropertyInfo>();
             var properties = new List<Tuple<PropertyInfo, PropertyInfo>>();
+#if NetCore
+            properties.AddRange(from property in type.GetTypeInfo().DeclaredProperties
+                                let method = property.SetMethod ?? property.GetMethod
+                                where !method.IsStatic && property.CanWrite && property.GetIndexParameters().Length == 0
+                                select Tuple.Create(property, ReflectionHelper.GetPropertyFromMethod(method.GetRuntimeBaseDefinition())));
+            foreach (var property in GetPropertiesHierarchy(type.GetTypeInfo().BaseType))
+            {
+                if (properties.All(p => !Equals(p.Item2, property)))
+                {
+                    properties.Add(Tuple.Create(property, ReflectionHelper.GetPropertyFromMethod((property.SetMethod ?? property.GetMethod).GetRuntimeBaseDefinition())));
+                }
+            }
+#else
             properties.AddRange(from property in type.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                                 let method = property.GetSetMethod(true) ?? property.GetGetMethod(true)
                                 where property.CanWrite && property.GetIndexParameters().Length == 0
@@ -95,6 +118,7 @@ namespace ServiceBridge
                     properties.Add(Tuple.Create(property, ReflectionHelper.GetPropertyFromMethod((property.GetSetMethod(true) ?? property.GetGetMethod(true)).GetBaseDefinition())));
                 }
             }
+#endif
             return properties.Select(p => p.Item1);
         }
 
@@ -103,6 +127,18 @@ namespace ServiceBridge
             if (type == null || type == typeof(object))
                 return Enumerable.Empty<MethodInfo>();
             var methods = new List<Tuple<MethodInfo, MethodInfo>>();
+#if NetCore
+            methods.AddRange(from method in type.GetTypeInfo().DeclaredMethods
+                             where !method.IsSpecialName && !method.IsStatic
+                             select Tuple.Create(method, method.GetRuntimeBaseDefinition()));
+            foreach (var method in GetMethodsHierarchy(type.GetTypeInfo().BaseType))
+            {
+                if (methods.All(x => !Equals(x.Item2, method)))
+                {
+                    methods.Add(Tuple.Create(method, method.GetRuntimeBaseDefinition()));
+                }
+            }
+#else
             methods.AddRange(from method in type.GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly)
                 where !method.IsSpecialName
                 select Tuple.Create(method, method.GetBaseDefinition()));
@@ -113,6 +149,7 @@ namespace ServiceBridge
                     methods.Add(Tuple.Create(method, method.GetBaseDefinition()));
                 }
             }
+#endif
             return methods.Select(x => x.Item1);
         }
     }

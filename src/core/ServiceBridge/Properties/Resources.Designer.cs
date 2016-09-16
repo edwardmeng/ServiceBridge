@@ -8,6 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+using System.Reflection;
+
 namespace ServiceBridge.Properties {
     using System;
     
@@ -39,7 +41,12 @@ namespace ServiceBridge.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ServiceBridge.Properties.Resources", typeof(Resources).Assembly);
+#if NetCore
+                    var assembly = typeof(Resources).GetTypeInfo().Assembly;
+#else
+                    var assembly = typeof(Resources).Assembly;
+#endif
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ServiceBridge.Properties.Resources", assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

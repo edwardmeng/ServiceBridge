@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
+using System.Threading;
 using Ninject;
 using Ninject.Infrastructure;
 using Ninject.Planning.Strategies;
@@ -117,10 +117,7 @@ namespace ServiceBridge.Ninject
                     binding.InScope(StandardScopeCallbacks.Singleton);
                     break;
                 case ServiceLifetime.PerThread:
-                    binding.InScope(StandardScopeCallbacks.Thread);
-                    break;
-                case ServiceLifetime.PerRequest:
-                    binding.InScope(ctx => HttpContext.Current);
+                    binding.InScope(ctx => Thread.CurrentThread);
                     break;
             }
         }
