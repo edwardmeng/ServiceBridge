@@ -8,7 +8,7 @@
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
     <ProjectGuid>f44d8bc5-dc8a-4134-b60d-6b001f272e04</ProjectGuid>
-    <RootNamespace>ServiceBridge.AspNetCore</RootNamespace>
+    <RootNamespace>ServiceBridge.Autofac.AspNetCore</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
@@ -26,8 +26,8 @@
     <Compile Include="..\..\src\Autofac\ServiceBridge.Autofac.AspNet\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\Autofac\ServiceBridge.Autofac.AspNet\AspNetExtension.cs">
-      <Link>AspNetExtension.cs</Link>
+    <Compile Include="..\..\src\Autofac\ServiceBridge.Autofac.AspNet\AutofacAspNetExtension.cs">
+      <Link>AutofacAspNetExtension.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Autofac\ServiceBridge.Autofac.AspNet\PerRequestScopeLifetime.cs">
       <Link>PerRequestScopeLifetime.cs</Link>

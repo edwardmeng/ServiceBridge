@@ -75,7 +75,7 @@ namespace ServiceBridge.UnitTests
         [Fact]
         public void GetUnknownInstance2()
         {
-            Assert.Throws<ActivationException>(() => ServiceContainer.GetInstance<ILogger>("test"));
+            Assert.Null(ServiceContainer.GetInstance<ILogger>("test"));
         }
 
         [Fact]

@@ -28,6 +28,7 @@ namespace ServiceBridge.Autofac
         {
             _builder = builder ?? new ContainerBuilder();
             _builder.RegisterInstance(this).As<IServiceContainer>().ExternallyOwned();
+            AddRegistration(typeof(IServiceContainer), typeof(AutofacServiceContainer), null);
         }
 
         /// <summary>

@@ -1,9 +1,11 @@
-﻿namespace ServiceBridge.StructureMap.AspNet
+﻿using Autofac.Core;
+
+namespace ServiceBridge.Autofac.AspNet
 {
     /// <summary>
-    /// The service container extension to enable Asp.Net integration for the <see cref="StructureMapServiceContainer"/>.
+    /// The service container extension to enable Asp.Net integration for the <see cref="AutofacServiceContainer"/>.
     /// </summary>
-    internal class AspNetExtension : IServiceContainerExtension
+    public class AutofacAspNetExtension: IServiceContainerExtension
     {
         /// <summary>
         /// Initial the container with this extension's functionality. 
@@ -27,7 +29,8 @@
         {
             if (e.Lifetime == ServiceLifetime.PerRequest)
             {
-                ((StructureMapServiceRegisterEventArgs)e).Configuration.LifecycleIs<PerRequestLifecycle>();
+                ((AutofacServiceRegisterEventArgs)e).Registration.RegistrationData.Sharing = InstanceSharing.Shared;
+                ((AutofacServiceRegisterEventArgs)e).Registration.RegistrationData.Lifetime = new PerRequestScopeLifetime();
             }
         }
     }

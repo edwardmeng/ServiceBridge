@@ -2,7 +2,7 @@
 using System.Web;
 using Microsoft.Practices.Unity;
 
-namespace ServiceBridge.Unity
+namespace ServiceBridge.Unity.AspNet
 {
     /// <summary>
     /// A <see cref="LifetimeManager"/> that holds the instances given to it, 

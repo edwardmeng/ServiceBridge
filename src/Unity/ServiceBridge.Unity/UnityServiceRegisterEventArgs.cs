@@ -18,5 +18,7 @@ namespace ServiceBridge.Unity
         /// Gets the injection members for the Unity service mapping.
         /// </summary>
         public List<InjectionMember> InjectionMembers { get; } = new List<InjectionMember>();
+
+        public LifetimeManager LifetimeManager { get; set; }
     }
 }

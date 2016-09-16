@@ -26,8 +26,8 @@
     <Compile Include="..\..\src\Ninject\ServiceBridge.Ninject.AspNet\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\Ninject\ServiceBridge.Ninject.AspNet\AspNetExtension.cs">
-      <Link>AspNetExtension.cs</Link>
+    <Compile Include="..\..\src\Ninject\ServiceBridge.Ninject.AspNet\NinjectAspNetExtension.cs">
+      <Link>NinjectAspNetExtension.cs</Link>
     </Compile>
     <Compile Include="..\..\src\Ninject\ServiceBridge.Ninject.AspNet\ServiceContainerExtensions.cs">
       <Link>ServiceContainerExtensions.cs</Link>

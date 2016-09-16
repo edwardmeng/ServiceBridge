@@ -63,7 +63,7 @@ namespace ServiceBridge.Interception
 #if NetCore
             return member.GetCustomAttributes<T>(inherits);
 #else
-            return GetCustomAttributes(member.DeclaringType, typeof(T), inherits).OfType<T>();
+            return GetCustomAttributes(member, typeof(T), inherits).OfType<T>();
 #endif
         }
     }

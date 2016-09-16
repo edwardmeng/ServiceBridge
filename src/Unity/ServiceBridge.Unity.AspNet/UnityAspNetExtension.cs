@@ -1,11 +1,9 @@
-﻿using Autofac.Core;
-
-namespace ServiceBridge.Autofac.AspNet
+﻿namespace ServiceBridge.Unity.AspNet
 {
     /// <summary>
-    /// The service container extension to enable Asp.Net integration for the <see cref="AutofacServiceContainer"/>.
+    /// The service container extension to enable Asp.Net integration for the <see cref="UnityServiceContainer"/>.
     /// </summary>
-    internal class AspNetExtension: IServiceContainerExtension
+    public class UnityAspNetExtension: IServiceContainerExtension
     {
         /// <summary>
         /// Initial the container with this extension's functionality. 
@@ -29,8 +27,7 @@ namespace ServiceBridge.Autofac.AspNet
         {
             if (e.Lifetime == ServiceLifetime.PerRequest)
             {
-                ((AutofacServiceRegisterEventArgs)e).Registration.RegistrationData.Sharing = InstanceSharing.Shared;
-                ((AutofacServiceRegisterEventArgs)e).Registration.RegistrationData.Lifetime = new PerRequestScopeLifetime();
+                ((UnityServiceRegisterEventArgs)e).LifetimeManager = new PerRequestLifetimeManager();
             }
         }
     }

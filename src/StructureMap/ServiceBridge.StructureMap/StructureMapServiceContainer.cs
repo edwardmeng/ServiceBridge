@@ -45,6 +45,7 @@ namespace ServiceBridge.StructureMap
             {
                 configure.For<IServiceContainer>().Add(this);
             });
+            AddRegistration(typeof(IServiceContainer), typeof(StructureMapServiceContainer), null);
         }
 
         /// <summary>

@@ -54,6 +54,7 @@ namespace ServiceBridge.Windsor
             // Enable constructor injection.
             modelBuilder.AddContributor(new SelectConstructorInspector());
             _container.Register(Component.For<IServiceContainer>().Instance(this));
+            AddRegistration(typeof(IServiceContainer), typeof(WindsorServiceContainer), null);
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace ServiceBridge.Windsor
             {
                 throw new ObjectDisposedException("container");
             }
-            if (!serviceType.IsInterface && !serviceType.IsAbstract && !IsRegistered(serviceType,serviceName) && !IsDynamicRegisterd(serviceType,serviceName))
+            if (!serviceType.IsInterface && !serviceType.IsAbstract && !IsRegistered(serviceType, serviceName) && !IsDynamicRegisterd(serviceType, serviceName))
             {
                 lock (_registrations)
                 {

@@ -210,6 +210,10 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Autofac\ServiceBridge.Autofac.AspNet\ServiceBridge.Autofac.AspNet.csproj">
+      <Project>{a374733a-5a83-450f-b74c-4416e472e6b1}</Project>
+      <Name>ServiceBridge.Autofac.AspNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Autofac\ServiceBridge.Autofac.Interception\ServiceBridge.Autofac.Interception.csproj">
       <Project>{2984c4c5-f10e-4062-b574-9f274cf3c4da}</Project>
       <Name>ServiceBridge.Autofac.Interception</Name>
@@ -222,6 +226,10 @@
       <Project>{38426ec5-1a50-4da2-b459-5389b120a569}</Project>
       <Name>ServiceBridge.Interception</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Ninject\ServiceBridge.Ninject.AspNet\ServiceBridge.Ninject.AspNet.csproj">
+      <Project>{c12fab6c-a9e7-4a56-b8b6-25797fbc42d5}</Project>
+      <Name>ServiceBridge.Ninject.AspNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\Ninject\ServiceBridge.Ninject.Interception\ServiceBridge.Ninject.Interception.csproj">
       <Project>{b8765a35-b885-465b-9a6b-f4c2aaba6bea}</Project>
       <Name>ServiceBridge.Ninject.Interception</Name>
@@ -230,6 +238,10 @@
       <Project>{ccf5528e-e26b-408a-933f-d2e9e1927a98}</Project>
       <Name>ServiceBridge.Ninject</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\StructureMap\ServiceBridge.StructureMap.AspNet\ServiceBridge.StructureMap.AspNet.csproj">
+      <Project>{9953961e-4bc4-497e-a23f-901b337db81c}</Project>
+      <Name>ServiceBridge.StructureMap.AspNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\StructureMap\ServiceBridge.StructureMap.Interception\ServiceBridge.StructureMap.Interception.csproj">
       <Project>{793af29f-1186-45b7-92eb-8605ebce3cfe}</Project>
       <Name>ServiceBridge.StructureMap.Interception</Name>
@@ -237,6 +249,10 @@
     <ProjectReference Include="..\..\src\StructureMap\ServiceBridge.StructureMap\ServiceBridge.StructureMap.csproj">
       <Project>{daa97815-4118-48f3-972f-eb339a0cb1ed}</Project>
       <Name>ServiceBridge.StructureMap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Unity\ServiceBridge.Unity.AspNet\ServiceBridge.Unity.AspNet.csproj">
+      <Project>{77dca08c-993d-4280-8ada-c73c0c476193}</Project>
+      <Name>ServiceBridge.Unity.AspNet</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Unity\ServiceBridge.Unity.Interception\ServiceBridge.Unity.Interception.csproj">
       <Project>{60972548-f189-49d7-9c31-976307a3e03d}</Project>

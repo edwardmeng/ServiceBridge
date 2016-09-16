@@ -26,6 +26,7 @@ namespace ServiceBridge.Unity
             _container
                 .AddNewExtension<UnityServiceContainerExtension>()
                 .RegisterInstance<IServiceContainer>(this, new ExternallyControlledLifetimeManager());
+            AddRegistration(typeof(IServiceContainer), typeof(UnityServiceContainer), null);
         }
 
         /// <summary>
@@ -109,26 +110,22 @@ namespace ServiceBridge.Unity
             }
             var args = new UnityServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime);
             args.InjectionMembers.AddRange(_injectionMembers);
-            OnRegistering(args);
             LifetimeManager lifetimeManager;
             switch (lifetime)
             {
-                case ServiceLifetime.Singleton:
-                    lifetimeManager = new ContainerControlledLifetimeManager();
-                    break;
                 case ServiceLifetime.Transient:
                     lifetimeManager = new TransientLifetimeManager();
                     break;
                 case ServiceLifetime.PerThread:
                     lifetimeManager = new PerThreadLifetimeManager();
                     break;
-                case ServiceLifetime.PerRequest:
-                    lifetimeManager = new PerRequestLifetimeManager();
-                    break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    lifetimeManager = new ContainerControlledLifetimeManager();
+                    break;
             }
-            _container.RegisterType(serviceType, implementationType, serviceName, lifetimeManager, args.InjectionMembers.ToArray());
+            args.LifetimeManager = lifetimeManager;
+            OnRegistering(args);
+            _container.RegisterType(serviceType, implementationType, serviceName, args.LifetimeManager, args.InjectionMembers.ToArray());
         }
     }
 }

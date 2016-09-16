@@ -5,7 +5,7 @@ namespace ServiceBridge.Ninject.AspNet
     /// <summary>
     /// The service container extension to enable Asp.Net integration for the <see cref="NinjectServiceContainer"/>.
     /// </summary>
-    internal class AspNetExtension : IServiceContainerExtension
+    public class NinjectAspNetExtension : IServiceContainerExtension
     {
         /// <summary>
         /// Initial the container with this extension's functionality. 

@@ -14,7 +14,7 @@ namespace ServiceBridge.Autofac.AspNet
         public static void EnableAspNet(this IServiceContainer container)
         {
             if (container == null) throw new ArgumentNullException(nameof(container));
-            container.AddNewExtension<AspNetExtension>();
+            container.AddNewExtension<AutofacAspNetExtension>();
         }
     }
 }

@@ -30,6 +30,7 @@ namespace ServiceBridge.Ninject
             _kernel.Components.Add<IPlanningStrategy, PropertyStrategy>();
             _kernel.Components.Add<IPlanningStrategy, MethodStrategy>();
             _kernel.Bind<IServiceContainer>().ToConstant(this);
+            AddRegistration(typeof(IServiceContainer), typeof(NinjectServiceContainer), null);
         }
 
         /// <summary>

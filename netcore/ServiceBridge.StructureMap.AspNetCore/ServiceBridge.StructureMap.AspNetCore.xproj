@@ -26,8 +26,8 @@
     <Compile Include="..\..\src\StructureMap\ServiceBridge.StructureMap.AspNet\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\StructureMap\ServiceBridge.StructureMap.AspNet\AspNetExtension.cs">
-      <Link>AspNetExtension.cs</Link>
+    <Compile Include="..\..\src\StructureMap\ServiceBridge.StructureMap.AspNet\StructureMapAspNetExtension.cs">
+      <Link>StructureMapAspNetExtension.cs</Link>
     </Compile>
     <Compile Include="..\..\src\StructureMap\ServiceBridge.StructureMap.AspNet\PerRequestLifecycle.cs">
       <Link>PerRequestLifecycle.cs</Link>
