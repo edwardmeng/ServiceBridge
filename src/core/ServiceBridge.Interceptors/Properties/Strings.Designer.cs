@@ -8,9 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Reflection;
-
-namespace ServiceBridge.Interception.Properties {
+namespace ServiceBridge.Interceptors.Properties {
     using System;
     
     
@@ -41,12 +39,7 @@ namespace ServiceBridge.Interception.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-#if NetCore
-                    var assembly = typeof(Strings).GetTypeInfo().Assembly;
-#else
-                    var assembly = typeof(Strings).Assembly;
-#endif
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ServiceBridge.Interception.Properties.Strings", assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ServiceBridge.Interceptors.Properties.Strings", typeof(Strings).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

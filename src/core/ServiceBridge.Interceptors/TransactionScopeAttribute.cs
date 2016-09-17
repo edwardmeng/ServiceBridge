@@ -3,9 +3,10 @@ using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Transactions;
-using ServiceBridge.Interception.Properties;
+using ServiceBridge.Interception;
+using ServiceBridge.Interceptors.Properties;
 
-namespace ServiceBridge.Interception
+namespace ServiceBridge.Interceptors
 {
     /// <summary>
     /// An attribute used to wraps the invocation with a <see cref="TransactionScope"/>
@@ -150,7 +151,7 @@ namespace ServiceBridge.Interception
         /// <param name="invocation">Inputs to the current call to the target.</param>
         /// <param name="getNext">Delegate to execute to get the next delegate in the interceptor chain.</param>
         /// <returns>Return value from the target.</returns>
-#if Net461
+#if Net451
         public IMethodReturn Invoke(IMethodInvocation invocation, GetNextInterceptorHandler getNext)
         {
             var method = (MethodInfo)invocation.Method;

@@ -12,8 +12,8 @@ namespace ServiceBridge.Autofac
         public ISharingLifetimeScope FindScope(ISharingLifetimeScope mostNestedVisibleScope)
         {
             var context = ServiceContainer.HostContext as HttpContext;
-#if NetCore
             if (context == null) return null;
+#if NetCore
             if (!context.Items.ContainsKey(typeof(IComponentLifetime)))
             {
                 lock (context)
@@ -27,7 +27,6 @@ namespace ServiceBridge.Autofac
                 }
             }
 #else
-            if (context == null) return null;
             if (!context.Items.Contains(typeof(IComponentLifetime)))
             {
                 lock (context.Items.SyncRoot)

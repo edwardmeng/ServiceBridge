@@ -53,6 +53,12 @@ namespace ServiceBridge
         /// </summary>
         public static bool HasProvider => _currentProvider != null;
 
+        /// <summary>
+        /// Gets or sets the host context associated with the current thread.
+        /// </summary>
+        /// <remarks>
+        /// This is only used to integrate with Asp.Net purpose.
+        /// </remarks>
         public static object HostContext
         {
             get

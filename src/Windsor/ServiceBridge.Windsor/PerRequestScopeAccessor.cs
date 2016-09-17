@@ -8,12 +8,13 @@ namespace ServiceBridge.Windsor
     {
         public void Dispose()
         {
-            if (HttpContext.Current == null) return;
-            if (HttpContext.Current.Items.Contains(typeof(PerRequestScopeAccessor)))
+            var httpContext = ServiceContainer.HostContext as HttpContext;
+            if (httpContext == null) return;
+            if (httpContext.Items.Contains(typeof(PerRequestScopeAccessor)))
             {
-                lock (HttpContext.Current.Items.SyncRoot)
+                lock (httpContext.Items.SyncRoot)
                 {
-                    var scope = (ILifetimeScope) HttpContext.Current.Items[typeof(PerRequestScopeAccessor)];
+                    var scope = (ILifetimeScope)httpContext.Items[typeof(PerRequestScopeAccessor)];
                     scope?.Dispose();
                 }
             }
@@ -21,21 +22,22 @@ namespace ServiceBridge.Windsor
 
         public ILifetimeScope GetScope(CreationContext context)
         {
-            if (HttpContext.Current == null) return null;
-            if (!HttpContext.Current.Items.Contains(typeof(PerRequestScopeAccessor)))
+            var httpContext = ServiceContainer.HostContext as HttpContext;
+            if (httpContext == null) return null;
+            if (!httpContext.Items.Contains(typeof(PerRequestScopeAccessor)))
             {
-                lock (HttpContext.Current.Items.SyncRoot)
+                lock (httpContext.Items.SyncRoot)
                 {
-                    if (!HttpContext.Current.Items.Contains(typeof(PerRequestScopeAccessor)))
+                    if (!httpContext.Items.Contains(typeof(PerRequestScopeAccessor)))
                     {
                         var scope = new DefaultLifetimeScope(new ScopeCache());
-                        HttpContext.Current.Items[typeof(PerRequestScopeAccessor)] = scope;
-                        HttpContext.Current.DisposeOnPipelineCompleted(scope);
+                        httpContext.Items[typeof(PerRequestScopeAccessor)] = scope;
+                        httpContext.DisposeOnPipelineCompleted(scope);
                         return scope;
                     }
                 }
             }
-            return (ILifetimeScope) HttpContext.Current.Items[typeof(PerRequestScopeAccessor)];
+            return (ILifetimeScope)httpContext.Items[typeof(PerRequestScopeAccessor)];
         }
     }
 }
