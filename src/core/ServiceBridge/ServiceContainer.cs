@@ -1,5 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+#if NetCore
+using System.Threading;
+#else
+using System.Runtime.Remoting.Messaging;
+#endif
 using ServiceBridge.Properties;
 
 namespace ServiceBridge
@@ -47,6 +52,25 @@ namespace ServiceBridge
         /// Returns a value indicates whether the provider for the service container has been specified.
         /// </summary>
         public static bool HasProvider => _currentProvider != null;
+
+        public static object HostContext
+        {
+            get
+            {
+#if NetCore
+                return null;
+#else
+                return CallContext.HostContext;
+#endif
+            }
+            set
+            {
+#if NetCore
+#else
+                CallContext.HostContext = value;
+#endif
+            }
+        }
 
         #endregion
 

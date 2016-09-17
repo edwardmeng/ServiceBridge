@@ -28,7 +28,7 @@ namespace ServiceBridge.Autofac
         {
             _builder = builder ?? new ContainerBuilder();
             _builder.RegisterInstance(this).As<IServiceContainer>().ExternallyOwned();
-            AddRegistration(typeof(IServiceContainer), typeof(AutofacServiceContainer), null);
+            RegisterInstance(typeof(IServiceContainer), this);
         }
 
         /// <summary>
@@ -179,6 +179,28 @@ namespace ServiceBridge.Autofac
             Register(_builder, serviceType, implementationType, serviceName, lifetime);
         }
 
+        /// <summary>
+        /// Registering the instance mapping.
+        /// </summary>
+        /// <param name="serviceType"><see cref="System.Type"/> that will be requested.</param>
+        /// <param name="instance">The instance that will actually be returned.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
+        {
+            if (_builder == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            if (serviceName == null)
+            {
+                _builder.RegisterInstance(instance).As(serviceType);
+            }
+            else
+            {
+                _builder.RegisterInstance(instance).Named(serviceName, serviceType);
+            }
+        }
+
         private void Register(ContainerBuilder builder, Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
         {
             var registration = serviceName == null
@@ -198,7 +220,6 @@ namespace ServiceBridge.Autofac
                 .UsingConstructor(new MostParametersConstructorSelector())
                 .OnActivated(args => DynamicInjectionBuilder.GetOrCreate(implementationType, true, true)(this, args.Instance));
             OnRegistering(new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, registration));
-            //registration.RegistrationData.Lifetime
             switch (lifetime)
             {
                 case ServiceLifetime.Singleton:
@@ -210,6 +231,10 @@ namespace ServiceBridge.Autofac
                 case ServiceLifetime.PerThread:
                     registration.RegistrationData.Sharing = InstanceSharing.Shared;
                     registration.RegistrationData.Lifetime = new PerThreadScopeLifetime();
+                    break;
+                case ServiceLifetime.PerRequest:
+                    registration.RegistrationData.Sharing = InstanceSharing.Shared;
+                    registration.RegistrationData.Lifetime = new PerRequestScopeLifetime();
                     break;
             }
         }

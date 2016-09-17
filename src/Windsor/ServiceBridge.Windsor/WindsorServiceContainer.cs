@@ -53,8 +53,7 @@ namespace ServiceBridge.Windsor
             }
             // Enable constructor injection.
             modelBuilder.AddContributor(new SelectConstructorInspector());
-            _container.Register(Component.For<IServiceContainer>().Instance(this));
-            AddRegistration(typeof(IServiceContainer), typeof(WindsorServiceContainer), null);
+            RegisterInstance(typeof(IServiceContainer), this);
         }
 
         /// <summary>
@@ -207,25 +206,19 @@ namespace ServiceBridge.Windsor
                 case ServiceLifetime.PerThread:
                     registration.LifestylePerThread();
                     break;
-                case ServiceLifetime.PerRequest:
-                    registration.LifestylePerWebRequest();
-                    break;
             }
             _container.Register(registration);
         }
 
         /// <summary>
-        /// Registers an instance to the container.
+        /// Registering the instance mapping.
         /// </summary>
-        /// <param name="serviceType">Type of instance to register (may be an implemented interface instead of the full type).</param>
-        /// <param name="instance">Object to be returned.</param>
-        public void RegisterInstance(Type serviceType, object instance)
+        /// <param name="serviceType"><see cref="System.Type"/> that will be requested.</param>
+        /// <param name="instance">The instance that will actually be returned.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
         {
-            if (_container == null)
-            {
-                throw new ObjectDisposedException("container");
-            }
-            _container.Register(Component.For(serviceType).Instance(instance));
+            _container.Register(Component.For(serviceType).Instance(this).Named(GetServiceName(serviceType, serviceName)));
         }
 
         private string GetServiceName(Type serviceType, string serviceName)

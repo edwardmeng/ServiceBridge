@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-*",
+
+    "dependencies": {
+        "MassActivation": "1.1.0",
+        "NETStandard.Library": "1.6.0",
+        "ServiceBridge.AspNetCore": {"target": "project"} 
+    },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}

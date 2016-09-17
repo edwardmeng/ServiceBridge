@@ -4,7 +4,8 @@
     "dependencies": {
         "NETStandard.Library": "1.6.0",
         "ServiceBridge": { "target": "project" },
-        "Autofac": "4.1.0" 
+        "Autofac": "4.1.0",
+        "Microsoft.AspNetCore.Http.Abstractions": "1.0.0"
     },
 
   "frameworks": {

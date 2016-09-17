@@ -23,10 +23,8 @@ namespace ServiceBridge.Unity
         {
             _container = container ?? new UnityContainer();
             _injectionMembers = injectionMembers ?? new InjectionMember[0];
-            _container
-                .AddNewExtension<UnityServiceContainerExtension>()
-                .RegisterInstance<IServiceContainer>(this, new ExternallyControlledLifetimeManager());
-            AddRegistration(typeof(IServiceContainer), typeof(UnityServiceContainer), null);
+            _container.AddNewExtension<UnityServiceContainerExtension>();
+            RegisterInstance(typeof(IServiceContainer), this);
         }
 
         /// <summary>
@@ -110,6 +108,7 @@ namespace ServiceBridge.Unity
             }
             var args = new UnityServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime);
             args.InjectionMembers.AddRange(_injectionMembers);
+            OnRegistering(args);
             LifetimeManager lifetimeManager;
             switch (lifetime)
             {
@@ -119,13 +118,29 @@ namespace ServiceBridge.Unity
                 case ServiceLifetime.PerThread:
                     lifetimeManager = new PerThreadLifetimeManager();
                     break;
+                case ServiceLifetime.PerRequest:
+                    lifetimeManager = new PerRequestLifetimeManager();
+                    break;
                 default:
                     lifetimeManager = new ContainerControlledLifetimeManager();
                     break;
             }
-            args.LifetimeManager = lifetimeManager;
-            OnRegistering(args);
-            _container.RegisterType(serviceType, implementationType, serviceName, args.LifetimeManager, args.InjectionMembers.ToArray());
+            _container.RegisterType(serviceType, implementationType, serviceName, lifetimeManager, args.InjectionMembers.ToArray());
+        }
+
+        /// <summary>
+        /// Registering the instance mapping.
+        /// </summary>
+        /// <param name="serviceType"><see cref="System.Type"/> that will be requested.</param>
+        /// <param name="instance">The instance that will actually be returned.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
+        {
+            if (_container == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            _container.RegisterInstance(serviceType, serviceName, instance, new ExternallyControlledLifetimeManager());
         }
     }
 }

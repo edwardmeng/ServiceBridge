@@ -22,6 +22,9 @@
     <Compile Include="..\..\src\StructureMap\ServiceBridge.StructureMap\InjectionConstructorSelector.cs">
       <Link>InjectionConstructorSelector.cs</Link>
     </Compile>
+    <Compile Include="..\..\src\StructureMap\ServiceBridge.StructureMap\PerRequestLifecycle.cs">
+      <Link>PerRequestLifecycle.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\StructureMap\ServiceBridge.StructureMap\StructureMapServiceContainer.cs">
       <Link>StructureMapServiceContainer.cs</Link>
     </Compile>

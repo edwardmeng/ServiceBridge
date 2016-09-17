@@ -22,6 +22,9 @@
     <Compile Include="..\..\src\Autofac\ServiceBridge.Autofac\PerThreadScopeLifetime.cs">
       <Link>PerThreadScopeLifetime.cs</Link>
     </Compile>
+    <Compile Include="..\..\src\Autofac\ServiceBridge.Autofac\PerRequestScopeLifetime.cs">
+      <Link>PerRequestScopeLifetime.cs</Link>
+    </Compile>
     <Compile Include="..\..\src\Share\ServiceBridge.DynamicInjection\DynamicInjectionBuilder.cs">
       <Link>DynamicInjectionBuilder.cs</Link>
     </Compile>

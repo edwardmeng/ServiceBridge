@@ -247,6 +247,40 @@ namespace ServiceBridge
         #region Register
 
         /// <summary>
+        /// Registers a instance mapping with the container. 
+        /// </summary>
+        /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
+        /// <param name="instance">The instance that will actually be returned.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
+        public IServiceContainer RegisterInstance(Type serviceType, object instance, string serviceName = null)
+        {
+            if (_registrations == null)
+            {
+                throw new ObjectDisposedException("container");
+            }
+            if (serviceType == null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
+            if (instance == null)
+            {
+                throw new ArgumentNullException(nameof(instance));
+            }
+            var implementationType = instance.GetType();
+            try
+            {
+                DoRegisterInstance(serviceType, instance, serviceName);
+                AddRegistration(serviceType, implementationType, serviceName);
+                return this;
+            }
+            catch (Exception ex)
+            {
+                throw new RegistrationException(FormatRegistrationExceptionMessage(ex, serviceType, implementationType, serviceName), ex);
+            }
+        }
+
+        /// <summary>
         /// Checking if a particular type/name pair has been registered with the container. 
         /// </summary>
         /// <param name="serviceType">Type to check registration for.</param>
@@ -361,6 +395,15 @@ namespace ServiceBridge
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
         /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
         protected abstract void DoRegister(Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime);
+
+        /// <summary>
+        /// When implemented by inheriting classes, this method will do the actual work of
+        /// registering the instance mapping.
+        /// </summary>
+        /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
+        /// <param name="instance">The instance that will actually be returned.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        protected abstract void DoRegisterInstance(Type serviceType, object instance, string serviceName);
 
         /// <summary>
         /// This event is raised when the <see cref="IServiceContainer.Register"/> method is called. 

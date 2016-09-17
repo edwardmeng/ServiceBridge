@@ -41,11 +41,7 @@ namespace ServiceBridge.StructureMap
         public StructureMapServiceContainer(IContainer container = null)
         {
             _container = container ?? new Container();
-            _container.Configure(configure =>
-            {
-                configure.For<IServiceContainer>().Add(this);
-            });
-            AddRegistration(typeof(IServiceContainer), typeof(StructureMapServiceContainer), null);
+            RegisterInstance(typeof(IServiceContainer), this);
         }
 
         /// <summary>
@@ -127,6 +123,9 @@ namespace ServiceBridge.StructureMap
                     case ServiceLifetime.PerThread:
                         instance.LifecycleIs<ThreadLocalStorageLifecycle>();
                         break;
+                    case ServiceLifetime.PerRequest:
+                        instance.LifecycleIs<PerRequestLifecycle>();
+                        break;
                 }
                 // Enable the method injection
                 instance.AddInterceptor(new ActivatorInterceptor<object>((context, x) => DynamicInjectionBuilder.GetOrCreate(implementationType, false, true)(this, x)));
@@ -135,6 +134,24 @@ namespace ServiceBridge.StructureMap
                 // Enable the property injection
                 registry.Policies.SetAllProperties(convention => convention.Matching(InjectionAttribute.Matches));
                 configure.AddRegistry(registry);
+            });
+        }
+
+        /// <summary>
+        /// Registering the instance mapping.
+        /// </summary>
+        /// <param name="serviceType"><see cref="System.Type"/> that will be requested.</param>
+        /// <param name="instance">The instance that will actually be returned.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
+        {
+            _container.Configure(configure =>
+            {
+                var objectInstance = configure.For(serviceType).Add(this);
+                if (!string.IsNullOrEmpty(serviceName))
+                {
+                    objectInstance.Named(serviceName);
+                }
             });
         }
     }

@@ -50,7 +50,7 @@
     </Compile>
     <Compile Include="PreApplicationStartup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceContainerHttpModule.cs" />
+    <Compile Include="ServiceBridgeHttpModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\core\ServiceBridge\ServiceBridge.csproj">

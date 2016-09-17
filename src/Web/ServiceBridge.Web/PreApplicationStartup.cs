@@ -8,7 +8,7 @@ namespace ServiceBridge.Web
     {
         public static void Configuration()
         {
-            HttpApplication.RegisterModule(typeof(ServiceContainerHttpModule));
+            HttpApplication.RegisterModule(typeof(ServiceBridgeHttpModule));
         }
     }
 }

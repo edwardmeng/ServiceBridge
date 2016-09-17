@@ -4,7 +4,8 @@
     "dependencies": {
         "NETStandard.Library": "1.6.0",
         "StructureMap": "4.4.0",
-        "ServiceBridge": {"target": "project"} 
+        "ServiceBridge": { "target": "project" },
+        "Microsoft.AspNetCore.Http.Abstractions": "1.0.0"
     },
 
   "frameworks": {
@@ -15,7 +16,7 @@
                 "include": [ "../../GlobalAssemblyInfo.cs", "../../src/StructureMap/ServiceBridge.StructureMap/**/*.cs", "../../src/Share/ServiceBridge.DynamicInjection/**/*.cs" ]
             },
             "define": [ "NetCore" ],
-            "keyFile": "../../ServiceBridge.snk",
+            //"keyFile": "../../ServiceBridge.snk",
             "xmlDoc": true,
             "outputName": "ServiceBridge.StructureMap"
         }

@@ -29,8 +29,7 @@ namespace ServiceBridge.Ninject
             _kernel.Components.Add<IPlanningStrategy, ConstructorStrategy>();
             _kernel.Components.Add<IPlanningStrategy, PropertyStrategy>();
             _kernel.Components.Add<IPlanningStrategy, MethodStrategy>();
-            _kernel.Bind<IServiceContainer>().ToConstant(this);
-            AddRegistration(typeof(IServiceContainer), typeof(NinjectServiceContainer), null);
+            RegisterInstance(typeof(IServiceContainer), this);
         }
 
         /// <summary>
@@ -120,7 +119,23 @@ namespace ServiceBridge.Ninject
                 case ServiceLifetime.PerThread:
                     binding.InScope(ctx => Thread.CurrentThread);
                     break;
+                case ServiceLifetime.PerRequest:
+                    binding.InScope(ctx => ServiceContainer.HostContext);
+                    break;
             }
+        }
+
+        /// <summary>
+        /// Registering the instance mapping.
+        /// </summary>
+        /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
+        /// <param name="instance">The instance that will actually be returned.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
+        {
+            if (_kernel == null) throw new ObjectDisposedException("container");
+            var binding = _kernel.Bind(serviceType).ToConstant(instance);
+            if (serviceName != null) binding.Named(serviceName);
         }
     }
 }
