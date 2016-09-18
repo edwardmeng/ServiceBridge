@@ -52,6 +52,10 @@
       <Project>{38426ec5-1a50-4da2-b459-5389b120a569}</Project>
       <Name>ServiceBridge.Interception</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\core\ServiceBridge.Interceptors\ServiceBridge.Interceptors.net451.csproj">
+      <Project>{c2ccc516-9876-408a-a3d1-5aa8ad2ce2c3}</Project>
+      <Name>ServiceBridge.Interceptors.net451</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\core\ServiceBridge\ServiceBridge.csproj">
       <Project>{3eb8741f-d5db-47eb-a76e-2cd1ce0b3961}</Project>
       <Name>ServiceBridge</Name>

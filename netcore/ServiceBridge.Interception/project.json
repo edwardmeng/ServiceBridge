@@ -15,9 +15,6 @@
                 "include": [ "../../GlobalAssemblyInfo.cs", "../../src/core/ServiceBridge.Interception/**/*.cs" ],
                 "exclude": [ "../../src/core/ServiceBridge.Interception/TransactionScopeAttribute.cs" ]
             },
-            "embed": {
-                "include": [ "../../src/core/ServiceBridge.Interception/**/*.resx" ]
-            },
             "define": [ "NetCore" ],
             "keyFile": "../../ServiceBridge.snk",
             "xmlDoc": true,

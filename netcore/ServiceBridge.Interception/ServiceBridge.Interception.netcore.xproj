@@ -46,17 +46,6 @@
     <Compile Include="..\..\src\core\ServiceBridge.Interception\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\src\core\ServiceBridge.Interception\Properties\Strings.Designer.cs">
-      <Link>Properties\Strings.Designer.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Strings.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="..\..\src\core\ServiceBridge.Interception\Properties\Strings.resx">
-      <Link>Properties\Strings.resx</Link>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>

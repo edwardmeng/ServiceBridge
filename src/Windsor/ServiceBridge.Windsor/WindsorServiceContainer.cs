@@ -135,14 +135,7 @@ namespace ServiceBridge.Windsor
             {
                 throw new ObjectDisposedException("container");
             }
-            if (serviceName == null)
-            {
-                return _container.Resolve(serviceType);
-            }
-            else
-            {
-                return _container.Resolve(GetServiceName(serviceType, serviceName), serviceType);
-            }
+            return _container.Resolve(GetServiceName(serviceType, serviceName), serviceType);
         }
 
         /// <summary>
@@ -195,18 +188,7 @@ namespace ServiceBridge.Windsor
                 // Enable property injection
                 .PropertiesIgnore(property => !InjectionAttribute.Matches(property));
             OnRegistering(new WindsorServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, registration));
-            switch (lifetime)
-            {
-                case ServiceLifetime.Singleton:
-                    registration.LifestyleSingleton();
-                    break;
-                case ServiceLifetime.Transient:
-                    registration.LifestyleTransient();
-                    break;
-                case ServiceLifetime.PerThread:
-                    registration.LifestylePerThread();
-                    break;
-            }
+            ApplyLifetime(registration, lifetime);
             _container.Register(registration);
         }
 
@@ -216,14 +198,39 @@ namespace ServiceBridge.Windsor
         /// <param name="serviceType"><see cref="System.Type"/> that will be requested.</param>
         /// <param name="instance">The instance that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName, ServiceLifetime? lifetime)
         {
-            _container.Register(Component.For(serviceType).Instance(this).Named(GetServiceName(serviceType, serviceName)));
+            var registration = Component.For(serviceType).Instance(instance).Named(GetServiceName(serviceType, serviceName));
+            ApplyLifetime(registration, lifetime);
+            _container.Register(registration);
         }
 
         private string GetServiceName(Type serviceType, string serviceName)
         {
             return ComponentName.DefaultNameFor(serviceType) + (string.IsNullOrEmpty(serviceName) ? null : '.' + serviceName);
+        }
+
+        private void ApplyLifetime(ComponentRegistration<object> registration, ServiceLifetime? lifetime)
+        {
+            if (lifetime.HasValue)
+            {
+                switch (lifetime)
+                {
+                    case ServiceLifetime.Singleton:
+                        registration.LifestyleSingleton();
+                        break;
+                    case ServiceLifetime.Transient:
+                        registration.LifestyleTransient();
+                        break;
+                    case ServiceLifetime.PerThread:
+                        registration.LifestylePerThread();
+                        break;
+                    case ServiceLifetime.PerRequest:
+                        registration.LifestylePerWebRequest();
+                        break;
+                }
+            }
         }
     }
 }

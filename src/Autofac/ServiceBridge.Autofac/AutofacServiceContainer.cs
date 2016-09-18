@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Autofac;
+using Autofac.Builder;
 using Autofac.Core;
 using Autofac.Core.Activators.Reflection;
 using ServiceBridge.DynamicInjection;
@@ -14,12 +15,16 @@ namespace ServiceBridge.Autofac
     /// </summary>
     public class AutofacServiceContainer : ServiceContainerBase
     {
+        #region Fields
+
         private ContainerBuilder _builder;
         private IContainer _container;
         private readonly object _lockobj = new object();
 
         private readonly IDictionary<Type, IDictionary<ServiceName, ServiceRegistration>> _registrations =
             new Dictionary<Type, IDictionary<ServiceName, ServiceRegistration>>();
+    
+        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutofacServiceContainer" /> class.
@@ -185,20 +190,15 @@ namespace ServiceBridge.Autofac
         /// <param name="serviceType"><see cref="System.Type"/> that will be requested.</param>
         /// <param name="instance">The instance that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName, ServiceLifetime? lifetime)
         {
             if (_builder == null)
             {
                 throw new ObjectDisposedException("container");
             }
-            if (serviceName == null)
-            {
-                _builder.RegisterInstance(instance).As(serviceType);
-            }
-            else
-            {
-                _builder.RegisterInstance(instance).Named(serviceName, serviceType);
-            }
+            var registration = serviceName == null ? _builder.RegisterInstance(instance).As(serviceType) : _builder.RegisterInstance(instance).Named(serviceName, serviceType);
+            ApplyLifetime(registration, lifetime);
         }
 
         private void Register(ContainerBuilder builder, Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
@@ -220,7 +220,17 @@ namespace ServiceBridge.Autofac
                 .UsingConstructor(new MostParametersConstructorSelector())
                 .OnActivated(args => DynamicInjectionBuilder.GetOrCreate(implementationType, true, true)(this, args.Instance));
             OnRegistering(new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, registration));
-            switch (lifetime)
+            ApplyLifetime(registration, lifetime);
+        }
+
+        private void ApplyLifetime(IRegistrationBuilder<object, IConcreteActivatorData, SingleRegistrationStyle> registration, ServiceLifetime? lifetime)
+        {
+            if (!lifetime.HasValue)
+            {
+                registration.ExternallyOwned();
+                return;
+            }
+            switch (lifetime.Value)
             {
                 case ServiceLifetime.Singleton:
                     registration.SingleInstance();

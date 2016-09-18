@@ -17,7 +17,7 @@ namespace ServiceBridge.UnitTests
         protected ServiceContainerFixtureBase()
         {
             ServiceContainer.SetProvider(CreateContainer);
-            ServiceContainer.Register<ILogger, AdvancedLogger>().Register<ILogger, SimpleLogger>("Simple").Register<ILogger, AdvancedLogger>("Advanced");
+            ServiceContainer.Register<ILogger, SimpleLogger>("Simple").Register<ILogger, AdvancedLogger>().Register<ILogger, AdvancedLogger>("Advanced");
             ServiceContainer.Register<ICanChangeParameters, CanChangeParametersTarget>().Register<ObjectWithInjection>();
         }
 
@@ -32,6 +32,7 @@ namespace ServiceBridge.UnitTests
         {
             var instance = ServiceContainer.GetInstance<ILogger>();
             Assert.NotNull(instance);
+            Assert.IsAssignableFrom<AdvancedLogger>(instance);
         }
 
         [Fact]

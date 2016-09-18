@@ -108,21 +108,7 @@ namespace ServiceBridge.Ninject
             IBindingSyntax syntax = binding;
             if (serviceName != null) syntax = binding.Named(serviceName);
             OnRegistering(new NinjectServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, syntax));
-            switch (lifetime)
-            {
-                case ServiceLifetime.Transient:
-                    binding.InScope(StandardScopeCallbacks.Transient);
-                    break;
-                case ServiceLifetime.Singleton:
-                    binding.InScope(StandardScopeCallbacks.Singleton);
-                    break;
-                case ServiceLifetime.PerThread:
-                    binding.InScope(ctx => Thread.CurrentThread);
-                    break;
-                case ServiceLifetime.PerRequest:
-                    binding.InScope(ctx => ServiceContainer.HostContext);
-                    break;
-            }
+            ApplyLifetime(binding, lifetime);
         }
 
         /// <summary>
@@ -131,11 +117,35 @@ namespace ServiceBridge.Ninject
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="instance">The instance that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName, ServiceLifetime? lifetime)
         {
             if (_kernel == null) throw new ObjectDisposedException("container");
             var binding = _kernel.Bind(serviceType).ToConstant(instance);
             if (serviceName != null) binding.Named(serviceName);
+            ApplyLifetime(binding, lifetime);
+        }
+
+        private void ApplyLifetime(IBindingInSyntax<object> binding, ServiceLifetime? lifetime)
+        {
+            if (lifetime.HasValue)
+            {
+                switch (lifetime.Value)
+                {
+                    case ServiceLifetime.Transient:
+                        binding.InScope(StandardScopeCallbacks.Transient);
+                        break;
+                    case ServiceLifetime.Singleton:
+                        binding.InScope(StandardScopeCallbacks.Singleton);
+                        break;
+                    case ServiceLifetime.PerThread:
+                        binding.InScope(ctx => Thread.CurrentThread);
+                        break;
+                    case ServiceLifetime.PerRequest:
+                        binding.InScope(ctx => ServiceContainer.HostContext);
+                        break;
+                }
+            }
         }
     }
 }

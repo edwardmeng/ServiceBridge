@@ -252,8 +252,9 @@ namespace ServiceBridge
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="instance">The instance that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        public IServiceContainer RegisterInstance(Type serviceType, object instance, string serviceName = null)
+        public IServiceContainer RegisterInstance(Type serviceType, object instance, string serviceName = null, ServiceLifetime? lifetime = null)
         {
             if (_registrations == null)
             {
@@ -270,7 +271,7 @@ namespace ServiceBridge
             var implementationType = instance.GetType();
             try
             {
-                DoRegisterInstance(serviceType, instance, serviceName);
+                DoRegisterInstance(serviceType, instance, serviceName, lifetime);
                 AddRegistration(serviceType, implementationType, serviceName);
                 return this;
             }
@@ -403,7 +404,8 @@ namespace ServiceBridge
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="instance">The instance that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        protected abstract void DoRegisterInstance(Type serviceType, object instance, string serviceName);
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        protected abstract void DoRegisterInstance(Type serviceType, object instance, string serviceName, ServiceLifetime? lifetime);
 
         /// <summary>
         /// This event is raised when the <see cref="IServiceContainer.Register"/> method is called. 

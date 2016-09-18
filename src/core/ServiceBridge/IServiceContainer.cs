@@ -62,8 +62,9 @@ namespace ServiceBridge
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="instance">The instance that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
+        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        IServiceContainer RegisterInstance(Type serviceType, object instance, string serviceName = null);
+        IServiceContainer RegisterInstance(Type serviceType, object instance, string serviceName = null, ServiceLifetime? lifetime = null);
 
         /// <summary>
         /// Check if a particular type/name pair has been registered with the container. 

@@ -1,4 +1,4 @@
-﻿using ServiceBridge.Interception;
+﻿using ServiceBridge.Interceptors;
 
 namespace ServiceBridge.Sample.Components
 {
