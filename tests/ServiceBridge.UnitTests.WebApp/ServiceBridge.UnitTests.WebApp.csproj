@@ -93,7 +93,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
@@ -210,10 +210,6 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Autofac\ServiceBridge.Autofac.Activation\ServiceBridge.Autofac.Activation.csproj">
-      <Project>{13546467-0a48-430d-8e96-0f56d1001f6f}</Project>
-      <Name>ServiceBridge.Autofac.Activation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Autofac\ServiceBridge.Autofac.Interception\ServiceBridge.Autofac.Interception.csproj">
       <Project>{2984c4c5-f10e-4062-b574-9f274cf3c4da}</Project>
       <Name>ServiceBridge.Autofac.Interception</Name>
@@ -234,10 +230,6 @@
       <Project>{580786d7-8264-4b2a-a120-770e5e0b1ece}</Project>
       <Name>ServiceBridge.Mvc.Activation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\Ninject\ServiceBridge.Ninject.Activation\ServiceBridge.Ninject.Activation.csproj">
-      <Project>{a99b1da1-fbf8-4ba6-8c17-88d53aa033bf}</Project>
-      <Name>ServiceBridge.Ninject.Activation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Ninject\ServiceBridge.Ninject.Interception\ServiceBridge.Ninject.Interception.csproj">
       <Project>{b8765a35-b885-465b-9a6b-f4c2aaba6bea}</Project>
       <Name>ServiceBridge.Ninject.Interception</Name>
@@ -246,10 +238,6 @@
       <Project>{ccf5528e-e26b-408a-933f-d2e9e1927a98}</Project>
       <Name>ServiceBridge.Ninject</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\src\StructureMap\ServiceBridge.StructureMap.Activation\ServiceBridge.StructureMap.Activation.csproj">
-      <Project>{72730ee4-75bd-4825-9ac0-ab44c284b6b7}</Project>
-      <Name>ServiceBridge.StructureMap.Activation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\StructureMap\ServiceBridge.StructureMap.Interception\ServiceBridge.StructureMap.Interception.csproj">
       <Project>{793af29f-1186-45b7-92eb-8605ebce3cfe}</Project>
       <Name>ServiceBridge.StructureMap.Interception</Name>
@@ -257,10 +245,6 @@
     <ProjectReference Include="..\..\src\StructureMap\ServiceBridge.StructureMap\ServiceBridge.StructureMap.csproj">
       <Project>{daa97815-4118-48f3-972f-eb339a0cb1ed}</Project>
       <Name>ServiceBridge.StructureMap</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Unity\ServiceBridge.Unity.Activation\ServiceBridge.Unity.Activation.csproj">
-      <Project>{ec9bd218-f49b-4c44-bbc5-eb009dc31ca9}</Project>
-      <Name>ServiceBridge.Unity.Activation</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Unity\ServiceBridge.Unity.Interception\ServiceBridge.Unity.Interception.csproj">
       <Project>{60972548-f189-49d7-9c31-976307a3e03d}</Project>
@@ -273,10 +257,6 @@
     <ProjectReference Include="..\..\src\WebApi\ServiceBridge.WebApi.Activation\ServiceBridge.WebApi.Activation.csproj">
       <Project>{709a79e4-5133-4c93-9e46-70215f710812}</Project>
       <Name>ServiceBridge.WebApi.Activation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\src\Windsor\ServiceBridge.Windsor.Activation\ServiceBridge.Windsor.Activation.csproj">
-      <Project>{c643f9cc-5b63-45b2-b42c-747ed4ba6d17}</Project>
-      <Name>ServiceBridge.Windsor.Activation</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Windsor\ServiceBridge.Windsor.Interception\ServiceBridge.Windsor.Interception.csproj">
       <Project>{b233cd92-2d28-4304-be77-337f508e574b}</Project>
