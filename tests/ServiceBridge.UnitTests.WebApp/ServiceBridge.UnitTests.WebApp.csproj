@@ -189,7 +189,6 @@
     <Compile Include="..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Components\LifetimeTarget.cs" />
     <Compile Include="Controllers\LifetimeController.cs" />
     <Compile Include="Global.asax.cs">

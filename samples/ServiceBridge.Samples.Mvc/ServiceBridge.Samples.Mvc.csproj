@@ -134,9 +134,17 @@
       <Project>{1afd596c-6d58-4b6b-ad84-27375e41fecd}</Project>
       <Name>ServiceBridge.Autofac</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\core\ServiceBridge.Activation\ServiceBridge.Activation.csproj">
+      <Project>{acacefc2-c9f6-4747-ba58-39d17de46460}</Project>
+      <Name>ServiceBridge.Activation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\core\ServiceBridge.Interception\ServiceBridge.Interception.csproj">
       <Project>{38426ec5-1a50-4da2-b459-5389b120a569}</Project>
       <Name>ServiceBridge.Interception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\Mvc\ServiceBridge.Mvc.Activation\ServiceBridge.Mvc.Activation.csproj">
+      <Project>{580786d7-8264-4b2a-a120-770e5e0b1ece}</Project>
+      <Name>ServiceBridge.Mvc.Activation</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\src\Mvc\ServiceBridge.Mvc\ServiceBridge.Mvc.csproj">
       <Project>{33ce1bde-446d-4152-ab59-c40b18cd3919}</Project>

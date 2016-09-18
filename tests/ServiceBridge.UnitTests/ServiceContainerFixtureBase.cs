@@ -324,9 +324,9 @@ namespace ServiceBridge.UnitTests
         [Fact]
         public async Task MvcPerRequestLifetime()
         {
-            Assert.Equal("Success", JsonConvert.DeserializeObject(await ProcessWebRequest($"http://localhost:62232/Lifetime/Initialize?container={WebName}")));
-            Assert.Equal("12345", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/Lifetime/SetValue?value=12345")));
-            Assert.Equal("Default", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/Lifetime/GetValue")));
+            Assert.Equal("Success", JsonConvert.DeserializeObject(await ProcessWebRequest($"http://localhost:62232/mvc/Lifetime/Initialize?container={WebName}")));
+            Assert.Equal("12345", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/mvc/Lifetime/SetValue?value=12345")));
+            Assert.Equal("Default", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/mvc/Lifetime/GetValue")));
         }
 
         [Fact]
