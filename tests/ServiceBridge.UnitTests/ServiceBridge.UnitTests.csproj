@@ -137,6 +137,7 @@
     <Compile Include="Components\DoubleInputInterceptor.cs" />
     <Compile Include="Components\ICanChangeParameters.cs" />
     <Compile Include="Components\ILogger.cs" />
+    <Compile Include="Components\InstanceObject.cs" />
     <Compile Include="Components\LifetimeObject.cs" />
     <Compile Include="Components\ObjectWithInjection.cs" />
     <Compile Include="Components\SimpleLogger.cs" />

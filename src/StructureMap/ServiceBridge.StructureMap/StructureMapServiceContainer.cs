@@ -134,7 +134,7 @@ namespace ServiceBridge.StructureMap
         {
             _container.Configure(configure =>
             {
-                var objectInstance = configure.For(serviceType).Add(this);
+                var objectInstance = configure.For(serviceType).Add(instance);
                 if (!string.IsNullOrEmpty(serviceName))
                 {
                     objectInstance.Named(serviceName);
