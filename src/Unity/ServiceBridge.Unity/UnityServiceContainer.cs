@@ -109,7 +109,23 @@ namespace ServiceBridge.Unity
             var args = new UnityServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime);
             args.InjectionMembers.AddRange(_injectionMembers);
             OnRegistering(args);
-            _container.RegisterType(serviceType, implementationType, serviceName, CreateLifetimeManager(lifetime), args.InjectionMembers.ToArray());
+            LifetimeManager lifetimeManager;
+            switch (lifetime)
+            {
+                case ServiceLifetime.Transient:
+                    lifetimeManager = new TransientLifetimeManager();
+                    break;
+                case ServiceLifetime.PerThread:
+                    lifetimeManager = new PerThreadLifetimeManager();
+                    break;
+                case ServiceLifetime.PerRequest:
+                    lifetimeManager = new PerRequestLifetimeManager();
+                    break;
+                default:
+                    lifetimeManager = new ContainerControlledLifetimeManager();
+                    break;
+            }
+            _container.RegisterType(serviceType, implementationType, serviceName, lifetimeManager, args.InjectionMembers.ToArray());
         }
 
         /// <summary>
@@ -118,33 +134,13 @@ namespace ServiceBridge.Unity
         /// <param name="serviceType"><see cref="System.Type"/> that will be requested.</param>
         /// <param name="instance">The instance that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
-        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName, ServiceLifetime? lifetime)
+        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
         {
             if (_container == null)
             {
                 throw new ObjectDisposedException("container");
             }
-            _container.RegisterInstance(serviceType, serviceName, instance, CreateLifetimeManager(lifetime));
-        }
-
-        private LifetimeManager CreateLifetimeManager(ServiceLifetime? lifetime)
-        {
-            if (!lifetime.HasValue)
-            {
-                return new ExternallyControlledLifetimeManager();
-            }
-            switch (lifetime.Value)
-            {
-                case ServiceLifetime.Transient:
-                    return new TransientLifetimeManager();
-                case ServiceLifetime.PerThread:
-                    return new PerThreadLifetimeManager();
-                case ServiceLifetime.PerRequest:
-                    return new PerRequestLifetimeManager();
-                default:
-                    return new ContainerControlledLifetimeManager();
-            }
+            _container.RegisterInstance(serviceType, serviceName, instance, new ExternallyControlledLifetimeManager());
         }
     }
 }

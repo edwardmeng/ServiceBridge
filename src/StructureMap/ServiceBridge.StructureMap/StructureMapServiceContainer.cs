@@ -112,7 +112,21 @@ namespace ServiceBridge.StructureMap
                     instance.Named(serviceName);
                 }
                 OnRegistering(new StructureMapServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, instance));
-                ApplyLifetime(instance, lifetime);
+                switch (lifetime)
+                {
+                    case ServiceLifetime.Singleton:
+                        instance.Singleton();
+                        break;
+                    case ServiceLifetime.Transient:
+                        instance.Transient();
+                        break;
+                    case ServiceLifetime.PerThread:
+                        instance.LifecycleIs<ThreadLocalStorageLifecycle>();
+                        break;
+                    case ServiceLifetime.PerRequest:
+                        instance.LifecycleIs<PerRequestLifecycle>();
+                        break;
+                }
                 // Enable the method injection
                 instance.AddInterceptor(new ActivatorInterceptor<object>((context, x) => DynamicInjectionBuilder.GetOrCreate(implementationType, false, true)(this, x)));
                 // Enable the constructor injection
@@ -129,8 +143,7 @@ namespace ServiceBridge.StructureMap
         /// <param name="serviceType"><see cref="System.Type"/> that will be requested.</param>
         /// <param name="instance">The instance that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
-        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName, ServiceLifetime? lifetime)
+        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
         {
             _container.Configure(configure =>
             {
@@ -139,30 +152,7 @@ namespace ServiceBridge.StructureMap
                 {
                     objectInstance.Named(serviceName);
                 }
-                ApplyLifetime(objectInstance, lifetime);
             });
-        }
-
-        private void ApplyLifetime<T>(ExpressedInstance<T> instance, ServiceLifetime? lifetime)
-        {
-            if (lifetime.HasValue)
-            {
-                switch (lifetime.Value)
-                {
-                    case ServiceLifetime.Singleton:
-                        instance.Singleton();
-                        break;
-                    case ServiceLifetime.Transient:
-                        instance.Transient();
-                        break;
-                    case ServiceLifetime.PerThread:
-                        instance.LifecycleIs<ThreadLocalStorageLifecycle>();
-                        break;
-                    case ServiceLifetime.PerRequest:
-                        instance.LifecycleIs<PerRequestLifecycle>();
-                        break;
-                }
-            }
         }
     }
 }

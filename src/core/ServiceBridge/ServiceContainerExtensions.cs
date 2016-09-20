@@ -344,21 +344,6 @@ namespace ServiceBridge
         /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
         /// <param name="instance">The instance that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
-        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        public static IServiceContainer RegisterInstance<TService>(this IServiceContainer container, object instance, string serviceName, ServiceLifetime? lifetime)
-        {
-            if (container == null) throw new ArgumentNullException(nameof(container));
-            return container.RegisterInstance(typeof(TService), instance, serviceName, lifetime);
-        }
-
-        /// <summary>
-        /// Registers a instance mapping with the container. 
-        /// </summary>
-        /// <param name="container">The container to configure.</param>
-        /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
-        /// <param name="instance">The instance that will actually be returned.</param>
-        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
         public static IServiceContainer RegisterInstance<TService>(this IServiceContainer container, object instance, string serviceName = null)
         {
@@ -372,12 +357,12 @@ namespace ServiceBridge
         /// <param name="container">The container to configure.</param>
         /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
         /// <param name="instance">The instance that will actually be returned.</param>
-        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
+        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        public static IServiceContainer RegisterInstance<TService>(this IServiceContainer container, object instance, ServiceLifetime? lifetime)
+        public static IServiceContainer RegisterInstance<TService>(this IServiceContainer container, TService instance, string serviceName = null)
         {
             if (container == null) throw new ArgumentNullException(nameof(container));
-            return container.RegisterInstance(typeof(TService), instance, null, lifetime);
+            return container.RegisterInstance(typeof(TService), instance, serviceName);
         }
 
         #endregion

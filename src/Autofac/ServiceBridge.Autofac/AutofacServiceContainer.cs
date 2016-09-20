@@ -190,15 +190,14 @@ namespace ServiceBridge.Autofac
         /// <param name="serviceType"><see cref="System.Type"/> that will be requested.</param>
         /// <param name="instance">The instance that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
-        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName, ServiceLifetime? lifetime)
+        protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
         {
             if (_builder == null)
             {
                 throw new ObjectDisposedException("container");
             }
             var registration = serviceName == null ? _builder.RegisterInstance(instance).As(serviceType) : _builder.RegisterInstance(instance).Named(serviceName, serviceType);
-            ApplyLifetime(registration, lifetime);
+            registration.ExternallyOwned();
         }
 
         private void Register(ContainerBuilder builder, Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
@@ -220,17 +219,7 @@ namespace ServiceBridge.Autofac
                 .UsingConstructor(new MostParametersConstructorSelector())
                 .OnActivated(args => DynamicInjectionBuilder.GetOrCreate(implementationType, true, true)(this, args.Instance));
             OnRegistering(new AutofacServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, registration));
-            ApplyLifetime(registration, lifetime);
-        }
-
-        private void ApplyLifetime(IRegistrationBuilder<object, IConcreteActivatorData, SingleRegistrationStyle> registration, ServiceLifetime? lifetime)
-        {
-            if (!lifetime.HasValue)
-            {
-                registration.ExternallyOwned();
-                return;
-            }
-            switch (lifetime.Value)
+            switch (lifetime)
             {
                 case ServiceLifetime.Singleton:
                     registration.SingleInstance();

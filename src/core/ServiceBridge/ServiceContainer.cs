@@ -269,24 +269,10 @@ namespace ServiceBridge
         /// <param name="serviceType"><see cref="Type"/> that will be requested.</param>
         /// <param name="instance">The instance that will actually be returned.</param>
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        public static IServiceContainer RegisterInstance(Type serviceType, object instance, string serviceName = null, ServiceLifetime? lifetime = null)
+        public static IServiceContainer RegisterInstance(Type serviceType, object instance, string serviceName = null)
         {
-            return Current.RegisterInstance(serviceType, instance, serviceName, lifetime);
-        }
-
-        /// <summary>
-        /// Registers a instance mapping with the container. 
-        /// </summary>
-        /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
-        /// <param name="instance">The instance that will actually be returned.</param>
-        /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
-        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
-        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        public static IServiceContainer RegisterInstance<TService>(object instance, string serviceName, ServiceLifetime? lifetime)
-        {
-            return Current.RegisterInstance(typeof(TService), instance, serviceName, lifetime);
+            return Current.RegisterInstance(serviceType, instance, serviceName);
         }
 
         /// <summary>
@@ -311,30 +297,6 @@ namespace ServiceBridge
         public static IServiceContainer RegisterInstance<TService>(TService instance, string serviceName = null)
         {
             return Current.RegisterInstance(typeof(TService), instance, serviceName);
-        }
-
-        /// <summary>
-        /// Registers a instance mapping with the container. 
-        /// </summary>
-        /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
-        /// <param name="instance">The instance that will actually be returned.</param>
-        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
-        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        public static IServiceContainer RegisterInstance<TService>(object instance, ServiceLifetime? lifetime)
-        {
-            return Current.RegisterInstance(typeof(TService), instance, null, lifetime);
-        }
-
-        /// <summary>
-        /// Registers a instance mapping with the container. 
-        /// </summary>
-        /// <typeparam name="TService"><see cref="Type"/> that will be requested.</typeparam>
-        /// <param name="instance">The instance that will actually be returned.</param>
-        /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
-        /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        public static IServiceContainer RegisterInstance<TService>(TService instance, ServiceLifetime? lifetime)
-        {
-            return Current.RegisterInstance(typeof(TService), instance, null, lifetime);
         }
 
         #endregion

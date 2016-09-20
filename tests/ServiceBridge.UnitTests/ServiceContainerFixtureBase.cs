@@ -36,7 +36,20 @@ namespace ServiceBridge.UnitTests
             var instance = ServiceContainer.GetInstance<ILogger>();
             Assert.NotNull(instance);
             Assert.IsAssignableFrom<AdvancedLogger>(instance);
+        }
+
+        [Fact]
+        public void GetInstanceRegistration()
+        {
             Assert.Equal(_registeredInstance, ServiceContainer.GetInstance<InstanceObject>());
+            InstanceObject result1 = null;
+            Thread thread1 = new Thread(delegate ()
+            {
+                result1 = ServiceContainer.GetInstance<InstanceObject>();
+            });
+            thread1.Start();
+            thread1.Join();
+            Assert.Equal(_registeredInstance, result1);
         }
 
         [Fact]
@@ -245,8 +258,10 @@ namespace ServiceBridge.UnitTests
 
         protected abstract string WebName { get; }
 
-        private void ExecuteSingletonInThreads()
+        [Fact]
+        public void SingletonInThreads()
         {
+            ServiceContainer.Register<LifetimeObject>(ServiceLifetime.Singleton);
             LifetimeObject result1 = null;
             LifetimeObject result2 = null;
             Thread thread1 = new Thread(delegate ()
@@ -269,39 +284,13 @@ namespace ServiceBridge.UnitTests
         }
 
         [Fact]
-        public void SingletonInThreads()
+        public void SingletonTypeRegistration()
         {
             ServiceContainer.Register<LifetimeObject>(ServiceLifetime.Singleton);
-            ExecuteSingletonInThreads();
-        }
-
-        [Fact]
-        public void SingletonInstanceInThreads()
-        {
-            ServiceContainer.RegisterInstance(new LifetimeObject(), ServiceLifetime.Singleton);
-            ExecuteSingletonInThreads();
-        }
-
-        private void ExecuteSingletonRegistration()
-        {
             LifetimeObject result1 = ServiceContainer.GetInstance<LifetimeObject>();
             LifetimeObject result2 = ServiceContainer.GetInstance<LifetimeObject>();
             Assert.NotNull(result1);
             Assert.Same(result1, result2);
-        }
-
-        [Fact]
-        public void SingletonTypeRegistration()
-        {
-            ServiceContainer.Register<LifetimeObject>(ServiceLifetime.Singleton);
-            ExecuteSingletonRegistration();
-        }
-
-        [Fact]
-        public void SingletonInstanceRegistration()
-        {
-            ServiceContainer.RegisterInstance(new LifetimeObject(), ServiceLifetime.Singleton);
-            ExecuteSingletonRegistration();
         }
 
         [Fact]
@@ -331,39 +320,6 @@ namespace ServiceBridge.UnitTests
             Assert.NotNull(result2);
             Assert.NotNull(result3);
             Assert.NotSame(result1, result2);
-            Assert.Same(result3, result2);
-        }
-
-        [Fact]
-        public void PerThreadInstanceRegistration()
-        {
-            var registrateringInstance = new LifetimeObject() { Value = 1 };
-            ServiceContainer.RegisterInstance(registrateringInstance, ServiceLifetime.PerThread);
-            LifetimeObject result1 = null;
-            LifetimeObject result2 = null;
-            LifetimeObject result3 = null;
-            Thread thread1 = new Thread(delegate ()
-            {
-                result1 = ServiceContainer.GetInstance<LifetimeObject>();
-            });
-
-            Thread thread2 = new Thread(delegate ()
-            {
-                ServiceContainer.RegisterInstance(new LifetimeObject() { Value = 2 }, ServiceLifetime.PerThread);
-                result2 = ServiceContainer.GetInstance<LifetimeObject>();
-                result3 = ServiceContainer.GetInstance<LifetimeObject>();
-            });
-            thread1.Start();
-            thread2.Start();
-
-            thread2.Join();
-            thread1.Join();
-
-            Assert.NotNull(result1);
-            Assert.NotNull(result2);
-            Assert.NotNull(result3);
-            Assert.NotSame(registrateringInstance, result1);
-            Assert.NotSame(registrateringInstance, result2);
             Assert.Same(result3, result2);
         }
 
@@ -411,8 +367,10 @@ namespace ServiceBridge.UnitTests
             }
         }
 
-        private void ExecuteTransientRegistration()
+        [Fact]
+        public void TransientTypeRegistration()
         {
+            ServiceContainer.Register<LifetimeObject>(ServiceLifetime.Transient);
             LifetimeObject result1 = null;
             LifetimeObject result2 = null;
             LifetimeObject result3 = null;
@@ -437,20 +395,6 @@ namespace ServiceBridge.UnitTests
             Assert.NotNull(result3);
             Assert.NotSame(result1, result2);
             Assert.NotSame(result3, result2);
-        }
-
-        [Fact]
-        public void TransientTypeRegistration()
-        {
-            ServiceContainer.Register<LifetimeObject>(ServiceLifetime.Transient);
-            ExecuteTransientRegistration();
-        }
-
-        [Fact]
-        public void TransientInstanceRegistration()
-        {
-            ServiceContainer.RegisterInstance(new LifetimeObject(), ServiceLifetime.Transient);
-            ExecuteTransientRegistration();
         }
 
         #endregion
