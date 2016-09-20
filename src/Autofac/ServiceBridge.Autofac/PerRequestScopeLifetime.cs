@@ -1,8 +1,7 @@
-﻿using Autofac.Core;
+﻿using Autofac;
+using Autofac.Core;
 #if NetCore
 using Microsoft.AspNetCore.Http;
-#else
-using System.Web;
 #endif
 
 namespace ServiceBridge.Autofac
@@ -11,9 +10,9 @@ namespace ServiceBridge.Autofac
     {
         public ISharingLifetimeScope FindScope(ISharingLifetimeScope mostNestedVisibleScope)
         {
-            var context = ServiceContainer.HostContext as HttpContext;
-            if (context == null) return null;
 #if NetCore
+            var context = mostNestedVisibleScope.Resolve<IHttpContextAccessor>()?.HttpContext;
+            if (context == null) return null;
             if (!context.Items.ContainsKey(typeof(IComponentLifetime)))
             {
                 lock (context)
@@ -26,7 +25,10 @@ namespace ServiceBridge.Autofac
                     }
                 }
             }
+            return (ISharingLifetimeScope)context.Items[typeof(IComponentLifetime)];
 #else
+            var context = System.Web.HttpContext.Current;
+            if (context == null) return null;
             if (!context.Items.Contains(typeof(IComponentLifetime)))
             {
                 lock (context.Items.SyncRoot)
@@ -40,8 +42,8 @@ namespace ServiceBridge.Autofac
                     }
                 }
             }
-#endif
             return (ISharingLifetimeScope)context.Items[typeof(IComponentLifetime)];
+#endif
         }
     }
 }

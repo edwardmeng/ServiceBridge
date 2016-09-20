@@ -3,14 +3,19 @@ using StructureMap;
 using StructureMap.Pipeline;
 #if NetCore
 using Microsoft.AspNetCore.Http;
-#else
-using System.Web;
 #endif
 
 namespace ServiceBridge.StructureMap
 {
     internal class PerRequestLifecycle : LifecycleBase
     {
+        private IContainer _container;
+
+        public PerRequestLifecycle(IContainer container)
+        {
+            _container = container;
+        }
+
         private class PerRequestLifecycleObjectCache : LifecycleObjectCache, IDisposable
         {
             public void Dispose()
@@ -26,9 +31,9 @@ namespace ServiceBridge.StructureMap
 
         public override IObjectCache FindCache(ILifecycleContext context)
         {
-            var httpContext = ServiceContainer.HostContext as HttpContext;
-            if (httpContext == null) return null;
 #if NetCore
+            var httpContext = _container.GetInstance<IHttpContextAccessor>()?.HttpContext;
+            if (httpContext == null) return null;
             if (!httpContext.Items.ContainsKey(typeof(PerRequestLifecycle)))
             {
                 lock (httpContext)
@@ -41,7 +46,10 @@ namespace ServiceBridge.StructureMap
                     }
                 }
             }
+            return (IObjectCache)httpContext.Items[typeof(PerRequestLifecycle)];
 #else
+            var httpContext = System.Web.HttpContext.Current;
+            if (httpContext == null) return null;
             if (!httpContext.Items.Contains(typeof(PerRequestLifecycle)))
             {
                 lock (httpContext.Items.SyncRoot)
@@ -55,8 +63,8 @@ namespace ServiceBridge.StructureMap
                     }
                 }
             }
-#endif
             return (IObjectCache)httpContext.Items[typeof(PerRequestLifecycle)];
+#endif
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Web;
 using Microsoft.Practices.Unity;
 
 namespace ServiceBridge.Unity
@@ -57,7 +56,7 @@ namespace ServiceBridge.Unity
 
         private static PerRequestInstanceContainer EnsureValues()
         {
-            var context = ServiceContainer.HostContext as HttpContext;
+            var context = System.Web.HttpContext.Current;
             if (context == null) return null;
             if (!context.Items.Contains(typeof(PerRequestLifetimeManager)))
             {

@@ -1,5 +1,4 @@
-﻿using System.Web;
-using Castle.MicroKernel.Context;
+﻿using Castle.MicroKernel.Context;
 using Castle.MicroKernel.Lifestyle.Scoped;
 
 namespace ServiceBridge.Windsor
@@ -8,7 +7,7 @@ namespace ServiceBridge.Windsor
     {
         public void Dispose()
         {
-            var httpContext = ServiceContainer.HostContext as HttpContext;
+            var httpContext = System.Web.HttpContext.Current;
             if (httpContext == null) return;
             if (httpContext.Items.Contains(typeof(PerRequestScopeAccessor)))
             {
@@ -22,7 +21,7 @@ namespace ServiceBridge.Windsor
 
         public ILifetimeScope GetScope(CreationContext context)
         {
-            var httpContext = ServiceContainer.HostContext as HttpContext;
+            var httpContext = System.Web.HttpContext.Current;
             if (httpContext == null) return null;
             if (!httpContext.Items.Contains(typeof(PerRequestScopeAccessor)))
             {
