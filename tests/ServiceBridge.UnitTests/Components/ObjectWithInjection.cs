@@ -12,7 +12,7 @@
             InjectionFromConstructor = logger;
         }
 
-        public ObjectWithInjection(ICanChangeParameters obj)
+        public ObjectWithInjection(InstanceObject obj)
         {
             NotInjectionFromConstructor = obj;
         }
@@ -25,7 +25,7 @@
 
         public virtual ILogger InjectionFromConstructor { get; set; }
 
-        public virtual ICanChangeParameters NotInjectionFromConstructor { get; set; }
+        public virtual InstanceObject NotInjectionFromConstructor { get; set; }
 
         [Injection]
         public virtual ILogger InjectionFromProperty { get; set; }

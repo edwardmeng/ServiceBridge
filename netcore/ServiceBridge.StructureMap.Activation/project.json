@@ -1,0 +1,25 @@
+﻿{
+  "version": "1.0.0-*",
+
+    "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "MassActivation": "1.1.0",
+        "StructureMap": "4.4.0",
+        "ServiceBridge": { "target": "project" },
+        "ServiceBridge.StructureMap": { "target": "project" }
+    },
+
+  "frameworks": {
+    "netstandard1.6": {
+        "imports": "dnxcore50",
+        "buildOptions": {
+            "compile": {
+                "include": [ "../../GlobalAssemblyInfo.cs", "../../src/StructureMap/ServiceBridge.StructureMap.Activation/**/*.cs" ]
+            },
+            "define": [ "NetCore" ],
+            "xmlDoc": true,
+            "outputName": "ServiceBridge.StructureMap.Activation"
+        }
+    }
+  }
+}

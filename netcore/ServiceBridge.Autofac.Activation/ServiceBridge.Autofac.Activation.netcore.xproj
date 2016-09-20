@@ -7,15 +7,21 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>bce1c4b4-16a9-49a9-a273-66c39dd00ef3</ProjectGuid>
-    <RootNamespace>ServiceBridge.AspNetCore.Activation</RootNamespace>
+    <ProjectGuid>d3ddb1bd-f9f7-4cdd-a387-a9775b272197</ProjectGuid>
+    <RootNamespace>ServiceBridge.Autofac.Activation.netcore</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\src\Autofac\ServiceBridge.Autofac.Activation\ActivatingEnvironmentExtensions.cs">
+      <Link>ActivatingEnvironmentExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\Autofac\ServiceBridge.Autofac.Activation\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
   </ItemGroup>
   <PropertyGroup>

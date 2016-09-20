@@ -164,11 +164,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AspNetCore", "AspNetCore", 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ServiceBridge.AspNetCore", "src\AspNetCore\ServiceBridge.AspNetCore\ServiceBridge.AspNetCore.xproj", "{E8BA0C7E-76A0-4BD3-A39C-F7A24B24159F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ServiceBridge.AspNetCore.Activation", "src\AspNetCore\ServiceBridge.AspNetCore.Activation\ServiceBridge.AspNetCore.Activation.xproj", "{BCE1C4B4-16A9-49A9-A273-66C39DD00EF3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Interceptors.net40", "src\core\ServiceBridge.Interceptors\ServiceBridge.Interceptors.net40.csproj", "{C33EE159-0C51-4913-8F83-0211C7085D24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceBridge.Interceptors.net451", "src\core\ServiceBridge.Interceptors\ServiceBridge.Interceptors.net451.csproj", "{C2CCC516-9876-408A-A3D1-5AA8AD2CE2C3}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ServiceBridge.UnitTests.netcore", "netcore\ServiceBridge.UnitTests\ServiceBridge.UnitTests.netcore.xproj", "{CEBFA9AB-C4D5-4593-B3E2-FD58B0E76AA4}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ServiceBridge.Autofac.Activation.netcore", "netcore\ServiceBridge.Autofac.Activation\ServiceBridge.Autofac.Activation.netcore.xproj", "{D3DDB1BD-F9F7-4CDD-A387-A9775B272197}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ServiceBridge.Ninject.Activation.netcore", "netcore\ServiceBridge.Ninject.Activation\ServiceBridge.Ninject.Activation.netcore.xproj", "{0EBA13E8-651A-4EEF-BA10-B1C689F334CD}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ServiceBridge.StructureMap.Activation.netcore", "netcore\ServiceBridge.StructureMap.Activation\ServiceBridge.StructureMap.Activation.netcore.xproj", "{ADEA2518-80C5-498F-9927-8F223D922708}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ServiceBridge.UnitTests.CoreApp", "tests\ServiceBridge.UnitTests.CoreApp\ServiceBridge.UnitTests.CoreApp.xproj", "{ED3E8FDD-3327-4C90-974B-EAB8A9CCC585}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -354,10 +362,6 @@ Global
 		{E8BA0C7E-76A0-4BD3-A39C-F7A24B24159F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8BA0C7E-76A0-4BD3-A39C-F7A24B24159F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8BA0C7E-76A0-4BD3-A39C-F7A24B24159F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BCE1C4B4-16A9-49A9-A273-66C39DD00EF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BCE1C4B4-16A9-49A9-A273-66C39DD00EF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BCE1C4B4-16A9-49A9-A273-66C39DD00EF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BCE1C4B4-16A9-49A9-A273-66C39DD00EF3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C33EE159-0C51-4913-8F83-0211C7085D24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C33EE159-0C51-4913-8F83-0211C7085D24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C33EE159-0C51-4913-8F83-0211C7085D24}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -366,6 +370,26 @@ Global
 		{C2CCC516-9876-408A-A3D1-5AA8AD2CE2C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2CCC516-9876-408A-A3D1-5AA8AD2CE2C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2CCC516-9876-408A-A3D1-5AA8AD2CE2C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEBFA9AB-C4D5-4593-B3E2-FD58B0E76AA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEBFA9AB-C4D5-4593-B3E2-FD58B0E76AA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEBFA9AB-C4D5-4593-B3E2-FD58B0E76AA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEBFA9AB-C4D5-4593-B3E2-FD58B0E76AA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3DDB1BD-F9F7-4CDD-A387-A9775B272197}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3DDB1BD-F9F7-4CDD-A387-A9775B272197}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3DDB1BD-F9F7-4CDD-A387-A9775B272197}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3DDB1BD-F9F7-4CDD-A387-A9775B272197}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EBA13E8-651A-4EEF-BA10-B1C689F334CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EBA13E8-651A-4EEF-BA10-B1C689F334CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EBA13E8-651A-4EEF-BA10-B1C689F334CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EBA13E8-651A-4EEF-BA10-B1C689F334CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADEA2518-80C5-498F-9927-8F223D922708}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADEA2518-80C5-498F-9927-8F223D922708}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADEA2518-80C5-498F-9927-8F223D922708}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADEA2518-80C5-498F-9927-8F223D922708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED3E8FDD-3327-4C90-974B-EAB8A9CCC585}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED3E8FDD-3327-4C90-974B-EAB8A9CCC585}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED3E8FDD-3327-4C90-974B-EAB8A9CCC585}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED3E8FDD-3327-4C90-974B-EAB8A9CCC585}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -426,8 +450,12 @@ Global
 		{4AB8E6C1-6FE6-466E-9929-23FD62B26003} = {10CC8A59-EC96-4AC1-A80D-1D7C2CC3EE5B}
 		{8DA64887-2EDF-49A2-9211-7D4406DADB57} = {D5D57C7A-8A24-46BB-8D3B-94B7867CA9D9}
 		{E8BA0C7E-76A0-4BD3-A39C-F7A24B24159F} = {8DA64887-2EDF-49A2-9211-7D4406DADB57}
-		{BCE1C4B4-16A9-49A9-A273-66C39DD00EF3} = {8DA64887-2EDF-49A2-9211-7D4406DADB57}
 		{C33EE159-0C51-4913-8F83-0211C7085D24} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
 		{C2CCC516-9876-408A-A3D1-5AA8AD2CE2C3} = {0E23DD74-733E-4539-AEEB-527D73F0CA28}
+		{CEBFA9AB-C4D5-4593-B3E2-FD58B0E76AA4} = {830309B2-BF70-4BC5-8CA1-5EB40F60A76B}
+		{D3DDB1BD-F9F7-4CDD-A387-A9775B272197} = {CE31D387-7B66-430B-AC4B-1A3A74A451C9}
+		{0EBA13E8-651A-4EEF-BA10-B1C689F334CD} = {AB1FEDB3-EB92-48F2-983E-78A34163735E}
+		{ADEA2518-80C5-498F-9927-8F223D922708} = {59126E2C-9CA2-450D-96D6-3FA0DAC5D0C0}
+		{ED3E8FDD-3327-4C90-974B-EAB8A9CCC585} = {830309B2-BF70-4BC5-8CA1-5EB40F60A76B}
 	EndGlobalSection
 EndGlobal

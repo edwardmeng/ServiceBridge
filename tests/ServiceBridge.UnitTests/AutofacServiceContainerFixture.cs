@@ -1,5 +1,4 @@
 ﻿using ServiceBridge.Autofac;
-using ServiceBridge.Autofac.Interception;
 
 namespace ServiceBridge.UnitTests
 {
@@ -7,7 +6,11 @@ namespace ServiceBridge.UnitTests
     {
         protected override IServiceContainer CreateContainer()
         {
-            return new AutofacServiceContainer().AddExtension(new AutofacServiceContainerExtension());
+            var container = new AutofacServiceContainer();
+#if !NetCore
+            container.AddExtension(new ServiceBridge.Autofac.Interception.AutofacServiceContainerExtension());
+#endif
+            return container;
         }
 
         protected override string WebName => "autofac";

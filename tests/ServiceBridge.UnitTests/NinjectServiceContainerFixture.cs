@@ -1,5 +1,4 @@
 ﻿using ServiceBridge.Ninject;
-using ServiceBridge.Ninject.Interception;
 
 namespace ServiceBridge.UnitTests
 {
@@ -7,7 +6,11 @@ namespace ServiceBridge.UnitTests
     {
         protected override IServiceContainer CreateContainer()
         {
-            return new NinjectServiceContainer().AddExtension(new NinjectServiceContainerExtension());
+            var container = new NinjectServiceContainer();
+#if !NetCore
+            container..AddExtension(new ServiceBridge.Ninject.Interception.NinjectServiceContainerExtension());
+#endif
+            return container;
         }
 
         protected override string WebName => "ninject";

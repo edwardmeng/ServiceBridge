@@ -20,8 +20,11 @@ namespace ServiceBridge.UnitTests
         {
             ServiceContainer.SetProvider(CreateContainer);
             ServiceContainer.Register<ILogger, SimpleLogger>("Simple").Register<ILogger, AdvancedLogger>().Register<ILogger, AdvancedLogger>("Advanced");
-            ServiceContainer.Register<ICanChangeParameters, CanChangeParametersTarget>().Register<ObjectWithInjection>();
             ServiceContainer.RegisterInstance(_registeredInstance);
+            ServiceContainer.Register<ObjectWithInjection>();
+#if !NetCore
+            ServiceContainer.Register<ICanChangeParameters, CanChangeParametersTarget>();
+#endif
         }
 
         [Fact]
@@ -219,6 +222,8 @@ namespace ServiceBridge.UnitTests
 
         #endregion
 
+#if !NetCore
+         
         #region Interception
 
         [Fact]
@@ -253,6 +258,8 @@ namespace ServiceBridge.UnitTests
             Assert.Equal((2 + 3 + 5) * 3, output);
         }
         #endregion
+
+#endif
 
         #region Lifetime
 
@@ -324,50 +331,6 @@ namespace ServiceBridge.UnitTests
         }
 
         [Fact]
-        public async Task WebApiPerRequestLifetime()
-        {
-            Assert.Equal("Success", JsonConvert.DeserializeObject(await ProcessWebRequest($"http://localhost:62232/api/Lifetime?container={WebName}")));
-            Assert.Equal("12345", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/api/Lifetime?value=12345")));
-            Assert.Equal("Default", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/api/Lifetime")));
-        }
-
-        [Fact]
-        public async Task HttpHandlerPerRequestLifetime()
-        {
-            Assert.Equal("Success", await ProcessWebRequest($"http://localhost:62232/LifetimeHandler.ashx?container={WebName}"));
-            Assert.Equal("12345", await ProcessWebRequest("http://localhost:62232/LifetimeHandler.ashx?value=12345"));
-            Assert.Equal("Default", await ProcessWebRequest("http://localhost:62232/LifetimeHandler.ashx"));
-        }
-
-        [Fact]
-        public async Task MvcPerRequestLifetime()
-        {
-            Assert.Equal("Success", JsonConvert.DeserializeObject(await ProcessWebRequest($"http://localhost:62232/mvc/Lifetime/Initialize?container={WebName}")));
-            Assert.Equal("12345", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/mvc/Lifetime/SetValue?value=12345")));
-            Assert.Equal("Default", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/mvc/Lifetime/GetValue")));
-        }
-
-        [Fact]
-        public async Task WebPagePerRequestLifetime()
-        {
-            Assert.Equal("Success", await ProcessWebRequest($"http://localhost:62232/LifetimePage.aspx?container={WebName}"));
-            Assert.Equal("12345", await ProcessWebRequest("http://localhost:62232/LifetimePage.aspx?value=12345"));
-            Assert.Equal("Default", await ProcessWebRequest("http://localhost:62232/LifetimePage.aspx"));
-        }
-
-        private async Task<string> ProcessWebRequest(string url)
-        {
-            var request = WebRequest.Create(url);
-            var response = await request.GetResponseAsync();
-            var stream = response.GetResponseStream();
-            if (stream == null) return null;
-            using (var reader = new StreamReader(stream))
-            {
-                return await reader.ReadToEndAsync();
-            }
-        }
-
-        [Fact]
         public void TransientTypeRegistration()
         {
             ServiceContainer.Register<LifetimeObject>(ServiceLifetime.Transient);
@@ -395,6 +358,60 @@ namespace ServiceBridge.UnitTests
             Assert.NotNull(result3);
             Assert.NotSame(result1, result2);
             Assert.NotSame(result3, result2);
+        }
+
+        [Fact]
+        public async Task MvcPerRequestLifetime()
+        {
+            string host;
+#if NetCore
+            host = "http://localhost:44413";
+#else
+            host = "http://localhost:62232";
+#endif
+            Assert.Equal("Success", JsonConvert.DeserializeObject(await ProcessWebRequest($"{host}/mvc/Lifetime/Initialize?container={WebName}")));
+            Assert.Equal("12345", JsonConvert.DeserializeObject(await ProcessWebRequest($"{host}/mvc/Lifetime/SetValue?value=12345")));
+            Assert.Equal("Default", JsonConvert.DeserializeObject(await ProcessWebRequest($"{host}/mvc/Lifetime/GetValue")));
+        }
+
+#if !NetCore
+
+        [Fact]
+        public async Task WebApiPerRequestLifetime()
+        {
+            Assert.Equal("Success", JsonConvert.DeserializeObject(await ProcessWebRequest($"http://localhost:62232/api/Lifetime?container={WebName}")));
+            Assert.Equal("12345", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/api/Lifetime?value=12345")));
+            Assert.Equal("Default", JsonConvert.DeserializeObject(await ProcessWebRequest("http://localhost:62232/api/Lifetime")));
+        }
+         
+        [Fact]
+        public async Task HttpHandlerPerRequestLifetime()
+        {
+            Assert.Equal("Success", await ProcessWebRequest($"http://localhost:62232/LifetimeHandler.ashx?container={WebName}"));
+            Assert.Equal("12345", await ProcessWebRequest("http://localhost:62232/LifetimeHandler.ashx?value=12345"));
+            Assert.Equal("Default", await ProcessWebRequest("http://localhost:62232/LifetimeHandler.ashx"));
+        }
+
+        [Fact]
+        public async Task WebPagePerRequestLifetime()
+        {
+            Assert.Equal("Success", await ProcessWebRequest($"http://localhost:62232/LifetimePage.aspx?container={WebName}"));
+            Assert.Equal("12345", await ProcessWebRequest("http://localhost:62232/LifetimePage.aspx?value=12345"));
+            Assert.Equal("Default", await ProcessWebRequest("http://localhost:62232/LifetimePage.aspx"));
+        }
+
+#endif
+
+        private async Task<string> ProcessWebRequest(string url)
+        {
+            var request = WebRequest.Create(url);
+            var response = await request.GetResponseAsync();
+            var stream = response.GetResponseStream();
+            if (stream == null) return null;
+            using (var reader = new StreamReader(stream))
+            {
+                return await reader.ReadToEndAsync();
+            }
         }
 
         #endregion

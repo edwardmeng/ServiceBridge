@@ -1,5 +1,4 @@
 ﻿using ServiceBridge.StructureMap;
-using ServiceBridge.StructureMap.Interception;
 
 namespace ServiceBridge.UnitTests
 {
@@ -7,7 +6,11 @@ namespace ServiceBridge.UnitTests
     {
         protected override IServiceContainer CreateContainer()
         {
-            return new StructureMapServiceContainer().AddExtension(new StructureMapServiceContainerExtension());
+            var container = new StructureMapServiceContainer();
+#if !NetCore
+            container.AddExtension(new ServiceBridge.StructureMap.Interception.StructureMapServiceContainerExtension());
+#endif
+            return container;
         }
 
         protected override string WebName => "structuremap";
