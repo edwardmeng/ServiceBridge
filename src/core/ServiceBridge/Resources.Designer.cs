@@ -10,7 +10,7 @@
 
 using System.Reflection;
 
-namespace ServiceBridge.Properties {
+namespace ServiceBridge {
     using System;
     
     
@@ -46,7 +46,7 @@ namespace ServiceBridge.Properties {
 #else
                     var assembly = typeof(Resources).Assembly;
 #endif
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ServiceBridge.Properties.Resources", assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ServiceBridge.Resources", assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

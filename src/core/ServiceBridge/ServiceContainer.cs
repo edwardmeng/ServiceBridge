@@ -5,7 +5,6 @@ using System.Threading;
 #else
 using System.Runtime.Remoting.Messaging;
 #endif
-using ServiceBridge.Properties;
 
 namespace ServiceBridge
 {

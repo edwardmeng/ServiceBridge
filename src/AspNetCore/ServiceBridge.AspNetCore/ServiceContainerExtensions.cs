@@ -26,6 +26,17 @@ namespace ServiceBridge.AspNetCore
             return container;
         }
 
+        public static IServiceContainer RegisterServices(this IServiceContainer container, IServiceCollection services)
+        {
+            if (container == null) throw new ArgumentNullException(nameof(container));
+            if(services == null)throw new ArgumentNullException(nameof(services));
+            foreach (var descriptor in services)
+            {
+                container.Register(descriptor);
+            }
+            return container;
+        }
+
         private static ServiceLifetime ConvertLifetime(ServiceDescriptor descriptor)
         {
             switch (descriptor.Lifetime)

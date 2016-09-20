@@ -25,8 +25,7 @@
         "ServiceBridge": { "target": "project" },
         "ServiceBridge.Autofac": { "target": "project" },
         "ServiceBridge.Ninject": { "target": "project" },
-        "ServiceBridge.StructureMap": { "target": "project" },
-        "ServiceBridge.AspNetCore": { "target": "project" }
+        "ServiceBridge.StructureMap": { "target": "project" }
     },
 
   "tools": {

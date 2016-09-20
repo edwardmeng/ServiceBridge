@@ -8,7 +8,12 @@ namespace ServiceBridge.Samples.Mvc
     {
         public Startup(IActivatingEnvironment environment)
         {
-            environment.UseAutofac().EnableInterception();
+            environment.UseAutofac();
+        }
+
+        public void Configuration(IServiceContainer container)
+        {
+            container.EnableInterception();
         }
     }
 }
