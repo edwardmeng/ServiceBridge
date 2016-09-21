@@ -114,7 +114,8 @@ namespace ServiceBridge.Mvc
         /// <returns><c>true</c> if the <paramref name="controllerType"/> is an ASP.NET MVC controller type; otherwise, <c>false</c>.</returns>
         private static bool IsValidController(Type controllerType)
         {
-            return !controllerType.IsInterface && !controllerType.IsAbstract && controllerType.IsClass && typeof(IController).IsAssignableFrom(controllerType);
+            return controllerType.IsClass && !controllerType.IsAbstract && controllerType.IsPublic && !controllerType.ContainsGenericParameters &&
+                   typeof(IController).IsAssignableFrom(controllerType);
         }
     }
 }

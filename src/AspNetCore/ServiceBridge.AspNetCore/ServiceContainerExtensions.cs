@@ -80,7 +80,9 @@ namespace ServiceBridge.AspNetCore
         /// <returns><c>true</c> if the <paramref name="controllerType"/> is an ASP.NET MVC controller type; otherwise, <c>false</c>.</returns>
         private static bool IsValidController(TypeInfo controllerType)
         {
-            return !controllerType.IsInterface && !controllerType.IsAbstract && controllerType.IsClass && typeof(ControllerBase).IsAssignableFrom(controllerType.AsType());
+            return controllerType.IsClass && !controllerType.IsAbstract && controllerType.IsPublic && !controllerType.ContainsGenericParameters &&
+                   !controllerType.IsDefined(typeof(NonControllerAttribute)) &&
+                   (controllerType.Name.EndsWith("Controller", StringComparison.OrdinalIgnoreCase) || controllerType.IsDefined(typeof(ControllerAttribute)));
         }
 
         /// <summary>
