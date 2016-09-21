@@ -43,6 +43,7 @@ namespace ServiceBridge.Samples.AspNetCore
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
             ApplicationActivator.Startup();
+            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "ServiceModel");
         }
     }
 }
