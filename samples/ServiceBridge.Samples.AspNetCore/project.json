@@ -27,7 +27,8 @@
         "ServiceBridge.Activation": { "target": "project" },
         "ServiceBridge.Autofac": { "target": "project" },
         "ServiceBridge.Autofac.Activation": { "target": "project" },
-        "ServiceBridge.AspNetCore": { "target": "project" }
+        "ServiceBridge.AspNetCore": { "target": "project" },
+        "ServiceBridge.AspNetCore.Activation": {"target": "project"} 
     },
 
   "tools": {

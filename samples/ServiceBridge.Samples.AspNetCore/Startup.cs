@@ -30,7 +30,7 @@ namespace ServiceBridge.Samples.AspNetCore
             // Add framework services.
             services.AddMvc();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            ServiceContainer.Current.RegisterServices(services);
+            ApplicationActivator.UseService(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,7 +43,7 @@ namespace ServiceBridge.Samples.AspNetCore
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "mvc/{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
             ApplicationActivator.Startup();
         }
