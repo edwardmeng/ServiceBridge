@@ -16,7 +16,6 @@ namespace ServiceBridge.Samples.AspNetCore
         public void Configuration(IServiceContainer container, IServiceCollection services)
         {
             container.Register<ICacheRepository, CacheRepository>(ServiceLifetime.Singleton);
-            container.RegisterServices(services);
         }
     }
 }

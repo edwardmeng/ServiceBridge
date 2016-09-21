@@ -1,11 +1,9 @@
 ﻿using MassActivation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ServiceBridge.AspNetCore;
 
 namespace ServiceBridge.Samples.AspNetCore
 {
@@ -29,7 +27,6 @@ namespace ServiceBridge.Samples.AspNetCore
         {
             // Add framework services.
             services.AddMvc();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             ApplicationActivator.UseService(services);
         }
 
