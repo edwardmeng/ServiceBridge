@@ -13,7 +13,7 @@ namespace ServiceBridge.Samples.WebApi
         {
             ApplicationActivator.UseEnvironment(EnvironmentName.Development).Startup();
             RegisterRoutes(RouteTable.Routes);
-            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "ServiceModel");
+            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "ServiceBridge");
         }
 
         private void RegisterRoutes(RouteCollection routes)

@@ -19,18 +19,16 @@ namespace ServiceBridge.Samples.AspNetCore
             Configuration = builder.Build();
             ApplicationActivator.UseEnvironment(env.EnvironmentName);
         }
+
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddMvc();
-            ApplicationActivator.UseService(services);
+            ApplicationActivator.UseService(services).Startup();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
@@ -42,8 +40,7 @@ namespace ServiceBridge.Samples.AspNetCore
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
-            ApplicationActivator.Startup();
-            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "ServiceModel");
+            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "ServiceBridge");
         }
     }
 }

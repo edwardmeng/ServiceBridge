@@ -9,7 +9,7 @@ namespace ServiceBridge.StructureMap
 {
     internal class PerRequestLifecycle : LifecycleBase
     {
-        private IContainer _container;
+        private readonly IContainer _container;
 
         public PerRequestLifecycle(IContainer container)
         {

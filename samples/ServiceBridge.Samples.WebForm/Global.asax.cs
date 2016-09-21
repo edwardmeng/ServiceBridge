@@ -10,7 +10,7 @@ namespace ServiceBridge.Samples.WebForm
         protected void Application_Start(object sender, EventArgs e)
         {
             ApplicationActivator.UseEnvironment(EnvironmentName.Development).Startup();
-            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "ServiceModel");
+            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "ServiceBridge");
         }
 
         protected void Session_Start(object sender, EventArgs e)

@@ -233,7 +233,7 @@ namespace ServiceBridge.Autofac
                     break;
                 case ServiceLifetime.PerRequest:
                     registration.RegistrationData.Sharing = InstanceSharing.Shared;
-                    registration.RegistrationData.Lifetime = new PerRequestScopeLifetime();
+                    registration.RegistrationData.Lifetime = new PerRequestScopeLifetime(this);
                     break;
             }
         }

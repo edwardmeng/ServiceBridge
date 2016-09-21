@@ -21,9 +21,10 @@ namespace ServiceBridge.AspNetCore.Activation
                     container.RegisterMvcControllers(assembly);
                 }
             }
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.Replace(ServiceDescriptor.Singleton<IControllerActivator, ServiceBridgeControllerActivator>());
-            container.RegisterServices(services);
+            var httpContextAccessor = new HttpContextAccessor();
+            services.AddSingleton<IHttpContextAccessor>(httpContextAccessor);
+            services.Replace(ServiceDescriptor.Singleton<IControllerActivator>(new ServiceBridgeControllerActivator()));
+            container.RegisterInstance<IHttpContextAccessor>(httpContextAccessor);
         }
     }
 }
