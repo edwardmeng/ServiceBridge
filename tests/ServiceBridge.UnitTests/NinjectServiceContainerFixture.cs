@@ -8,7 +8,7 @@ namespace ServiceBridge.UnitTests
         {
             var container = new NinjectServiceContainer();
 #if !NetCore
-            container..AddExtension(new ServiceBridge.Ninject.Interception.NinjectServiceContainerExtension());
+            container.AddExtension(new ServiceBridge.Ninject.Interception.NinjectServiceContainerExtension());
 #endif
             return container;
         }

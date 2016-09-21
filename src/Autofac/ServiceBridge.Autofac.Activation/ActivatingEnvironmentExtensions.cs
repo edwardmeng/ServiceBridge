@@ -12,7 +12,7 @@ namespace ServiceBridge.Autofac.Activation
         /// Specify Autofac as the service container to be used by the application.
         /// </summary>
         /// <param name="hostingEnvironment">An instance of <see cref="IActivatingEnvironment"/>.</param>
-        /// <returns>The <see cref="IServiceContainer"/> object that is configuring for the application.</returns>
+        /// <returns>The <see cref="IActivatingEnvironment"/>.</returns>
         public static IActivatingEnvironment UseAutofac(this IActivatingEnvironment hostingEnvironment)
         {
             if (hostingEnvironment == null) throw new ArgumentNullException(nameof(hostingEnvironment));
