@@ -38,8 +38,8 @@
     <AssemblyOriginatorKeyFile>..\..\..\ServiceBridge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MassActivation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=dfa3bda2996d7b44, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\MassActivation.1.1.0\lib\net40\MassActivation.dll</HintPath>
+    <Reference Include="MassActivation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=dfa3bda2996d7b44, processorArchitecture=MSIL">
+      <HintPath>..\..\..\packages\MassActivation.1.2.0\lib\net40\MassActivation.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

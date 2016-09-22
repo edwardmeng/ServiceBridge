@@ -3,7 +3,7 @@
 
     "dependencies": {
         "NETStandard.Library": "1.6.0",
-        "StructureMap": "4.4.0",
+        "StructureMap": "4.4.1",
         "ServiceBridge": { "target": "project" },
         "Microsoft.AspNetCore.Http.Abstractions": "1.0.0"
     },
