@@ -3,4 +3,6 @@
 }
 
 @model string
-@Html.TextBox("textValue", Model)
+@inject ICacheRepository Service
+@Html.TextBox("textValue1", Model)
+@Html.TextBox("textValue2", Service.GetVale("Injection"))

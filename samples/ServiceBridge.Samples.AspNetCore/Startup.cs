@@ -1,9 +1,11 @@
-﻿using MassActivation;
+﻿using System;
+using MassActivation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using ServiceBridge.AspNetCore;
 
 namespace ServiceBridge.Samples.AspNetCore
 {
@@ -22,17 +24,18 @@ namespace ServiceBridge.Samples.AspNetCore
 
         public IConfigurationRoot Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // Add framework services.
-            services.AddMvc();
-            ApplicationActivator.UseService(services).Startup();
-        }
-
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+            }
+
+            app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {
@@ -41,6 +44,14 @@ namespace ServiceBridge.Samples.AspNetCore
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
             ServiceContainer.GetInstance<ICacheRepository>().SetVale("Sample", "ServiceBridge");
+            ServiceContainer.GetInstance<ICacheRepository>().SetVale("Injection", "ServiceInjection");
+        }
+
+        public IServiceProvider ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc();
+            ApplicationActivator.UseService(services).Startup();
+            return new CompositeServiceProvider(services.BuildServiceProvider(), ServiceContainer.Current);
         }
     }
 }

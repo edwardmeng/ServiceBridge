@@ -1,4 +1,5 @@
 ﻿using MassActivation;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,7 @@ namespace ServiceBridge.AspNetCore.Activation
                     container.RegisterMvcControllers(assembly);
                 }
             }
+            services.Insert(0, ServiceDescriptor.Transient<IStartupFilter, ServiceBridgeStartupFilter>());
             var httpContextAccessor = new HttpContextAccessor();
             services.AddSingleton<IHttpContextAccessor>(httpContextAccessor);
             services.Replace(ServiceDescriptor.Singleton<IControllerActivator>(new ServiceBridgeControllerActivator()));

@@ -1,13 +1,14 @@
 {
   "version": "1.0.0-*",
 
-    "dependencies": {
-        "NETStandard.Library": "1.6.0",
-        "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
-        "Microsoft.Extensions.DependencyInjection": "1.0.0",
-        "ServiceBridge": { "target": "project" },
-        "Microsoft.AspNetCore.Mvc.Core": "1.0.1" 
-    },
+  "dependencies": {
+    "NETStandard.Library": "1.6.0",
+    "Microsoft.AspNetCore.Http.Abstractions": "1.0.0",
+    "Microsoft.Extensions.DependencyInjection": "1.0.0",
+    "ServiceBridge": { "target": "project" },
+    "Microsoft.AspNetCore.Mvc.Core": "1.0.1",
+    "Microsoft.AspNetCore.Hosting": "1.0.0" 
+  },
 
   "frameworks": {
     "netstandard1.6": {
