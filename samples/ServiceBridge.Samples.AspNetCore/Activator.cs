@@ -1,6 +1,5 @@
 ﻿using MassActivation;
 using Microsoft.Extensions.DependencyInjection;
-using ServiceBridge.AspNetCore;
 using ServiceBridge.Autofac.Activation;
 
 [assembly:AssemblyActivator(typeof(ServiceBridge.Samples.AspNetCore.Activator))]

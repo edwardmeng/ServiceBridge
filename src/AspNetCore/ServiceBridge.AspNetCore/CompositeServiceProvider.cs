@@ -9,8 +9,6 @@ namespace ServiceBridge.AspNetCore
     /// </summary>
     public class CompositeServiceProvider : IServiceProvider
     {
-        private readonly IServiceProvider[] _serviceProviders;
-
         /// <summary>
         /// Initialize a new <see cref="CompositeServiceProvider"/> using the specified child service providers.
         /// </summary>
@@ -21,7 +19,7 @@ namespace ServiceBridge.AspNetCore
             {
                 throw new ArgumentNullException(nameof(serviceProviders));
             }
-            _serviceProviders = serviceProviders.ToArray();
+            ServiceProviders = serviceProviders.ToArray();
         }
 
         /// <summary>
@@ -44,7 +42,7 @@ namespace ServiceBridge.AspNetCore
         /// </returns>
         public object GetService(Type serviceType)
         {
-            foreach (var serviceProvider in _serviceProviders)
+            foreach (var serviceProvider in ServiceProviders)
             {
                 var service = serviceProvider.GetService(serviceType);
                 if (service != null)
@@ -54,5 +52,7 @@ namespace ServiceBridge.AspNetCore
             }
             return null;
         }
+
+        internal IServiceProvider[] ServiceProviders { get; }
     }
 }

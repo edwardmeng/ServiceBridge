@@ -1,11 +1,9 @@
-﻿using System;
-using MassActivation;
+﻿using MassActivation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using ServiceBridge.AspNetCore;
 
 namespace ServiceBridge.Samples.AspNetCore
 {
@@ -47,11 +45,10 @@ namespace ServiceBridge.Samples.AspNetCore
             ServiceContainer.GetInstance<ICacheRepository>().SetVale("Injection", "ServiceInjection");
         }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
             ApplicationActivator.UseService(services).Startup();
-            return new CompositeServiceProvider(services.BuildServiceProvider(), ServiceContainer.Current);
         }
     }
 }

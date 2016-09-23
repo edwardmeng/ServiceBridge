@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace ServiceBridge.AspNetCore
 {
-    public class ServiceBridgeStartupFilter: IStartupFilter
+    public class ServiceBridgeStartupFilter : IStartupFilter
     {
         public Action<IApplicationBuilder> Configure(Action<IApplicationBuilder> next)
         {
