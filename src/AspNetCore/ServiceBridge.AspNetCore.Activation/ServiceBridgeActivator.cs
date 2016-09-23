@@ -25,7 +25,7 @@ namespace ServiceBridge.AspNetCore.Activation
             services.Insert(0, ServiceDescriptor.Transient<IStartupFilter, ServiceBridgeStartupFilter>());
             var httpContextAccessor = new HttpContextAccessor();
             services.AddSingleton<IHttpContextAccessor>(httpContextAccessor);
-            services.Replace(ServiceDescriptor.Singleton<IControllerActivator>(new ServiceBridgeControllerActivator()));
+            services.Replace(ServiceDescriptor.Singleton<IControllerActivator,ServiceBasedControllerActivator>());
             container.RegisterInstance<IHttpContextAccessor>(httpContextAccessor);
         }
     }

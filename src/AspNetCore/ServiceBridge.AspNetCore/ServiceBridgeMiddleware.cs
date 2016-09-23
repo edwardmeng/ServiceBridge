@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Http;
@@ -23,28 +20,18 @@ namespace ServiceBridge.AspNetCore
 
         private void Initialize()
         {
-            var serviceProvider = _app.ApplicationServices;
-            if (!Flattern(serviceProvider).Contains(ServiceContainer.Current))
+            if (ServiceContainer.HasProvider)
             {
-                serviceProvider = new CompositeServiceProvider(serviceProvider, ServiceContainer.Current);
-                _app.ApplicationServices = serviceProvider;
+                var compositeContainer = new CompositeServiceContainer(ServiceContainer.Current, _app.ApplicationServices);
+                ServiceContainer.SetProvider(()=> compositeContainer);
+                _app.ApplicationServices = compositeContainer;
             }
-        }
-
-        private static IEnumerable<IServiceProvider> Flattern(IServiceProvider serviceProvider)
-        {
-            var compositeProvider = serviceProvider as CompositeServiceProvider;
-            if (compositeProvider != null)
-            {
-                return compositeProvider.ServiceProviders.SelectMany(Flattern);
-            }
-            return new[] { serviceProvider };
         }
 
         public async Task Invoke(HttpContext context)
         {
             var existingFeature = context.Features.Get<IServiceProvidersFeature>();
-            using (var feature = new RequestServicesFeature(new CompositeServiceScopeFactory(_app.ApplicationServices)))
+            using (var feature = new RequestServicesFeature(new ServiceProviderScopeFactory(_app.ApplicationServices)))
             {
                 try
                 {

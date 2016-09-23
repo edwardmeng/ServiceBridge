@@ -3,9 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ServiceBridge.AspNetCore
 {
-    internal class CompositeServiceScope : IServiceScope
+    internal class ServicePrividerScope : IServiceScope
     {
-        public CompositeServiceScope(IServiceProvider serviceProvider)
+        public ServicePrividerScope(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
         }
