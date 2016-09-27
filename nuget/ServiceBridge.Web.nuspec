@@ -13,7 +13,7 @@
     </description>
     <tags>IoC DependencyInjection Web ASP.NET WebForm UserControl Interception AOP</tags>
     <dependencies>
-      <group targetFramework=".NETFramework4.0" >
+      <group targetFramework=".NETFramework4.5" >
         <dependency id="ServiceBridge" version="[1.0,2.0)" />
       </group>
     </dependencies>
