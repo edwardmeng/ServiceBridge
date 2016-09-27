@@ -19,11 +19,19 @@
         <dependency id="ServiceBridge.Ninject" version="[1.0,2.0)" />
         <dependency id="Ninject" version="[3.2.0,)" />
       </group>
+      <group targetFramework=".NETStandard1.6">
+        <dependency id="NETStandard.Library" version="[1.6.0, )" />
+        <dependency id="MassActivation" version="[1.0,2.0)" />
+        <dependency id="Ninject" version="[3.2.0,)" />
+        <dependency id="ServiceBridge" version="[1.0,2.0)" />
+        <dependency id="ServiceBridge.Ninject" version="[1.0,2.0)" />
+      </group>
     </dependencies>
   </metadata>
   <files>
     <file src="lib\**\*.dll" target="lib" />
     <file src="lib\**\*.xml" target="lib" />
+    <file src="lib\**\*.deps.json" target="lib" />
     <file src="..\LICENSE" />
   </files>
 </package>

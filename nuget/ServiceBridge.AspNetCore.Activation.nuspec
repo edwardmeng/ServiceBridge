@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <metadata minClientVersion="3.4">
-    <id>ServiceBridge.StructureMap.Activation</id>
+    <id>ServiceBridge.AspNetCore.Activation</id>
     <version>1.0.0</version>
     <authors>edwardmeng</authors>
     <owners>edwardmeng</owners>
@@ -9,22 +9,15 @@
     <projectUrl>https://github.com/edwardmeng/ServiceBridge</projectUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>
-      This library integrate ServiceBridge with MassActivation for StructureMap implementation.
+      This library integrate ServiceBridge with MassActivation for ASP.NET Core.
     </description>
-    <tags>IoC DependencyInjection StructureMap</tags>
+    <tags>IoC DependencyInjection Interception AOP MVC Activation</tags>
     <dependencies>
-      <group targetFramework=".NETFramework4.5" >
-        <dependency id="MassActivation" version="[1.0,2.0)" />
-        <dependency id="ServiceBridge" version="[1.0,2.0)" />
-        <dependency id="ServiceBridge.StructureMap" version="[1.0,2.0)" />
-        <dependency id="StructureMap" version="[4.4.1,)" />
-      </group>
       <group targetFramework=".NETStandard1.6">
         <dependency id="NETStandard.Library" version="[1.6.0, )" />
         <dependency id="MassActivation" version="[1.0,2.0)" />
-        <dependency id="StructureMap" version="[4.4.1,)" />
         <dependency id="ServiceBridge" version="[1.0,2.0)" />
-        <dependency id="ServiceBridge.StructureMap" version="[1.0,2.0)" />
+        <dependency id="ServiceBridge.AspNetCore" version="[1.0,2.0)" />
       </group>
     </dependencies>
   </metadata>

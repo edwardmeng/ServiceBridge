@@ -10,7 +10,16 @@
 
   "frameworks": {
     "netstandard1.6": {
-      "imports": "dnxcore50"
+        "imports": "dnxcore50",
+        "buildOptions": {
+            "compile": {
+                "include": [ "../../../GlobalAssemblyInfo.cs" ]
+            },
+            "define": [ "NetCore" ],
+            "keyFile": "../../../ServiceBridge.snk",
+            "xmlDoc": true,
+            "outputName": "ServiceBridge.AspNetCore.Activation"
+        }
     }
   }
 }
