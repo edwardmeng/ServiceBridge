@@ -29,3 +29,8 @@ Integrations
 * Ninject
 * StructureMap
 * Castle Windsor
+
+License
+------
+ServiceBridge is Open Source software and it is released under the MIT license.
+The licenses allow the use of ServiceBridge in free and commercial applications and libraries without restrictions.
