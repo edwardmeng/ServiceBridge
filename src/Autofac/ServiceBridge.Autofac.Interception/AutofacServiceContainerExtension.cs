@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Reflection;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Castle.DynamicProxy;
@@ -41,6 +42,18 @@ namespace ServiceBridge.Autofac.Interception
                     Selector = new ServiceInterceptorSelector((IServiceContainer)sender)
                 }).FindConstructorsWith(type =>
                 {
+#if NetCore
+                    // Fix the constructor injection in the interception mechanism.
+                    if (type.IsAssignableTo<IProxyTargetAccessor>())
+                    {
+                        var constructors = InjectionAttribute.GetConstructors(type.GetTypeInfo().BaseType).ToArray();
+                        if (constructors.Length > 0)
+                        {
+                            return constructors.Select(ctor => type.GetTypeInfo().GetConstructor(new[] { typeof(IInterceptor[]), typeof(IInterceptorSelector) }.Concat(ctor.GetParameters().Select(parameter => parameter.ParameterType)).ToArray())).ToArray();
+                        }
+                    }
+                    return type.GetConstructors();
+#else
                     // Fix the constructor injection in the interception mechanism.
                     if (type.IsAssignableTo<IProxyTargetAccessor>())
                     {
@@ -51,6 +64,7 @@ namespace ServiceBridge.Autofac.Interception
                         }
                     }
                     return type.GetConstructors();
+#endif
                 });
             }
         }

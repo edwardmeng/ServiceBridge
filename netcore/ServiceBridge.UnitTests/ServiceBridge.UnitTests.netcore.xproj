@@ -31,6 +31,18 @@
     <Compile Include="..\..\tests\ServiceBridge.UnitTests\Components\SimpleLogger.cs">
       <Link>Components\SimpleLogger.cs</Link>
     </Compile>
+    <Compile Include="..\..\tests\ServiceBridge.UnitTests\Components\DoubleInputInterceptor.cs">
+      <Link>Components\DoubleInputInterceptor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\tests\ServiceBridge.UnitTests\Components\ICanChangeParameters.cs">
+      <Link>Components\ICanChangeParameters.cs</Link>
+    </Compile>
+    <Compile Include="..\..\tests\ServiceBridge.UnitTests\Components\TripleOutputInterceptor.cs">
+      <Link>Components\TripleOutputInterceptor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\tests\ServiceBridge.UnitTests\Components\CanChangeParametersTarget.cs">
+      <Link>Components\CanChangeParametersTarget.cs</Link>
+    </Compile>
     <Compile Include="..\..\tests\ServiceBridge.UnitTests\Components\UnregisteredInjectionObject.cs">
       <Link>Components\UnregisteredInjectionObject.cs</Link>
     </Compile>
@@ -52,6 +64,9 @@
     <Compile Include="..\..\tests\ServiceBridge.UnitTests\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>

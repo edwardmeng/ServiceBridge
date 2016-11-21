@@ -7,9 +7,7 @@ namespace ServiceBridge.UnitTests
         protected override IServiceContainer CreateContainer()
         {
             var container = new AutofacServiceContainer();
-#if !NetCore
             container.AddExtension(new ServiceBridge.Autofac.Interception.AutofacServiceContainerExtension());
-#endif
             return container;
         }
 

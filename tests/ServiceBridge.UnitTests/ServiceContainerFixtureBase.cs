@@ -22,9 +22,7 @@ namespace ServiceBridge.UnitTests
             ServiceContainer.Register<ILogger, SimpleLogger>("Simple").Register<ILogger, AdvancedLogger>().Register<ILogger, AdvancedLogger>("Advanced");
             ServiceContainer.RegisterInstance(_registeredInstance);
             ServiceContainer.Register<ObjectWithInjection>();
-#if !NetCore
             ServiceContainer.Register<ICanChangeParameters, CanChangeParametersTarget>();
-#endif
         }
 
         [Fact]
@@ -221,8 +219,6 @@ namespace ServiceBridge.UnitTests
         }
 
         #endregion
-
-#if !NetCore
          
         #region Interception
 
@@ -258,8 +254,6 @@ namespace ServiceBridge.UnitTests
             Assert.Equal((2 + 3 + 5) * 3, output);
         }
         #endregion
-
-#endif
 
         #region Lifetime
 
