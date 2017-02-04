@@ -12,6 +12,7 @@ namespace ServiceBridge.Ninject
     /// </summary>
     public class NinjectServiceContainer : ServiceContainerBase
     {
+        private bool _externalKernel;
         private IKernel _kernel;
 
         /// <summary>
@@ -23,7 +24,20 @@ namespace ServiceBridge.Ninject
         /// </param>
         public NinjectServiceContainer(IKernel kernel = null)
         {
-            _kernel = kernel ?? new StandardKernel(new NinjectSettings { InjectAttribute = typeof(InjectionAttribute) });
+            if (kernel == null)
+            {
+                var settings = new NinjectSettings {InjectAttribute = typeof(InjectionAttribute)};
+                settings.ExtensionSearchPatterns =
+                    new List<string>(settings.ExtensionSearchPatterns ?? new string[0])
+                    {
+                        "ServiceBridge.Ninject.*.dll"
+                    }.ToArray();
+                _kernel = new StandardKernel(settings);
+            }
+            else
+            {
+                _externalKernel = true;
+            }
             _kernel.Components.RemoveAll<IPlanningStrategy>();
             _kernel.Components.Add<IPlanningStrategy, ConstructorStrategy>();
             _kernel.Components.Add<IPlanningStrategy, PropertyStrategy>();
@@ -37,13 +51,10 @@ namespace ServiceBridge.Ninject
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);
-            if (disposing)
+            if (disposing && !_externalKernel && _kernel != null)
             {
-                if (_kernel != null)
-                {
-                    _kernel.Dispose();
-                    _kernel = null;
-                }
+                _kernel.Dispose();
+                _kernel = null;
             }
         }
 
