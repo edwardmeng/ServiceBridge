@@ -25,7 +25,7 @@
         <dependency id="ServiceBridge" version="[1.0.0, )" />
         <dependency id="ServiceBridge.Interception" version="[1.0.0, )" />
         <dependency id="ServiceBridge.StructureMap" version="[1.0.0, )" />
-        <dependency id="Castle.Core" version="[4.0.0-beta002, )" />
+        <dependency id="Castle.Core" version="[4.0.0, )" />
         <dependency id="StructureMap" version="[4.4.1,)" />
       </group>
     </dependencies>

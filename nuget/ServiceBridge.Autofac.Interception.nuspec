@@ -26,7 +26,7 @@
         <dependency id="ServiceBridge.Interception" version="[1.0,2.0)" />
         <dependency id="ServiceBridge.Autofac" version="[1.0,2.0)" />
         <dependency id="Autofac" version="[4.1.0,)" />
-        <dependency id="Castle.Core" version="[3.2.0,)" />
+        <dependency id="Castle.Core" version="[4.0.0, )" />
       </group>    
     </dependencies>
   </metadata>
