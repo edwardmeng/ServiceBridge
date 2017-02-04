@@ -38,7 +38,12 @@ namespace ServiceBridge.StructureMap.Interception
         }
         private bool ShouldIntercept(Type type)
         {
-            return !type.IsSealed && type
+#if NetCore
+            var isSealed = type.GetTypeInfo().IsSealed;
+#else
+            var isSealed = type.IsSealed;
+#endif
+            return !isSealed && type
                 .GetMethods(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
                 .Any(method => method.DeclaringType != typeof(object) && !method.IsPrivate && !method.IsFinal);
         }

@@ -1,0 +1,30 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "NETStandard.Library": "1.6.0",
+    "StructureMap": "4.4.1",
+    "ServiceBridge": { "target": "project" },
+    "ServiceBridge.StructureMap": { "target": "project" },
+    "ServiceBridge.Interception": { "target": "project" },
+    "Castle.Core": "4.0.0-beta002"
+  },
+
+  "frameworks": {
+    "netstandard1.5": {
+      "imports": "dnxcore50",
+      "buildOptions": {
+        "compile": {
+          "include": [
+            "../../GlobalAssemblyInfo.cs",
+            "../../src/StructureMap/ServiceBridge.StructureMap.Interception/**/*.cs",
+            "../../src/Share/ServiceBridge.DynamicProxy/**/*.cs"
+          ]
+        },
+        "define": [ "NetCore" ],
+        "xmlDoc": true,
+        "outputName": "ServiceBridge.StructureMap.Interception"
+      }
+    }
+  }
+}

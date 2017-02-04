@@ -119,6 +119,7 @@ call :Package
 IF %ERRORLEVEL% NEQ 0 goto error
 
 ::package ServiceBridge.StructureMap.Interception
+set NetCoreVersion=netstandard1.5
 set PackageName=ServiceBridge.%ModuleName%.Interception
 call :Package
 IF %ERRORLEVEL% NEQ 0 goto error

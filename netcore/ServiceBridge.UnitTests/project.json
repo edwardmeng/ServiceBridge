@@ -15,7 +15,8 @@
     "ServiceBridge.Ninject": { "target": "project" },
     "StructureMap": "4.4.1",
     "ServiceBridge.StructureMap": { "target": "project" },
-    "ServiceBridge.Autofac.Interception": { "target": "project" }
+    "ServiceBridge.Autofac.Interception": { "target": "project" },
+    "ServiceBridge.StructureMap.Interception": { "target": "project" }
   },
 
   "frameworks": {
