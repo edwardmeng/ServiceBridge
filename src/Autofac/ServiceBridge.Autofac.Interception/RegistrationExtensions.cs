@@ -10,7 +10,7 @@ namespace Autofac.Extras.DynamicProxy
     /// <summary>
     /// Adds registration syntax to the <see cref="ContainerBuilder"/> type.
     /// </summary>
-    public static class RegistrationExtensions
+    internal static class RegistrationExtensions
     {
         private static readonly ProxyGenerator ProxyGenerator = new ProxyGenerator();
 

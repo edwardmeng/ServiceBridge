@@ -20,6 +20,9 @@
     <Compile Include="..\..\src\Autofac\ServiceBridge.Autofac.Interception\ServiceContainerExtensions.cs">
       <Link>ServiceContainerExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\..\src\Autofac\ServiceBridge.Autofac.Interception\RegistrationExtensions.cs">
+      <Link>RegistrationExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
