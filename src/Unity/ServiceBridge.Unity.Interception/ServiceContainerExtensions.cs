@@ -11,10 +11,11 @@ namespace ServiceBridge.Unity.Interception
         /// Specifies the service container to be enabled by using Unity interception mechanism.
         /// </summary>
         /// <returns>The <see cref="IServiceContainer"/> object that this method was called on.</returns>
-        public static void EnableInterception(this IServiceContainer container)
+        public static IServiceContainer EnableInterception(this IServiceContainer container)
         {
             if (container == null) throw new ArgumentNullException(nameof(container));
             container.AddNewExtension<UnityServiceContainerExtension>();
+            return container;
         }
     }
 }

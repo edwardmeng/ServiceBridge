@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.Practices.Unity.InterceptionExtension;
+using ServiceBridge.Interception;
 
 namespace ServiceBridge.Unity.Interception
 {
@@ -14,6 +15,7 @@ namespace ServiceBridge.Unity.Interception
         /// <param name="container">The container this extension to extend.</param>
         public void Initialize(IServiceContainer container)
         {
+            container.UseDefaultInterceptorFactory();
             ((UnityServiceContainer)container).AddUnityExtension(new Microsoft.Practices.Unity.InterceptionExtension.Interception());
             container.Registering += OnRegistering;
         }

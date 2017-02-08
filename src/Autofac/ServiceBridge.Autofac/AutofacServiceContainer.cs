@@ -17,6 +17,7 @@ namespace ServiceBridge.Autofac
     {
         #region Fields
 
+        private bool _disposed;
         private ContainerBuilder _builder;
         private IContainer _container;
         private readonly object _lockobj = new object();
@@ -50,12 +51,13 @@ namespace ServiceBridge.Autofac
                     _container = null;
                 }
                 _builder = null;
+                _disposed = true;
             }
         }
 
         private IContainer EnsureContainer()
         {
-            if (_builder == null)
+            if (_disposed)
             {
                 throw new ObjectDisposedException("container");
             }
@@ -66,6 +68,7 @@ namespace ServiceBridge.Autofac
                     if (_container == null)
                     {
                         _container = _builder.Build();
+                        _builder = null;
                     }
                 }
             }
@@ -101,7 +104,7 @@ namespace ServiceBridge.Autofac
         /// <returns>The requested service instance. If the requested type/name has not been registerd, returns null.</returns>
         public override object GetInstance(Type serviceType, string serviceName)
         {
-            if (_builder == null)
+            if (_disposed)
             {
                 throw new ObjectDisposedException("container");
             }
@@ -120,18 +123,7 @@ namespace ServiceBridge.Autofac
                 {
                     if (!IsRegistered(serviceType, serviceName) && !IsDynamicRegisterd(serviceType, serviceName))
                     {
-                        if (_container == null)
-                        {
-                            // Dynamically register the requesting type to the ContainerBuilder that have not been built to IContainer.
-                            DoRegister(serviceType, serviceType, serviceName, ServiceLifetime.Transient);
-                        }
-                        else
-                        {
-                            // Dynamically register the requesting type to the container by using new ContainerBuilder.
-                            var builder = new ContainerBuilder();
-                            Register(builder, serviceType, serviceType, serviceName, ServiceLifetime.Transient);
-                            builder.Update(_container);
-                        }
+                        DoRegister(serviceType, serviceType, serviceName, ServiceLifetime.Transient);
                         // Add the dynamic registration to avoid the second time dynamic register.
                         AddDynamicRegistration(serviceType, serviceName);
                     }
@@ -161,7 +153,7 @@ namespace ServiceBridge.Autofac
         /// <param name="instance">The existing instance to be injected.</param>
         protected override void DoInjectInstance(object instance)
         {
-            if (_builder == null)
+            if (_disposed)
             {
                 throw new ObjectDisposedException("container");
             }
@@ -177,11 +169,22 @@ namespace ServiceBridge.Autofac
         /// <param name="lifetime">The lifetime strategy of the resolved instances.</param>
         protected override void DoRegister(Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
         {
-            if (_builder == null)
+            if (_disposed)
             {
                 throw new ObjectDisposedException("container");
             }
-            Register(_builder, serviceType, implementationType, serviceName, lifetime);
+            if (_container == null)
+            {
+                // Dynamically register the requesting type to the ContainerBuilder that have not been built to IContainer.
+                Register(_builder, serviceType, implementationType, serviceName, lifetime);
+            }
+            else
+            {
+                // Dynamically register the requesting type to the container by using new ContainerBuilder.
+                var builder = new ContainerBuilder();
+                Register(builder, serviceType, implementationType, serviceName, lifetime);
+                builder.Update(_container);
+            }
         }
 
         /// <summary>
@@ -192,11 +195,27 @@ namespace ServiceBridge.Autofac
         /// <param name="serviceName">Name to use for registration, null if a default registration.</param>
         protected override void DoRegisterInstance(Type serviceType, object instance, string serviceName)
         {
-            if (_builder == null)
+            if (_disposed)
             {
                 throw new ObjectDisposedException("container");
             }
-            var registration = serviceName == null ? _builder.RegisterInstance(instance).As(serviceType) : _builder.RegisterInstance(instance).Named(serviceName, serviceType);
+            if (_container == null)
+            {
+                // Dynamically register the requesting type to the ContainerBuilder that have not been built to IContainer.
+                RegisterInstance(_builder, serviceType, instance, serviceName);
+            }
+            else
+            {
+                // Dynamically register the requesting type to the container by using new ContainerBuilder.
+                var builder = new ContainerBuilder();
+                RegisterInstance(builder, serviceType, instance, serviceName);
+                builder.Update(_container);
+            }
+        }
+
+        private void RegisterInstance(ContainerBuilder builder, Type serviceType, object instance, string serviceName)
+        {
+            var registration = serviceName == null ? builder.RegisterInstance(instance).As(serviceType) : builder.RegisterInstance(instance).Named(serviceName, serviceType);
             registration.ExternallyOwned();
         }
 

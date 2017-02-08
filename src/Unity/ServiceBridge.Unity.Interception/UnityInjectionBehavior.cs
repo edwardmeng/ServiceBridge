@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Practices.Unity.InterceptionExtension;
+using ServiceBridge.Interception;
 using IMethodInvocation = Microsoft.Practices.Unity.InterceptionExtension.IMethodInvocation;
 using IMethodReturn = Microsoft.Practices.Unity.InterceptionExtension.IMethodReturn;
 using PipelineManager = ServiceBridge.Interception.PipelineManager;
@@ -36,17 +37,20 @@ namespace ServiceBridge.Unity.Interception
             {
                 throw new ArgumentNullException(nameof(interceptionRequest));
             }
-
             var hasHandlers = false;
 
-            var manager = new PipelineManager();
-
+            var manager = new PipelineManager(container.GetInstance<IInterceptorFactory>());
             foreach (
                 var method in
                     interceptionRequest.Interceptor.GetInterceptableMethods(interceptionRequest.TypeToIntercept,
                         interceptionRequest.ImplementationType))
             {
                 var hasNewHandlers = manager.InitializePipeline(method.InterfaceMethodInfo, method.ImplementationMethodInfo, container);
+                hasHandlers = hasHandlers || hasNewHandlers;
+            }
+            foreach (var constructor in interceptionRequest.ImplementationType.GetConstructors())
+            {
+                var hasNewHandlers = manager.InitializePipeline(constructor, container);
                 hasHandlers = hasHandlers || hasNewHandlers;
             }
             _pipelineManager = hasHandlers ? manager : null;

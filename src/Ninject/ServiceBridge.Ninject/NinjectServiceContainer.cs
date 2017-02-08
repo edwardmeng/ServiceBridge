@@ -12,7 +12,7 @@ namespace ServiceBridge.Ninject
     /// </summary>
     public class NinjectServiceContainer : ServiceContainerBase
     {
-        private bool _externalKernel;
+        private readonly bool _externalKernel;
         private IKernel _kernel;
 
         /// <summary>
@@ -114,7 +114,9 @@ namespace ServiceBridge.Ninject
         protected override void DoRegister(Type serviceType, Type implementationType, string serviceName, ServiceLifetime lifetime)
         {
             if (_kernel == null) throw new ObjectDisposedException("container");
-            var binding = _kernel.Bind(serviceType).To(implementationType);
+            var binding = IsRegistered(serviceType, serviceName)
+                ? _kernel.Rebind(serviceType).To(implementationType)
+                : _kernel.Bind(serviceType).To(implementationType);
             IBindingSyntax syntax = binding;
             if (serviceName != null) syntax = binding.Named(serviceName);
             OnRegistering(new NinjectServiceRegisterEventArgs(serviceType, implementationType, serviceName, lifetime, syntax));

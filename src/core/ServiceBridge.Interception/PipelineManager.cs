@@ -15,11 +15,26 @@ namespace ServiceBridge.Interception
         private readonly Dictionary<InterceptorPipelineKey, InterceptorPipeline> _pipelines =
             new Dictionary<InterceptorPipelineKey, InterceptorPipeline>();
 
+        private readonly IInterceptorFactory _interceptorFactory;
+
+        /// <summary>
+        /// Initialize new instance of <see cref="PipelineManager"/> with the specified interceptor factory.
+        /// </summary>
+        /// <param name="interceptorFactory"></param>
+        public PipelineManager(IInterceptorFactory interceptorFactory)
+        {
+            if (interceptorFactory == null)
+            {
+                throw new ArgumentNullException(nameof(interceptorFactory));
+            }
+            _interceptorFactory = interceptorFactory;
+        }
+
         /// <summary>
         /// Retrieve the pipeline associated with the requested <paramref name="method"/>.
         /// </summary>
-        /// <param name="method">The method for which the pipeline is being requested.</param>
-        /// <returns>The handler pipeline for the given method. If no pipeline has
+        /// <param name="method">The methodBase for which the pipeline is being requested.</param>
+        /// <returns>The handler pipeline for the given methodBase. If no pipeline has
         /// been set, returns a new empty pipeline.</returns>
         public InterceptorPipeline GetPipeline(MethodBase method)
         {
@@ -28,9 +43,9 @@ namespace ServiceBridge.Interception
         }
 
         /// <summary>
-        /// Set a new pipeline for a method.
+        /// Set a new pipeline for a methodBase.
         /// </summary>
-        /// <param name="method">The method on which the pipeline should be set.</param>
+        /// <param name="method">The methodBase on which the pipeline should be set.</param>
         /// <param name="pipeline">The new pipeline.</param>
         public void SetPipeline(MethodBase method, InterceptorPipeline pipeline)
         {
@@ -50,15 +65,29 @@ namespace ServiceBridge.Interception
             {
                 throw new ArgumentNullException(nameof(implementMethod));
             }
-            var pipeline = CreatePipeline(implementMethod,
-                from attribute in GetInterceptorAttributes(interfaceMethod, implementMethod)
-                orderby attribute.Order
-                select attribute.CreateInterceptor(container));
+
+            var pipeline = CreatePipeline(implementMethod, _interceptorFactory.CreateInterceptors(interfaceMethod, implementMethod, container));
             if (interfaceMethod != null)
             {
                 _pipelines[InterceptorPipelineKey.ForMethod(interfaceMethod)] = pipeline;
             }
 
+            return pipeline.Count > 0;
+        }
+
+        /// <summary>
+        /// Initialize the pipeline for the given constructor, creating it if necessary.
+        /// </summary>
+        /// <param name="constructor">The <see cref="ConstructorInfo"/> for the implementing constructor.</param>
+        /// <param name="container">Service container that can be used to resolve interceptors.</param>
+        /// <returns>True if the pipeline has any interceptor in it, false if not.</returns>
+        public bool InitializePipeline(ConstructorInfo constructor, IServiceContainer container)
+        {
+            if (constructor == null)
+            {
+                throw new ArgumentNullException(nameof(constructor));
+            }
+            var pipeline = CreatePipeline(constructor, _interceptorFactory.CreateInterceptors(constructor, container));
             return pipeline.Count > 0;
         }
 
@@ -83,6 +112,10 @@ namespace ServiceBridge.Interception
                     }
                 }
             }
+            foreach (var constructor in implementType.GetTypeInfo().DeclaredConstructors)
+            {
+                InitializePipeline(constructor, container);
+            }
 #else
             foreach (Type itf in implementType.GetInterfaces())
             {
@@ -96,45 +129,47 @@ namespace ServiceBridge.Interception
                     }
                 }
             }
+            foreach (var constructor in implementType.GetConstructors())
+            {
+                InitializePipeline(constructor, container);
+            }
 #endif
         }
 
-        private IEnumerable<InterceptorAttribute> GetInterceptorAttributes(MethodInfo interfaceMethod, MethodInfo implementMethod)
+        private InterceptorPipeline CreatePipeline(MethodBase methodBase, IEnumerable<IInterceptor> interceptors)
         {
-            if (interfaceMethod != null)
-            {
-                foreach (var attr in InterceptorAttribute.GetAttributes(interfaceMethod, true))
-                {
-                    yield return attr;
-                }
-            }
-            foreach (var attr in InterceptorAttribute.GetAttributes(implementMethod, true))
-            {
-                yield return attr;
-            }
-        }
-
-        private InterceptorPipeline CreatePipeline(MethodInfo method, IEnumerable<IInterceptor> interceptors)
-        {
-            InterceptorPipelineKey key = InterceptorPipelineKey.ForMethod(method);
+            InterceptorPipelineKey key = InterceptorPipelineKey.ForMethod(methodBase);
             if (_pipelines.ContainsKey(key))
             {
                 return _pipelines[key];
             }
+            InterceptorPipeline pipeline;
+#if NetCore
+            if (methodBase.IsConstructor)
+#else
+            if (methodBase.MemberType == MemberTypes.Constructor)
+#endif
+            {
+                pipeline = new InterceptorPipeline(interceptors);
+                _pipelines[key] = pipeline;
+                return pipeline;
+            }
+            var method = (MethodInfo) methodBase;
 #if NetCore
             var baseMethod = method.GetRuntimeBaseDefinition();
 #else
             var baseMethod = method.GetBaseDefinition();
 #endif
-            if (Equals(baseMethod, method))
+            if (baseMethod == null || Equals(baseMethod, method))
             {
-                _pipelines[key] = new InterceptorPipeline(interceptors);
-                return _pipelines[key];
+                pipeline = new InterceptorPipeline(interceptors);
+                _pipelines[key] = pipeline;
+                return pipeline;
             }
 
-            var basePipeline = CreatePipeline(baseMethod, interceptors);
-            _pipelines[key] = basePipeline;
-            return basePipeline;
+            pipeline = CreatePipeline(baseMethod, interceptors);
+            _pipelines[key] = pipeline;
+            return pipeline;
         }
     }
 }

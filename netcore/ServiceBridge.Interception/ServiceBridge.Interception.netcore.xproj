@@ -40,6 +40,18 @@
     <Compile Include="..\..\src\core\ServiceBridge.Interception\PipelineManager.cs">
       <Link>PipelineManager.cs</Link>
     </Compile>
+    <Compile Include="..\..\src\core\ServiceBridge.Interception\IInterceptorFactory.cs">
+      <Link>IInterceptorFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\core\ServiceBridge.Interception\DefaultInterceptorFactory.cs">
+      <Link>DefaultInterceptorFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\core\ServiceBridge.Interception\CompositeInterceptorFactory.cs">
+      <Link>CompositeInterceptorFactory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\src\core\ServiceBridge.Interception\ServiceContainerExtensions.cs">
+      <Link>ServiceContainerExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>

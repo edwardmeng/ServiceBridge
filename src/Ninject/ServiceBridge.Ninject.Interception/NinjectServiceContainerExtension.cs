@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using Ninject.Extensions.Interception.Infrastructure.Language;
-using Ninject.Extensions.Interception.ProxyFactory;
 using Ninject.Syntax;
 using ServiceBridge.Interception;
 
@@ -19,7 +18,7 @@ namespace ServiceBridge.Ninject.Interception
         /// <param name="container">The container this extension to extend.</param>
         public void Initialize(IServiceContainer container)
         {
-            container.Register<PipelineManager>(ServiceLifetime.Singleton);
+            container.Register<PipelineManager>(ServiceLifetime.Singleton).UseDefaultInterceptorFactory();
             container.Registering += OnRegistering;
         }
 

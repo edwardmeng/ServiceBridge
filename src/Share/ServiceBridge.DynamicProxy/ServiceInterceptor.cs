@@ -8,7 +8,6 @@ namespace ServiceBridge.DynamicProxy
 {
     internal class ServiceInterceptor : IInterceptor
     {
-        private readonly PipelineManager _pipelineManager;
         private readonly IServiceContainer _container;
 
         /// <summary>
@@ -18,17 +17,27 @@ namespace ServiceBridge.DynamicProxy
         /// <param name="container">Service container that can be used to resolve interceptors.</param>
         public ServiceInterceptor(PipelineManager pipelineManager, IServiceContainer container)
         {
-            _pipelineManager = pipelineManager;
+            PipelineManager = pipelineManager;
+            _container = container;
+        }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceInterceptor" />.
+        /// </summary>
+        /// <param name="container">Service container that can be used to resolve interceptors.</param>
+        public ServiceInterceptor(IServiceContainer container)
+        {
             _container = container;
         }
 
+        public PipelineManager PipelineManager { get; set; }
+
         private InterceptorPipeline EnsurePipeline(IInvocation invocation)
         {
-            var pipeline = _pipelineManager.GetPipeline(invocation.Method);
+            var pipeline = PipelineManager.GetPipeline(invocation.Method);
             if (pipeline == InterceptorPipeline.Empty)
             {
-                _pipelineManager.InitializePipeline(invocation.TargetType, _container);
-                pipeline = _pipelineManager.GetPipeline(invocation.Method);
+                PipelineManager.InitializePipeline(invocation.TargetType, _container);
+                pipeline = PipelineManager.GetPipeline(invocation.Method);
             }
             return pipeline;
         }

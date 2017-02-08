@@ -152,6 +152,13 @@ namespace ServiceBridge.UnitTests
             }
         }
 
+        [Fact]
+        public void ReplaceRegistration()
+        {
+            Assert.IsAssignableFrom<AdvancedLogger>(ServiceContainer.GetInstance<ILogger>());
+            Assert.Throws<RegistrationException>(() => ServiceContainer.Register<ILogger, SimpleLogger>());
+        }
+
         #region Injection
 
         [Fact]

@@ -18,7 +18,10 @@ namespace ServiceBridge.Windsor.Interception
         public void Initialize(IServiceContainer container)
         {
             container.Registering += OnRegistering;
-            ((WindsorServiceContainer)container).RegisterInstance(typeof(ServiceInterceptor), new ServiceInterceptor(new PipelineManager(), container));
+            var interceptor = new ServiceInterceptor(container);
+            ((WindsorServiceContainer)container).RegisterInstance(typeof(ServiceInterceptor), interceptor);
+            container.UseDefaultInterceptorFactory();
+            interceptor.PipelineManager = new PipelineManager(container.GetInstance<IInterceptorFactory>());
         }
 
         /// <summary>

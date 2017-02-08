@@ -17,7 +17,7 @@ namespace ServiceBridge.StructureMap.Interception
         public void Initialize(IServiceContainer container)
         {
             container.Registering += OnRegistering;
-            container.Register<PipelineManager>(ServiceLifetime.Singleton);
+            container.Register<PipelineManager>(ServiceLifetime.Singleton).UseDefaultInterceptorFactory();
         }
 
         /// <summary>

@@ -123,6 +123,12 @@
   <data name="ActivationExceptionMessage" xml:space="preserve">
     <value>Activation error occurred while trying to get instance of type {0}, key "{1}".</value>
   </data>
+  <data name="DuplicateDefaultRegistrationMessage" xml:space="preserve">
+    <value>There is already a registration for the requested service '{0}' with the default name, and cannot be registered again.</value>
+  </data>
+  <data name="DuplicateNamedRegistrationMessage" xml:space="preserve">
+    <value>There is already a registration for the requested service '{0}' with the specified name '{1}', and cannot be registered again.</value>
+  </data>
   <data name="InjectionExceptionMessage" xml:space="preserve">
     <value>Injection error occurred while trying to inject an existing instance of type {0}.</value>
   </data>

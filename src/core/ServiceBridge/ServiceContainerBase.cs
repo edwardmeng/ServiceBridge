@@ -373,6 +373,10 @@ namespace ServiceBridge
             {
                 throw new ArgumentNullException(nameof(serviceType));
             }
+            if (IsRegistered(serviceType, serviceName))
+            {
+                throw new RegistrationException(FormatDuplicateRegistrationExceptionMessage(serviceType, serviceName));
+            }
             try
             {
                 DoRegister(serviceType, implementationType, serviceName, lifetime);
@@ -521,6 +525,25 @@ namespace ServiceBridge
         protected virtual string FormatInjectionExceptionMessage(Exception actualException, object instance)
         {
             return string.Format(CultureInfo.CurrentUICulture, Resources.InjectionExceptionMessage, instance.GetType());
+        }
+
+        /// <summary>
+        /// Format the exception message for use in <see cref="RegistrationException"/>
+        /// that occurs while registering duplicate services.
+        /// </summary>
+        /// <param name="serviceType">Type of service requested.</param>
+        /// <param name="serviceName">Name requested.</param>
+        /// <returns>The formatted exception message string.</returns>
+        protected virtual string FormatDuplicateRegistrationExceptionMessage(Type serviceType, string serviceName)
+        {
+            if (!string.IsNullOrEmpty(serviceName))
+            {
+                return string.Format(Resources.DuplicateNamedRegistrationMessage, serviceType.FullName, serviceName);
+            }
+            else
+            {
+                return string.Format(Resources.DuplicateDefaultRegistrationMessage, serviceType.FullName);
+            }
         }
 
         #endregion
